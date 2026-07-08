@@ -73,7 +73,8 @@ header{position:relative;z-index:5;display:flex;align-items:center;justify-conte
 .pHead span{font-family:var(--fj);font-size:11px;color:var(--dim);letter-spacing:1px}
 /* ====== HOME LAYOUT ====== */
 .homeWrap{display:grid;grid-template-columns:1.3fr .9fr;gap:22px;align-items:stretch}
-.charStage{position:relative;display:flex;flex-direction:column;align-items:center;gap:6px;min-height:0}
+.homeWrap>*{min-width:0}
+.charStage{position:relative;display:flex;flex-direction:column;align-items:center;gap:6px;min-height:0;min-width:0;width:100%}
 .statsCol{display:flex;flex-direction:column;gap:16px;background:var(--panel);border:1px solid var(--line);backdrop-filter:blur(10px);padding:18px 20px;position:relative}
 .statsCol .pHead{margin-bottom:2px}
 /* radar */
@@ -134,12 +135,12 @@ header{position:relative;z-index:5;display:flex;align-items:center;justify-conte
 .charStage.f-mui .aura{background:radial-gradient(ellipse at center, rgba(240,246,255,.65), rgba(160,180,230,.3) 52%, transparent 68%);opacity:.72;animation:auraPulse 2.4s infinite}
 .charStage.f-ue .aura{background:radial-gradient(ellipse at center, rgba(180,80,255,.6), transparent 64%);opacity:.64;animation:auraPulse 2s infinite}
 .charStage.f-beast .aura{background:radial-gradient(ellipse at center, rgba(255,60,80,.6), rgba(255,150,160,.25) 50%, transparent 66%);opacity:.66;animation:auraPulse 1.8s infinite}
-#charaBox{position:relative;height:100%;max-height:52vh;display:flex;align-items:center;justify-content:center;z-index:2;animation:bob 5s ease-in-out infinite}
-#charaSvg{height:100%;width:auto;overflow:visible}
-#imgWrap{position:relative;height:100%;display:none}
+#charaBox{position:relative;height:100%;max-height:52vh;max-width:100%;min-width:0;display:flex;align-items:center;justify-content:center;z-index:2;animation:bob 5s ease-in-out infinite}
+#charaSvg{height:100%;width:auto;max-width:100%;overflow:visible}
+#imgWrap{position:relative;height:100%;max-width:100%;min-width:0;display:none}
 #charaBox.hasImg #charaSvg{display:none}
 #charaBox.hasImg #imgWrap{display:block}
-#charaImg{height:100%;width:auto;object-fit:contain;display:block;border-radius:16px;
+#charaImg{height:100%;width:auto;max-width:100%;object-fit:contain;display:block;border-radius:16px;
   border:1px solid rgba(53,224,255,.22);box-shadow:0 10px 44px rgba(0,0,0,.6),0 0 40px rgba(53,224,255,.1)}
 .imgTint{position:absolute;inset:0;border-radius:16px;pointer-events:none;
   background:repeating-linear-gradient(0deg, rgba(53,224,255,.035) 0 2px, transparent 2px 4px),
