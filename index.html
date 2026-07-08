@@ -210,8 +210,8 @@ header{position:relative;z-index:5;display:flex;align-items:center;justify-conte
 .fu1{stop-color:var(--fA)} .fu2{stop-color:var(--fB)}
 .irisFill{fill:var(--irisC)} .brow{stroke:var(--browC)} .armSkin{fill:var(--skin)}
 .apeChest{fill:var(--furChest)} .apeMuzzle{fill:var(--muzzle)}
-#charaSvg{--h1:#3a4270;--h2:#171b33;--irisC:#20264a;--browC:#151a30;--skin:#ffd9b8;
-  --flameC1:#ffd75e;--flameC2:#ff8c1a;--boltC:#cfe8ff;--fA:#8a5a33;--fB:#57351c;--furChest:#c9a06c;--muzzle:#d8b088}
+#charaSvg{--h1:#2e3448;--h2:#101320;--irisC:#4a2c16;--browC:#131722;--skin:#edb583;
+  --flameC1:#ffd75e;--flameC2:#ff8c1a;--boltC:#e8f2ff;--fA:#8a5a33;--fB:#57351c;--furChest:#c9a06c;--muzzle:#d8b088}
 #charaSvg:is(.f-ssj,.f-ussj,.f-ssj2,.f-ssj3,.f-goldape){--h1:#fff3b0;--h2:#f5a70a;--irisC:#28e0b0;--browC:#c9820a}
 #charaSvg.f-ssj4{--h1:#3c3f52;--h2:#14161f;--irisC:#ffd75e;--skin:#cf4433;--flameC1:#ff5e7a;--flameC2:#c9184a}
 #charaSvg.f-ssg{--h1:#ff8a7a;--h2:#e0294e;--irisC:#ff4d5e;--browC:#c22646;--flameC1:#ff9e5e;--flameC2:#ff3d2e}
@@ -241,6 +241,7 @@ header{position:relative;z-index:5;display:flex;align-items:center;justify-conte
 @keyframes flick{0%{transform:scaleY(1) skewX(0deg)}100%{transform:scaleY(1.05) skewX(1.4deg)}}
 #bolts{display:none}
 #charaSvg:is(.f-ssj2,.f-ssj3,.f-goldape,.f-ssj4,.f-ssbk,.f-beast) #bolts{display:inline}
+#charaSvg.f-base #bolts{display:inline}
 #bolts path{stroke:var(--boltC);fill:none;stroke-width:2.4;filter:drop-shadow(0 0 5px var(--boltC))}
 #bolts .b1{animation:boltF .9s steps(1) infinite}
 #bolts .b2{animation:boltF 1.3s steps(1) .3s infinite}
@@ -453,8 +454,14 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
             <linearGradient id="furGrad" x1="0" y1="0" x2="0" y2="1">
               <stop class="fu1" offset="0"/><stop class="fu2" offset="1"/>
             </linearGradient>
-            <linearGradient id="giG" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stop-color="#ffa03a"/><stop offset="1" stop-color="#e8641b"/>
+            <linearGradient id="milG" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#6d7f4e"/><stop offset="1" stop-color="#46552f"/>
+            </linearGradient>
+            <linearGradient id="pantG" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#5c6d42"/><stop offset="1" stop-color="#3c4a2b"/>
+            </linearGradient>
+            <linearGradient id="armorG" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#1f4258"/><stop offset="1" stop-color="#12293c"/>
             </linearGradient>
             <linearGradient id="coneG" x1="0" y1="1" x2="0" y2="0">
               <stop offset="0" stop-color="#35e0ff" stop-opacity=".35"/><stop offset="1" stop-color="#35e0ff" stop-opacity="0"/>
@@ -490,98 +497,129 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 
             <!-- ===== SAIYAN MODEL ===== -->
             <g id="saiyanModel">
-              <!-- legs -->
+              <!-- legs: olive cargo pants + green/orange boots -->
               <g id="legsG">
-                <path d="M128 316 L156 316 L153 384 L131 384 Z" fill="url(#giG)" stroke="#7a2d08" stroke-width="2.5"/>
-                <path d="M164 316 L192 316 L189 384 L167 384 Z" fill="url(#giG)" stroke="#7a2d08" stroke-width="2.5"/>
-                <path d="M137 340 L148 344" stroke="#b34a10" stroke-width="2" opacity=".6"/>
-                <path d="M183 340 L172 344" stroke="#b34a10" stroke-width="2" opacity=".6"/>
-                <path d="M130 380 L154 380 L153 408 C152 418 132 418 131 408 Z" fill="#1d2a5e" stroke="#0d1230" stroke-width="2.5"/>
-                <path d="M166 380 L190 380 L189 408 C188 418 168 418 167 408 Z" fill="#1d2a5e" stroke="#0d1230" stroke-width="2.5"/>
-                <path d="M130 383 L154 383 L154 389 L130 389 Z" fill="#ffd75e" stroke="none"/>
-                <path d="M166 383 L190 383 L190 389 L166 389 Z" fill="#ffd75e" stroke="none"/>
+                <path d="M126 296 C122 318 122 342 128 366 L157 366 C159 342 159 318 157 296 Z" fill="url(#pantG)" stroke="#232b18" stroke-width="2.5"/>
+                <path d="M194 296 C198 318 198 342 192 366 L163 366 C161 342 161 318 163 296 Z" fill="url(#pantG)" stroke="#232b18" stroke-width="2.5"/>
+                <path d="M138 304 C136 324 136 344 138 362" fill="none" stroke="#38452a" stroke-width="1.6" opacity=".6"/>
+                <path d="M182 304 C184 324 184 344 182 362" fill="none" stroke="#38452a" stroke-width="1.6" opacity=".6"/>
+                <rect x="124" y="324" width="15" height="17" fill="#4f5f38" stroke="#232b18" stroke-width="1.8"/>
+                <path d="M124 330 L139 330" stroke="#232b18" stroke-width="1.4"/>
+                <rect x="181" y="324" width="15" height="17" fill="#4f5f38" stroke="#232b18" stroke-width="1.8"/>
+                <path d="M181 330 L196 330" stroke="#232b18" stroke-width="1.4"/>
+                <path d="M126 364 L158 364 L158 371 L126 371 Z" fill="#f2801f" stroke="#7a3d08" stroke-width="1.5"/>
+                <path d="M162 364 L194 364 L194 371 L162 371 Z" fill="#f2801f" stroke="#7a3d08" stroke-width="1.5"/>
+                <path d="M127 371 L157 371 L158 400 C158 410 152 414 142 413 C133 412 127 407 127 400 Z" fill="#3f5a36" stroke="#1d2a17" stroke-width="2.5"/>
+                <path d="M163 371 L193 371 L193 400 C193 407 187 412 178 413 C168 414 162 410 162 400 Z" fill="#3f5a36" stroke="#1d2a17" stroke-width="2.5"/>
+                <path d="M128 396 C136 402 148 402 158 396 L158 402 C158 410 146 415 136 412 C130 410 128 405 128 399 Z" fill="#f2801f" stroke="#7a3d08" stroke-width="2"/>
+                <path d="M192 396 C184 402 172 402 162 396 L162 402 C162 410 174 415 184 412 C190 410 192 405 192 399 Z" fill="#f2801f" stroke="#7a3d08" stroke-width="2"/>
               </g>
-              <!-- torso -->
+              <!-- torso: green field jacket + saiyan chest armor + belt pouches -->
               <g id="torsoG">
-                <path d="M148 178 L172 178 L174 200 L146 200 Z" class="faceSkin" fill="#ffd9b8" stroke="#5a2c18" stroke-width="2"/>
-                <path d="M148 178 L172 178 L171 188 L149 188 Z" fill="#d9a077" opacity=".5" stroke="none"/>
-                <path d="M148 190 L122 208 L148 206 Z" fill="#ffd9b8" stroke="#5a2c18" stroke-width="2"/>
-                <path d="M172 190 L198 208 L172 206 Z" fill="#ffd9b8" stroke="#5a2c18" stroke-width="2"/>
-                <path d="M118 204 C136 194 184 194 202 204 C212 224 212 254 206 286 C188 294 132 294 114 286 C108 254 108 224 118 204 Z"
-                  fill="url(#giG)" stroke="#7a2d08" stroke-width="2.5"/>
-                <path d="M143 200 L160 224 L177 200 L169 197 L160 210 L151 197 Z" fill="#1d2a5e" stroke="#0d1230" stroke-width="2"/>
-                <path d="M126 248 C142 255 178 255 194 248" fill="none" stroke="#b34a10" stroke-width="2" opacity=".6"/>
-                <path d="M124 268 C142 274 178 274 196 268" fill="none" stroke="#b34a10" stroke-width="2" opacity=".45"/>
-                <circle cx="136" cy="230" r="11" fill="#fff7ea" stroke="#7a2d08" stroke-width="2"/>
-                <text x="136" y="235" font-family="Zen Dots" font-size="11" fill="#b3400f" text-anchor="middle">S</text>
-                <path d="M112 284 L208 284 L206 302 L114 302 Z" fill="#2b4fb8" stroke="#101c44" stroke-width="2.5"/>
-                <path d="M132 300 L126 324 L136 322 L139 302 Z" fill="#2b4fb8" stroke="#101c44" stroke-width="2"/>
-                <path d="M144 302 L142 328 L152 324 L150 302 Z" fill="#2b4fb8" stroke="#101c44" stroke-width="2"/>
-                <path d="M116 300 L204 300 L198 320 L122 320 Z" fill="url(#giG)" stroke="#7a2d08" stroke-width="2.5"/>
-                <path d="M160 300 L160 318" stroke="#b34a10" stroke-width="2" opacity=".6"/>
+                <path d="M151 152 L169 152 L171 168 L149 168 Z" class="faceSkin" fill="#edb583" stroke="#4a2515" stroke-width="2"/>
+                <path d="M151 152 L169 152 L168 160 L152 160 Z" fill="#c98a5e" opacity=".55" stroke="none"/>
+                <path d="M150 161 L122 175 L150 172 Z" fill="#edb583" stroke="#4a2515" stroke-width="2"/>
+                <path d="M170 161 L198 175 L170 172 Z" fill="#edb583" stroke="#4a2515" stroke-width="2"/>
+                <path d="M145 165 L175 165 L179 177 L160 186 L141 177 Z" fill="#16202e" stroke="#0b0e1f" stroke-width="2"/>
+                <path d="M115 176 C133 165 187 165 205 176 C212 200 212 236 207 264 L113 264 C108 236 108 200 115 176 Z" fill="url(#milG)" stroke="#232b18" stroke-width="2.5"/>
+                <path d="M142 172 L152 167 L158 181 L146 186 Z" fill="url(#milG)" stroke="#232b18" stroke-width="2"/>
+                <path d="M178 172 L168 167 L162 181 L174 186 Z" fill="url(#milG)" stroke="#232b18" stroke-width="2"/>
+                <path d="M122 186 C140 177 180 177 198 186 C205 206 205 236 198 256 C180 265 140 265 122 256 C115 236 115 206 122 186 Z" fill="#dde4ee" stroke="#9aa6b8" stroke-width="2"/>
+                <path d="M126 190 C142 182 178 182 194 190 C200 208 200 234 194 252 C178 260 142 260 126 252 C120 234 120 208 126 190 Z" fill="url(#armorG)" stroke="#0c1c2a" stroke-width="2"/>
+                <path d="M132 195 C140 190 150 189 158 190 C150 196 142 204 138 214 C134 206 132 200 132 195 Z" fill="#ffffff" opacity=".1"/>
+                <path d="M124 178 L140 172 L148 191 L131 197 Z" fill="#f2992e" stroke="#7a3d08" stroke-width="2"/>
+                <path d="M128 183 L145 176" stroke="#ffd75e" stroke-width="2.5"/>
+                <path d="M132 190 L149 183" stroke="#ffd75e" stroke-width="2.5"/>
+                <path d="M196 178 L180 172 L172 191 L189 197 Z" fill="#f2992e" stroke="#7a3d08" stroke-width="2"/>
+                <path d="M192 183 L175 176" stroke="#ffd75e" stroke-width="2.5"/>
+                <path d="M188 190 L171 183" stroke="#ffd75e" stroke-width="2.5"/>
+                <path d="M139 241 C142 228 178 228 181 241 C181 250 173 256 160 257 C147 256 139 250 139 241 Z" fill="#ffd75e" stroke="#7a3d08" stroke-width="1.5"/>
+                <path d="M143 243 C146 233 174 233 177 243 C177 250 170 254 160 255 C150 254 143 250 143 243 Z" fill="#ff9a2e" stroke="none"/>
+                <path d="M148 245 C150 238 170 238 172 245 C172 250 166 253 160 254 C154 253 148 250 148 245 Z" fill="#e8442e" stroke="none"/>
+                <path d="M118 262 L202 262 L200 274 L120 274 Z" fill="#d9dee8" stroke="#8a94a8" stroke-width="2"/>
+                <rect x="154" y="263" width="12" height="10" fill="#aab4c4" stroke="#6a7488" stroke-width="1.5"/>
+                <rect x="122" y="272" width="17" height="16" rx="2" fill="#8a5a33" stroke="#4a2c12" stroke-width="1.8"/>
+                <rect x="141" y="272" width="17" height="16" rx="2" fill="#8a5a33" stroke="#4a2c12" stroke-width="1.8"/>
+                <rect x="163" y="272" width="17" height="16" rx="2" fill="#8a5a33" stroke="#4a2c12" stroke-width="1.8"/>
+                <rect x="182" y="272" width="17" height="16" rx="2" fill="#8a5a33" stroke="#4a2c12" stroke-width="1.8"/>
+                <path d="M122 279 L139 279 M141 279 L158 279 M163 279 L180 279 M182 279 L199 279" stroke="#4a2c12" stroke-width="1.2"/>
+                <path d="M118 274 L202 274 L207 298 L113 298 Z" fill="url(#milG)" stroke="#232b18" stroke-width="2.5"/>
+                <path d="M160 274 L160 298" stroke="#232b18" stroke-width="2"/>
               </g>
               <!-- SSJ4 tail -->
-              <path id="tailSSJ4" d="M196 308 C232 314 246 290 240 264 C254 290 242 330 204 326 Z" fill="#b13c2c" stroke="#5a1408" stroke-width="2"/>
-              <!-- arms -->
+              <path id="tailSSJ4" d="M194 288 C230 294 244 270 238 244 C252 270 240 310 202 306 Z" fill="#b13c2c" stroke="#5a1408" stroke-width="2"/>
+              <!-- arms: green sleeves, flag patch, bare fists -->
               <g id="armL">
-                <circle cx="118" cy="216" r="15" class="armSkin" fill="#ffd9b8" stroke="#5a2c18" stroke-width="2.5"/>
-                <path d="M106 220 C96 236 92 252 96 266 L116 262 C112 250 114 236 124 226 Z" class="armSkin" fill="#ffd9b8" stroke="#5a2c18" stroke-width="2.5"/>
-                <path d="M96 262 C90 276 90 288 94 298 L112 294 C110 284 110 272 114 262 Z" class="armSkin" fill="#ffd9b8" stroke="#5a2c18" stroke-width="2.5"/>
-                <path d="M108 234 C104 244 104 252 107 258" fill="none" stroke="#d9a077" stroke-width="1.8" opacity=".8"/>
-                <path d="M90 292 L114 289 L115 304 L92 306 Z" fill="#2b4fb8" stroke="#101c44" stroke-width="2.5"/>
-                <circle cx="103" cy="316" r="10.5" class="armSkin" fill="#ffd9b8" stroke="#5a2c18" stroke-width="2.5"/>
-                <path d="M97 312 L109 311" stroke="#c9885e" stroke-width="1.6" opacity=".8"/>
+                <path d="M104 186 C96 196 92 210 94 224 L118 220 C114 208 116 196 126 188 C120 181 110 181 104 186 Z" fill="url(#milG)" stroke="#232b18" stroke-width="2.5"/>
+                <rect x="97" y="203" width="17" height="12" rx="1" fill="#f5f8fc" stroke="#8a94a8" stroke-width="1.2"/>
+                <path d="M98 206.5 L113 206.5 M98 212 L113 212" stroke="#2b4fb8" stroke-width="1.5"/>
+                <path d="M105.5 206.7 L108 210.5 L103 210.5 Z M105.5 212.1 L103 208.3 L108 208.3 Z" fill="none" stroke="#2b4fb8" stroke-width="1"/>
+                <path d="M94 222 C88 238 88 254 94 268 L114 262 C110 250 110 238 116 226 Z" fill="url(#milG)" stroke="#232b18" stroke-width="2.5"/>
+                <path d="M100 232 C98 242 98 252 100 260" fill="none" stroke="#38452a" stroke-width="1.6" opacity=".8"/>
+                <path d="M93 264 L115 258 L117 269 L95 275 Z" fill="#55663c" stroke="#232b18" stroke-width="2"/>
+                <circle cx="105" cy="284" r="11" class="armSkin" fill="#edb583" stroke="#4a2515" stroke-width="2.5"/>
+                <path d="M98 279 L112 277" stroke="#b57a4e" stroke-width="1.6" opacity=".9"/>
+                <path d="M100 290 C103 292 108 292 111 290" fill="none" stroke="#b57a4e" stroke-width="1.4" opacity=".8"/>
               </g>
               <g id="armR">
-                <circle cx="202" cy="216" r="15" class="armSkin" fill="#ffd9b8" stroke="#5a2c18" stroke-width="2.5"/>
-                <path d="M214 220 C224 236 228 252 224 266 L204 262 C208 250 206 236 196 226 Z" class="armSkin" fill="#ffd9b8" stroke="#5a2c18" stroke-width="2.5"/>
-                <path d="M224 262 C230 276 230 288 226 298 L208 294 C210 284 210 272 206 262 Z" class="armSkin" fill="#ffd9b8" stroke="#5a2c18" stroke-width="2.5"/>
-                <path d="M212 234 C216 244 216 252 213 258" fill="none" stroke="#d9a077" stroke-width="1.8" opacity=".8"/>
-                <path d="M230 292 L206 289 L205 304 L228 306 Z" fill="#2b4fb8" stroke="#101c44" stroke-width="2.5"/>
-                <circle cx="217" cy="316" r="10.5" class="armSkin" fill="#ffd9b8" stroke="#5a2c18" stroke-width="2.5"/>
-                <path d="M223 312 L211 311" stroke="#c9885e" stroke-width="1.6" opacity=".8"/>
+                <path d="M216 186 C224 196 228 210 226 224 L202 220 C206 208 204 196 194 188 C200 181 210 181 216 186 Z" fill="url(#milG)" stroke="#232b18" stroke-width="2.5"/>
+                <rect x="206" y="203" width="16" height="12" rx="1" fill="#5c6d42" stroke="#232b18" stroke-width="1.5"/>
+                <path d="M206 208 L222 208" stroke="#232b18" stroke-width="1.3"/>
+                <path d="M226 222 C232 238 232 254 226 268 L206 262 C210 250 210 238 204 226 Z" fill="url(#milG)" stroke="#232b18" stroke-width="2.5"/>
+                <path d="M220 232 C222 242 222 252 220 260" fill="none" stroke="#38452a" stroke-width="1.6" opacity=".8"/>
+                <path d="M227 264 L205 258 L203 269 L225 275 Z" fill="#55663c" stroke="#232b18" stroke-width="2"/>
+                <circle cx="215" cy="284" r="11" class="armSkin" fill="#edb583" stroke="#4a2515" stroke-width="2.5"/>
+                <path d="M222 279 L208 277" stroke="#b57a4e" stroke-width="1.6" opacity=".9"/>
+                <path d="M220 290 C217 292 212 292 209 290" fill="none" stroke="#b57a4e" stroke-width="1.4" opacity=".8"/>
               </g>
-              <!-- head -->
-              <path d="M124 98 C120 132 126 156 140 172 C148 181 172 181 180 172 C194 156 200 132 196 98 C186 88 134 88 124 98 Z"
-                class="faceSkin" fill="#ffd9b8" stroke="#5a2c18" stroke-width="2.5"/>
-              <path d="M132 150 L138 154" stroke="#d9a077" stroke-width="1.5" opacity=".6"/>
-              <path d="M188 150 L182 154" stroke="#d9a077" stroke-width="1.5" opacity=".6"/>
+              <!-- head: DBZ face, tan skin, buzz cut, stubble -->
+              <path d="M131 120 C124 116 123 130 130 135 C130 130 130 124 131 120 Z" class="faceSkin" fill="#edb583" stroke="#4a2515" stroke-width="1.8"/>
+              <path d="M189 120 C196 116 197 130 190 135 C190 130 190 124 189 120 Z" class="faceSkin" fill="#edb583" stroke="#4a2515" stroke-width="1.8"/>
+              <path d="M132 100 C132 76 188 76 188 100 C188 114 186 126 181 136 C176 147 170 154 160 157 C150 154 144 147 139 136 C134 126 132 114 132 100 Z"
+                class="faceSkin" fill="#edb583" stroke="#4a2515" stroke-width="2.5"/>
+              <path d="M138 127 C140 135 144 143 150 148 L153 144 L156 149 L160 146 L164 149 L167 144 L170 148 C176 143 180 135 182 127 C182 140 174 153 160 157 C146 153 138 140 138 127 Z" fill="#1a1626" opacity=".35" stroke="none"/>
+              <path d="M153 142 C156 140.5 164 140.5 167 142 L165.5 145 C162 143.8 158 143.8 154.5 145 Z" fill="#1a1626" opacity=".22" stroke="none"/>
+              <path d="M141 132 L144 135" stroke="#c98a5e" stroke-width="1.4" opacity=".6"/>
+              <path d="M179 132 L176 135" stroke="#c98a5e" stroke-width="1.4" opacity=".6"/>
               <g class="eyeGrp">
-                <path d="M130 128 L152 134 L150 145 L133 141 Z" fill="#fff"/>
-                <circle cx="143" cy="138" r="5" class="irisFill"/>
-                <circle cx="143" cy="138" r="2" fill="#0a0c18"/>
-                <circle cx="141.5" cy="136" r="1.2" fill="#fff"/>
-                <path d="M128 127 L153 134" stroke="#1a1226" stroke-width="3"/>
-                <rect class="lid" x="129" y="128" width="24" height="8" rx="3" fill="#ffd9b8"/>
+                <path d="M140 119 L158 121 L157 133 L142 131 Z" fill="#fff"/>
+                <circle cx="150" cy="126.5" r="4.6" class="irisFill"/>
+                <circle cx="150" cy="126.5" r="2" fill="#0a0c18"/>
+                <circle cx="148.6" cy="124.9" r="1.1" fill="#fff"/>
+                <path d="M139 118 L159 120" stroke="#1a1226" stroke-width="2.2"/>
+                <path d="M144 131.5 L155 132.5" stroke="#1a1226" stroke-width="1.2" opacity=".4"/>
+                <rect class="lid" x="140" y="118" width="19" height="6" rx="1.5" fill="#edb583" stroke="#c98a5e" stroke-width="1"/>
               </g>
               <g class="eyeGrp r">
-                <path d="M190 128 L168 134 L170 145 L187 141 Z" fill="#fff"/>
-                <circle cx="177" cy="138" r="5" class="irisFill"/>
-                <circle cx="177" cy="138" r="2" fill="#0a0c18"/>
-                <circle cx="175.5" cy="136" r="1.2" fill="#fff"/>
-                <path d="M192 127 L167 134" stroke="#1a1226" stroke-width="3"/>
-                <rect class="lid" x="167" y="128" width="24" height="8" rx="3" fill="#ffd9b8"/>
+                <path d="M180 119 L162 121 L163 133 L178 131 Z" fill="#fff"/>
+                <circle cx="170" cy="126.5" r="4.6" class="irisFill"/>
+                <circle cx="170" cy="126.5" r="2" fill="#0a0c18"/>
+                <circle cx="168.6" cy="124.9" r="1.1" fill="#fff"/>
+                <path d="M181 118 L161 120" stroke="#1a1226" stroke-width="2.2"/>
+                <path d="M165 132.5 L176 131.5" stroke="#1a1226" stroke-width="1.2" opacity=".4"/>
+                <rect class="lid" x="161" y="118" width="19" height="6" rx="1.5" fill="#edb583" stroke="#c98a5e" stroke-width="1"/>
               </g>
-              <path class="brow" d="M128 118 L154 126" stroke="#151a30" stroke-width="5" fill="none"/>
-              <path class="brow" d="M192 118 L166 126" stroke="#151a30" stroke-width="5" fill="none"/>
-              <path d="M160 148 L156 155" stroke="#d19a72" stroke-width="2" fill="none"/>
+              <path class="brow" d="M137 111 L158 115" stroke="#131722" stroke-width="3.4" fill="none"/>
+              <path class="brow" d="M183 111 L162 115" stroke="#131722" stroke-width="3.4" fill="none"/>
+              <path d="M161 122 C161 128 160 133 158 138" fill="none" stroke="#c98a5e" stroke-width="1.6"/>
+              <path d="M156 140 L159 141 M164 140 L161 141" stroke="#4a2515" stroke-width="1.4"/>
               <g id="mHappy">
-                <path d="M146 162 Q162 173 176 159" fill="none" stroke="#4a1f33" stroke-width="3"/>
-                <path d="M174 160 L179 156" stroke="#4a1f33" stroke-width="2.5"/>
+                <path d="M151 147 Q161 153 170 145" fill="none" stroke="#3a1a20" stroke-width="2.6"/>
+                <path d="M168 146 L172 143" stroke="#3a1a20" stroke-width="2"/>
               </g>
-              <path id="mNeutral" d="M150 165 L172 164" fill="none" stroke="#4a1f33" stroke-width="2.5"/>
-              <path id="mTired" d="M148 169 Q160 161 174 168" fill="none" stroke="#4a1f33" stroke-width="2.5"/>
+              <path id="mNeutral" d="M153 148 L168 147" fill="none" stroke="#3a1a20" stroke-width="2.4"/>
+              <path id="mTired" d="M152 151 Q160 146 169 151" fill="none" stroke="#3a1a20" stroke-width="2.4"/>
               <!-- hair meshes -->
-              <path id="hairBaseMesh" d="M120 112 L94 124 L106 92 L76 88 L104 66 L90 38 L122 56 L126 22 L150 52 L162 14 L176 50 L200 24 L202 56 L232 40 L216 68 L244 90 L214 94 L226 124 L200 112 C186 96 168 108 160 100 C152 108 134 96 120 112 Z"
-                fill="url(#hairGrad)" stroke="#10131f" stroke-width="2.5"/>
-              <path id="hairUpMesh" d="M120 110 L100 102 L114 74 L92 56 L120 56 L114 16 L140 44 L148 2 L162 40 L180 6 L188 44 L212 18 L208 56 L234 58 L212 78 L230 102 L200 110 C186 96 168 106 160 98 C152 106 134 96 120 110 Z"
+              <path id="hairBaseMesh" d="M131 106 C128 72 192 72 189 106 C188 110 186 112 184 111 C185 100 182 93 172 91 C168 94.5 152 94.5 148 91 C138 93 135 100 136 111 C134 112 132 110 131 106 Z M133 107 L138 109 L138 127 L134 124 Z M187 107 L182 109 L182 127 L186 124 Z"
+                fill="url(#hairGrad)" stroke="#10131f" stroke-width="2"/>
+              <path id="hairUpMesh" d="M137 112 L128 104 L136 88 L122 76 L138 74 L132 44 L148 66 L154 30 L163 62 L174 34 L182 64 L196 44 L192 72 L206 76 L192 90 L200 104 L183 112 C176 100 168 106 160 101 C152 106 144 100 137 112 Z"
                 fill="url(#hairGrad)" stroke="#10131f" stroke-width="2.5"/>
               <g id="hairLongMesh">
-                <path d="M116 104 C96 128 88 170 92 214 L78 224 L94 236 C90 264 96 288 106 302 L118 290 C112 264 112 236 118 214 C110 180 114 140 124 116 Z"
+                <path d="M136 106 C120 130 112 168 116 210 L104 220 L118 230 C114 258 120 282 130 296 L140 284 C134 260 134 236 140 214 C132 182 134 142 144 116 Z"
                   fill="url(#hairGrad)" stroke="#10131f" stroke-width="2.5"/>
-                <path d="M204 104 C224 128 232 170 228 214 L242 224 L226 236 C230 264 224 288 214 302 L202 290 C208 264 208 236 202 214 C210 180 206 140 196 116 Z"
+                <path d="M184 106 C200 130 208 168 204 210 L216 220 L202 230 C206 258 200 282 190 296 L180 284 C186 260 186 236 180 214 C188 182 186 142 176 116 Z"
                   fill="url(#hairGrad)" stroke="#10131f" stroke-width="2.5"/>
-                <path d="M120 110 L98 96 L114 70 L96 44 L126 52 L136 12 L154 44 L170 8 L182 46 L208 20 L206 54 L232 48 L216 78 L236 96 L200 110 C186 96 168 106 160 98 C152 106 134 96 120 110 Z"
+                <path d="M137 110 L124 98 L134 80 L122 60 L140 66 L146 34 L158 62 L170 32 L180 62 L196 40 L194 68 L208 64 L198 86 L206 100 L183 110 C176 100 168 105 160 100 C152 105 144 100 137 110 Z"
                   fill="url(#hairGrad)" stroke="#10131f" stroke-width="2.5"/>
               </g>
             </g>
