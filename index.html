@@ -3,21 +3,21 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BIOSYNC ─ SAIYAN HEALTH LINK</title>
+<title>BIOSYNC ─ Saiyan Health Tracker</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Zen+Dots&family=Rajdhani:wght@400;500;600;700&family=DotGothic16&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Dots&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#04050d; --panel:rgba(13,17,38,.74); --line:rgba(53,224,255,.16);
   --pink:#ff2e88; --pink2:#ff7ab8; --cyan:#35e0ff; --amber:#ffc94d; --gold:#ffd75e;
   --red:#ff4d5e; --good:#57ffc2; --text:#eaf0ff; --dim:#7d87ad;
-  --fd:'Zen Dots',cursive; --fb:'Rajdhani',sans-serif; --fj:'DotGothic16',monospace;
+  --fd:'Zen Dots',cursive; --fb:'Rajdhani',sans-serif; --fj:'Rajdhani',sans-serif;
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{height:100%}
-body{background:var(--bg);color:var(--text);font-family:var(--fb);overflow-x:hidden;min-height:100vh;display:flex;flex-direction:column}
+body{background:var(--bg);color:var(--text);font-family:var(--fb);overflow-x:hidden;min-height:100vh;display:flex;flex-direction:column;padding-bottom:74px}
 [hidden]{display:none!important}
 /* ====== ATMOSPHERE ====== */
 .bgfx{position:fixed;inset:0;z-index:-1;overflow:hidden;background:
@@ -49,57 +49,39 @@ body::after{content:'';position:fixed;inset:0;z-index:60;pointer-events:none;
   background:repeating-linear-gradient(0deg, transparent 0 2px, rgba(2,4,14,.16) 2px 3px)}
 body::before{content:'';position:fixed;inset:0;z-index:59;pointer-events:none;
   background:radial-gradient(ellipse 120% 100% at 50% 50%, transparent 55%, rgba(1,2,8,.6) 100%)}
+@keyframes shine{60%,100%{transform:translateX(100%)}}
 /* ====== HEADER ====== */
-header{position:relative;z-index:5;display:flex;align-items:center;gap:22px;padding:12px 26px 10px;
-  border-bottom:1px solid var(--line);background:linear-gradient(180deg, rgba(10,14,32,.85), rgba(10,14,32,.35))}
+header{position:relative;z-index:5;display:flex;align-items:center;justify-content:space-between;gap:14px;
+  padding:13px 22px;border-bottom:1px solid var(--line);background:linear-gradient(180deg, rgba(10,14,32,.85), rgba(10,14,32,.3))}
 .logo{display:flex;flex-direction:column;line-height:1}
-.logo b{font-family:var(--fd);font-weight:400;font-size:22px;letter-spacing:3px;
+.logo b{font-family:var(--fd);font-weight:400;font-size:20px;letter-spacing:3px;
   background:linear-gradient(90deg,var(--pink) 20%,var(--cyan) 80%);
   -webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 12px rgba(255,46,136,.5))}
-.logo span{font-family:var(--fj);font-size:10px;color:var(--dim);letter-spacing:4px;margin-top:4px}
-.tabs{display:flex;gap:8px}
-.tab{background:none;border:1px solid transparent;color:var(--dim);font-family:var(--fd);font-size:10px;
-  letter-spacing:2px;padding:7px 13px;cursor:pointer;display:flex;flex-direction:column;gap:3px;align-items:center;transition:.2s}
-.tab span{font-family:var(--fj);font-size:8px;letter-spacing:2px}
-.tab:hover{color:var(--text)}
-.tab.active{color:var(--cyan);border-color:rgba(53,224,255,.35);background:rgba(53,224,255,.06);box-shadow:0 0 14px rgba(53,224,255,.15)}
-.hd-xp{flex:1;max-width:460px;display:flex;align-items:center;gap:14px}
-.lvlBadge{font-family:var(--fd);font-size:13px;color:var(--bg);background:linear-gradient(135deg,var(--amber),#ff9d3d);
-  padding:6px 12px;clip-path:polygon(8px 0,100% 0,calc(100% - 8px) 100%,0 100%);box-shadow:0 0 16px rgba(255,201,77,.4);white-space:nowrap}
-.xpTrack{flex:1;height:12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,201,77,.3);
-  clip-path:polygon(6px 0,100% 0,calc(100% - 6px) 100%,0 100%);position:relative;overflow:hidden}
-.xpTrack i{position:absolute;inset:0;width:0%;background:linear-gradient(90deg,#ff9d3d,var(--amber));transition:width .8s cubic-bezier(.2,.9,.2,1)}
-.xpTrack i::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.55),transparent);
-  transform:translateX(-100%);animation:shine 2.8s ease-in-out infinite}
-@keyframes shine{60%,100%{transform:translateX(100%)}}
-.xpNums{font-size:12px;color:var(--dim);letter-spacing:1px;white-space:nowrap}
-.hd-right{margin-left:auto;display:flex;align-items:center;gap:22px;text-align:right}
-.hd-streak{display:flex;align-items:center;gap:8px;font-family:var(--fd);font-size:15px;color:var(--pink2)}
-.hd-streak svg{filter:drop-shadow(0 0 6px var(--pink))}
-.clock{font-family:var(--fd);font-size:17px;letter-spacing:2px;color:var(--cyan);text-shadow:0 0 14px rgba(53,224,255,.6)}
-.dateStr{font-family:var(--fj);font-size:10px;color:var(--dim);letter-spacing:2px}
-/* ====== LAYOUT ====== */
-main{position:relative;z-index:4;flex:1;display:grid;
-  grid-template-columns:minmax(300px,360px) minmax(380px,1fr) minmax(330px,400px);
-  gap:20px;padding:20px 26px;align-items:stretch;max-width:1900px;width:100%;margin:0 auto}
-.panel{position:relative;background:var(--panel);border:1px solid var(--line);backdrop-filter:blur(10px);
-  padding:18px 20px;display:flex;flex-direction:column;gap:16px;overflow-y:auto;
-  scrollbar-width:thin;scrollbar-color:rgba(53,224,255,.3) transparent}
+.logo span{font-family:var(--fj);font-size:9px;color:var(--dim);letter-spacing:3px;margin-top:4px;text-transform:uppercase}
+.viewTitle{font-family:var(--fd);font-size:12px;letter-spacing:2px;color:var(--cyan);text-shadow:0 0 12px rgba(53,224,255,.5)}
+/* ====== VIEW SHELL ====== */
+.view{flex:1;width:100%;max-width:1200px;margin:0 auto;padding:20px 22px;position:relative;z-index:4}
+.panel{position:relative;background:var(--panel);border:1px solid var(--line);backdrop-filter:blur(10px);padding:20px 22px;display:flex;flex-direction:column;gap:18px}
 .panel::before,.panel::after,.corner-b::before,.corner-b::after{content:'';position:absolute;width:16px;height:16px;pointer-events:none}
 .panel::before{top:-1px;left:-1px;border-top:2px solid var(--cyan);border-left:2px solid var(--cyan)}
 .panel::after{top:-1px;right:-1px;border-top:2px solid var(--cyan);border-right:2px solid var(--cyan)}
 .corner-b{position:absolute;inset:0;pointer-events:none}
 .corner-b::before{bottom:-1px;left:-1px;border-bottom:2px solid var(--pink);border-left:2px solid var(--pink)}
 .corner-b::after{bottom:-1px;right:-1px;border-bottom:2px solid var(--pink);border-right:2px solid var(--pink)}
-.pHead{display:flex;align-items:baseline;justify-content:space-between;border-bottom:1px solid var(--line);padding-bottom:10px}
-.pHead h2{font-family:var(--fd);font-weight:400;font-size:13px;letter-spacing:2px;color:var(--text)}
-.pHead span{font-family:var(--fj);font-size:10px;color:var(--dim);letter-spacing:2px}
-/* ====== LEFT: STATS ====== */
-.radarWrap{display:flex;justify-content:center;padding:4px 0}
-.statRow{display:grid;grid-template-columns:86px 1fr 44px 44px;align-items:center;gap:10px}
+.pHead{display:flex;align-items:baseline;justify-content:space-between;border-bottom:1px solid var(--line);padding-bottom:12px}
+.pHead h2{font-family:var(--fd);font-weight:400;font-size:14px;letter-spacing:2px;color:var(--text)}
+.pHead span{font-family:var(--fj);font-size:11px;color:var(--dim);letter-spacing:1px}
+/* ====== HOME LAYOUT ====== */
+.homeWrap{display:grid;grid-template-columns:1.3fr .9fr;gap:22px;align-items:stretch}
+.charStage{position:relative;display:flex;flex-direction:column;align-items:center;gap:6px;min-height:0}
+.statsCol{display:flex;flex-direction:column;gap:16px;background:var(--panel);border:1px solid var(--line);backdrop-filter:blur(10px);padding:18px 20px;position:relative}
+.statsCol .pHead{margin-bottom:2px}
+/* radar */
+.radarWrap{display:flex;justify-content:center;padding:2px 0}
+.statRow{display:grid;grid-template-columns:82px 1fr 40px;align-items:center;gap:10px}
 .statName{display:flex;flex-direction:column;line-height:1.1}
-.statName b{font-family:var(--fd);font-weight:400;font-size:12px;letter-spacing:1.5px}
-.statName span{font-family:var(--fj);font-size:9px;color:var(--dim)}
+.statName b{font-family:var(--fd);font-weight:400;font-size:11px;letter-spacing:1px}
+.statName span{font-family:var(--fj);font-size:9px;color:var(--dim);text-transform:uppercase;letter-spacing:1px}
 .statRow[data-s="vit"] b{color:var(--good)} .statRow[data-s="str"] b{color:var(--pink2)}
 .statRow[data-s="agi"] b{color:var(--cyan)} .statRow[data-s="foc"] b{color:var(--amber)}
 .sTrack{height:9px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);
@@ -110,34 +92,21 @@ main{position:relative;z-index:4;flex:1;display:grid;
 .statRow[data-s="agi"] .sTrack i{background:linear-gradient(90deg,#1272b8,var(--cyan))}
 .statRow[data-s="foc"] .sTrack i{background:linear-gradient(90deg,#c07a1a,var(--amber))}
 .sVal{font-family:var(--fd);font-size:14px;text-align:right}
-.sDelta{font-size:12px;font-weight:700;text-align:center;border-radius:2px;padding:1px 0;opacity:0;transition:opacity .4s}
-.sDelta.up{opacity:1;color:var(--good);background:rgba(87,255,194,.08)}
-.sDelta.dn{opacity:1;color:var(--red);background:rgba(255,77,94,.08)}
-.streakBlock{margin-top:auto;border:1px dashed rgba(255,46,136,.35);padding:12px 14px;display:flex;align-items:center;gap:14px;background:rgba(255,46,136,.04)}
-.streakBlock .n{font-family:var(--fd);font-size:30px;color:var(--pink2);text-shadow:0 0 16px rgba(255,46,136,.6)}
-.streakBlock .lbl{display:flex;flex-direction:column;line-height:1.2}
-.streakBlock .lbl b{font-size:13px;letter-spacing:2px}
-.streakBlock .lbl span{font-family:var(--fj);font-size:10px;color:var(--dim)}
-.streakBlock .best{margin-left:auto;font-size:12px;color:var(--dim);text-align:right;line-height:1.4}
-.streakBlock .best b{color:var(--amber);font-family:var(--fd);font-size:15px;display:block}
-/* ====== CENTER: STAGE ====== */
-.stage{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:6px 0 10px;min-height:0}
+/* ====== STAGE / HOLO (from character engine) ====== */
 .formBar{display:flex;align-items:center;gap:14px;z-index:6}
-.fArr{background:none;border:1px solid rgba(255,215,94,.35);color:var(--gold);font-size:14px;width:28px;height:28px;
-  cursor:pointer;transition:.15s;font-family:var(--fb)}
+.fArr{background:none;border:1px solid rgba(255,215,94,.35);color:var(--gold);font-size:14px;width:28px;height:28px;cursor:pointer;transition:.15s;font-family:var(--fb)}
 .fArr:hover:not(:disabled){background:rgba(255,215,94,.15)}
 .fArr:disabled{opacity:.25;cursor:default}
-.formNameBox{text-align:center;min-width:280px}
-.formNm{font-family:var(--fd);font-size:17px;letter-spacing:3px;
+.formNameBox{text-align:center;min-width:240px}
+.formNm{font-family:var(--fd);font-size:16px;letter-spacing:2px;
   background:linear-gradient(180deg,#fff,var(--gold) 60%,#ff9d3d);
   -webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 14px rgba(255,215,94,.55))}
-.formJp{font-family:var(--fj);font-size:10px;color:var(--dim);letter-spacing:3px;margin-top:3px}
-.tfReady{margin-top:8px;font-family:var(--fd);font-size:11px;letter-spacing:2px;color:var(--bg);
+.formSub{font-family:var(--fj);font-size:10px;color:var(--dim);letter-spacing:2px;margin-top:3px;text-transform:uppercase}
+.tfReady{margin-top:6px;font-family:var(--fd);font-size:11px;letter-spacing:2px;color:var(--bg);
   background:linear-gradient(120deg,var(--gold),#ff9d3d);border:none;padding:9px 18px;cursor:pointer;z-index:6;
-  clip-path:polygon(10px 0,100% 0,calc(100% - 10px) 100%,0 100%);
-  animation:readyPulse 1.4s ease-in-out infinite;box-shadow:0 0 22px rgba(255,215,94,.5)}
+  clip-path:polygon(10px 0,100% 0,calc(100% - 10px) 100%,0 100%);animation:readyPulse 1.4s ease-in-out infinite;box-shadow:0 0 22px rgba(255,215,94,.5)}
 @keyframes readyPulse{50%{box-shadow:0 0 40px rgba(255,215,94,.9);transform:scale(1.04)}}
-.holo{position:relative;flex:1;width:100%;max-width:560px;min-height:320px;display:flex;align-items:center;justify-content:center}
+.holo{position:relative;width:100%;max-width:520px;min-height:340px;flex:1;display:flex;align-items:center;justify-content:center}
 .holo.shake{animation:shakeX 1s linear}
 @keyframes shakeX{0%,100%{transform:none}10%{transform:translate(-6px,3px)}20%{transform:translate(7px,-2px)}30%{transform:translate(-7px,-4px)}
  40%{transform:translate(6px,3px)}50%{transform:translate(-5px,5px)}60%{transform:translate(5px,-5px)}70%{transform:translate(-4px,2px)}
@@ -145,49 +114,42 @@ main{position:relative;z-index:4;flex:1;display:grid;
 .aura{position:absolute;left:50%;top:52%;width:80%;height:86%;transform:translate(-50%,-50%);border-radius:50%;
   pointer-events:none;filter:blur(26px);opacity:.32;transition:opacity 1s, background 1s;
   background:radial-gradient(ellipse at center, rgba(53,224,255,.5), transparent 62%)}
-.stage.aura-low .aura{background:radial-gradient(ellipse at center, rgba(255,77,94,.4), transparent 60%);opacity:.28}
-.stage.aura-mid .aura{background:radial-gradient(ellipse at center, rgba(53,224,255,.5), transparent 62%);opacity:.4}
-.stage.aura-high .aura{background:radial-gradient(ellipse at center, rgba(53,224,255,.6), rgba(255,46,136,.25) 45%, transparent 65%);opacity:.55}
-.stage.burst .aura{animation:burstA .9s ease-out}
+.charStage.aura-low .aura{background:radial-gradient(ellipse at center, rgba(255,77,94,.4), transparent 60%);opacity:.28}
+.charStage.aura-mid .aura{background:radial-gradient(ellipse at center, rgba(53,224,255,.5), transparent 62%);opacity:.4}
+.charStage.aura-high .aura{background:radial-gradient(ellipse at center, rgba(53,224,255,.6), rgba(255,46,136,.25) 45%, transparent 65%);opacity:.55}
+.charStage.burst .aura{animation:burstA .9s ease-out}
 @keyframes burstA{0%{opacity:1;transform:translate(-50%,-50%) scale(.7)}100%{opacity:.4;transform:translate(-50%,-50%) scale(1.25)}}
 @keyframes auraPulse{50%{opacity:.85;transform:translate(-50%,-50%) scale(1.07)}}
-/* form auras (override stat auras) */
-.stage.f-oozaru .aura{background:radial-gradient(ellipse at center, rgba(210,90,40,.5), transparent 62%);opacity:.5;animation:auraPulse 2.6s infinite}
-.stage.f-ssj .aura,.stage.f-ussj .aura,.stage.f-ssj2 .aura,.stage.f-ssj3 .aura,.stage.f-goldape .aura{
+.charStage.f-oozaru .aura{background:radial-gradient(ellipse at center, rgba(210,90,40,.5), transparent 62%);opacity:.5;animation:auraPulse 2.6s infinite}
+.charStage.f-ssj .aura,.charStage.f-ussj .aura,.charStage.f-ssj2 .aura,.charStage.f-ssj3 .aura,.charStage.f-goldape .aura{
   background:radial-gradient(ellipse at center, rgba(255,215,80,.6), rgba(255,150,30,.25) 50%, transparent 66%);opacity:.62;animation:auraPulse 2.2s infinite}
-.stage.f-ssj4 .aura{background:radial-gradient(ellipse at center, rgba(255,70,100,.55), transparent 64%);opacity:.6;animation:auraPulse 2.2s infinite}
-.stage.f-ssg .aura{background:radial-gradient(ellipse at center, rgba(255,110,50,.6), rgba(255,40,60,.25) 52%, transparent 66%);opacity:.62;animation:auraPulse 2s infinite}
-.stage.f-ssb .aura,.stage.f-ssbp .aura{background:radial-gradient(ellipse at center, rgba(90,180,255,.6), rgba(40,90,255,.25) 52%, transparent 66%);opacity:.62;animation:auraPulse 2.2s infinite}
-.stage.f-ssbp .aura{opacity:.72}
-.stage.f-ssbk .aura{background:radial-gradient(closest-side, rgba(90,180,255,.65), rgba(255,50,50,.5) 58%, transparent 75%);opacity:.7;animation:auraPulse 1.6s infinite}
-.stage.f-ssbe .aura{background:radial-gradient(ellipse at center, rgba(60,110,255,.62), transparent 64%);opacity:.66;animation:auraPulse 2s infinite}
-.stage.f-uis .aura{background:radial-gradient(ellipse at center, rgba(190,205,235,.45), transparent 62%);opacity:.5;animation:auraPulse 3s infinite}
-.stage.f-mui .aura{background:radial-gradient(ellipse at center, rgba(240,246,255,.65), rgba(160,180,230,.3) 52%, transparent 68%);opacity:.72;animation:auraPulse 2.4s infinite}
-.stage.f-ue .aura{background:radial-gradient(ellipse at center, rgba(180,80,255,.6), transparent 64%);opacity:.64;animation:auraPulse 2s infinite}
-.stage.f-beast .aura{background:radial-gradient(ellipse at center, rgba(255,60,80,.6), rgba(255,150,160,.25) 50%, transparent 66%);opacity:.66;animation:auraPulse 1.8s infinite}
-#charaSvg{position:relative;height:100%;max-height:56vh;width:auto;overflow:visible;z-index:2}
+.charStage.f-ssj4 .aura{background:radial-gradient(ellipse at center, rgba(255,70,100,.55), transparent 64%);opacity:.6;animation:auraPulse 2.2s infinite}
+.charStage.f-ssg .aura{background:radial-gradient(ellipse at center, rgba(255,110,50,.6), rgba(255,40,60,.25) 52%, transparent 66%);opacity:.62;animation:auraPulse 2s infinite}
+.charStage.f-ssb .aura,.charStage.f-ssbp .aura{background:radial-gradient(ellipse at center, rgba(90,180,255,.6), rgba(40,90,255,.25) 52%, transparent 66%);opacity:.62;animation:auraPulse 2.2s infinite}
+.charStage.f-ssbp .aura{opacity:.72}
+.charStage.f-ssbk .aura{background:radial-gradient(closest-side, rgba(90,180,255,.65), rgba(255,50,50,.5) 58%, transparent 75%);opacity:.7;animation:auraPulse 1.6s infinite}
+.charStage.f-ssbe .aura{background:radial-gradient(ellipse at center, rgba(60,110,255,.62), transparent 64%);opacity:.66;animation:auraPulse 2s infinite}
+.charStage.f-uis .aura{background:radial-gradient(ellipse at center, rgba(190,205,235,.45), transparent 62%);opacity:.5;animation:auraPulse 3s infinite}
+.charStage.f-mui .aura{background:radial-gradient(ellipse at center, rgba(240,246,255,.65), rgba(160,180,230,.3) 52%, transparent 68%);opacity:.72;animation:auraPulse 2.4s infinite}
+.charStage.f-ue .aura{background:radial-gradient(ellipse at center, rgba(180,80,255,.6), transparent 64%);opacity:.64;animation:auraPulse 2s infinite}
+.charStage.f-beast .aura{background:radial-gradient(ellipse at center, rgba(255,60,80,.6), rgba(255,150,160,.25) 50%, transparent 66%);opacity:.66;animation:auraPulse 1.8s infinite}
+#charaSvg{position:relative;height:100%;max-height:52vh;width:auto;overflow:visible;z-index:2}
 #charaSvg.charging{animation:chargeUp 1.05s ease-in forwards}
-@keyframes chargeUp{0%{filter:none;transform:none}55%{transform:scale(.97,.93) translateY(6px)}
-  100%{filter:brightness(2.4) saturate(.5);transform:scale(.95,.9) translateY(10px)}}
+@keyframes chargeUp{0%{filter:none;transform:none}55%{transform:scale(.97,.93) translateY(6px)}100%{filter:brightness(2.4) saturate(.5);transform:scale(.95,.9) translateY(10px)}}
 #charaSvg.popIn{animation:popX .7s cubic-bezier(.2,1.6,.3,1)}
 @keyframes popX{0%{transform:scale(1.24);filter:brightness(3)}100%{transform:none;filter:none}}
-#flash{position:absolute;inset:-10%;z-index:8;pointer-events:none;opacity:0;
-  background:radial-gradient(circle at 50% 45%, #fff 0%, rgba(255,255,255,.85) 30%, transparent 70%)}
+#flash{position:absolute;inset:-10%;z-index:8;pointer-events:none;opacity:0;background:radial-gradient(circle at 50% 45%, #fff 0%, rgba(255,255,255,.85) 30%, transparent 70%)}
 #flash.go{animation:flashA 1.1s ease-out}
 @keyframes flashA{0%{opacity:0}14%{opacity:.97}100%{opacity:0}}
-#shock{position:absolute;left:50%;top:48%;width:40px;height:40px;border-radius:50%;z-index:7;pointer-events:none;
-  border:3px solid var(--gold);opacity:0;transform:translate(-50%,-50%)}
+#shock{position:absolute;left:50%;top:48%;width:40px;height:40px;border-radius:50%;z-index:7;pointer-events:none;border:3px solid var(--gold);opacity:0;transform:translate(-50%,-50%)}
 #shock.go{animation:shockX2 .85s ease-out}
 @keyframes shockX2{0%{opacity:.95;width:40px;height:40px;border-width:4px}100%{opacity:0;width:640px;height:640px;border-width:1px}}
 #floatLayer{position:absolute;inset:0;pointer-events:none;z-index:5;overflow:hidden}
-.floatTag{position:absolute;font-family:var(--fd);font-size:15px;letter-spacing:1px;white-space:nowrap;
-  animation:floatUp 1.7s ease-out forwards;text-shadow:0 0 12px currentColor}
+.floatTag{position:absolute;font-family:var(--fd);font-size:15px;letter-spacing:1px;white-space:nowrap;animation:floatUp 1.7s ease-out forwards;text-shadow:0 0 12px currentColor}
 .floatTag.up{color:var(--good)} .floatTag.dn{color:var(--red)} .floatTag.xp{color:var(--amber)}
-@keyframes floatUp{0%{opacity:0;transform:translateY(14px) scale(.7)}15%{opacity:1;transform:translateY(0) scale(1.1)}
-  30%{transform:translateY(-8px) scale(1)}100%{opacity:0;transform:translateY(-70px)}}
+@keyframes floatUp{0%{opacity:0;transform:translateY(14px) scale(.7)}15%{opacity:1;transform:translateY(0) scale(1.1)}30%{transform:translateY(-8px) scale(1)}100%{opacity:0;transform:translateY(-70px)}}
 .particles{position:absolute;inset:0;pointer-events:none;z-index:1}
-.particles i{position:absolute;bottom:8%;width:4px;height:4px;border-radius:50%;background:var(--cyan);
-  opacity:0;animation:rise 5.2s linear infinite;box-shadow:0 0 8px var(--cyan)}
+.particles i{position:absolute;bottom:8%;width:4px;height:4px;border-radius:50%;background:var(--cyan);opacity:0;animation:rise 5.2s linear infinite;box-shadow:0 0 8px var(--cyan)}
 .particles i:nth-child(1){left:22%;animation-delay:0s}
 .particles i:nth-child(2){left:36%;animation-delay:1.7s}
 .particles i:nth-child(3){left:52%;animation-delay:3.1s}
@@ -195,21 +157,31 @@ main{position:relative;z-index:4;flex:1;display:grid;
 .particles i:nth-child(5){left:78%;animation-delay:2.4s}
 .particles i:nth-child(6){left:12%;animation-delay:4s}
 @keyframes rise{0%{opacity:0;transform:translateY(0)}12%{opacity:.9}85%{opacity:.5}100%{opacity:0;transform:translateY(-46vh)}}
-.stage:is(.f-ssj,.f-ussj,.f-ssj2,.f-ssj3,.f-goldape) .particles i{background:var(--gold);box-shadow:0 0 8px var(--gold)}
-.stage:is(.f-ssb,.f-ssbp,.f-ssbe) .particles i{background:#7cc8ff;box-shadow:0 0 8px #7cc8ff}
-.stage.f-ssbk .particles i{background:#ff6b6b;box-shadow:0 0 8px #ff6b6b}
-.stage:is(.f-uis,.f-mui) .particles i{background:#eef4ff;box-shadow:0 0 8px #cdd9f5}
-.stage.f-ue .particles i{background:#d09aff;box-shadow:0 0 8px #d09aff}
-.stage:is(.f-beast,.f-ssj4,.f-ssg) .particles i{background:#ff6b7a;box-shadow:0 0 8px #ff6b7a}
-.powerRead{display:flex;flex-direction:column;align-items:center;gap:2px;margin-top:2px}
-.powerRead .lbl{font-family:var(--fj);font-size:10px;letter-spacing:4px;color:var(--dim)}
-.powerRead .num{font-family:var(--fd);font-size:40px;line-height:1;
+.charStage:is(.f-ssj,.f-ussj,.f-ssj2,.f-ssj3,.f-goldape) .particles i{background:var(--gold);box-shadow:0 0 8px var(--gold)}
+.charStage:is(.f-ssb,.f-ssbp,.f-ssbe) .particles i{background:#7cc8ff;box-shadow:0 0 8px #7cc8ff}
+.charStage.f-ssbk .particles i{background:#ff6b6b;box-shadow:0 0 8px #ff6b6b}
+.charStage:is(.f-uis,.f-mui) .particles i{background:#eef4ff;box-shadow:0 0 8px #cdd9f5}
+.charStage.f-ue .particles i{background:#d09aff;box-shadow:0 0 8px #d09aff}
+.charStage:is(.f-beast,.f-ssj4,.f-ssg) .particles i{background:#ff6b7a;box-shadow:0 0 8px #ff6b7a}
+.powerRead{display:flex;flex-direction:column;align-items:center;gap:2px;margin-top:4px}
+.powerRead .lbl{font-family:var(--fj);font-size:10px;letter-spacing:4px;color:var(--dim);text-transform:uppercase}
+.powerRead .num{font-family:var(--fd);font-size:38px;line-height:1;
   background:linear-gradient(180deg,#fff, var(--pink2) 55%, var(--pink));
   -webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 18px rgba(255,46,136,.55))}
 .powerRead .sub{font-size:12px;color:var(--dim);letter-spacing:2px}
 .powerRead .sub b{color:var(--cyan);font-family:var(--fd);font-size:12px;font-weight:400}
-.nextForm{font-family:var(--fj);font-size:10px;letter-spacing:2px;color:var(--gold);opacity:.8;margin-top:3px}
-/* ====== CHARACTER ====== */
+.nextForm{font-family:var(--fj);font-size:10px;letter-spacing:2px;color:var(--gold);opacity:.8;margin-top:3px;text-transform:uppercase}
+/* home meta tiles below character */
+.homeMeta{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;width:100%;max-width:520px;margin-top:12px}
+.mTile{border:1px solid var(--line);background:rgba(255,255,255,.03);padding:11px 8px;text-align:center;display:flex;flex-direction:column;gap:5px}
+.mTile .k{font-family:var(--fj);font-size:9px;letter-spacing:2px;color:var(--dim);text-transform:uppercase}
+.mTile .v{font-family:var(--fd);font-size:18px;color:var(--cyan)}
+.mTile.lvl .v{color:var(--gold)} .mTile.strk .v{color:var(--pink2)}
+.mTile.frm .v{font-size:11px;line-height:1.3;color:var(--gold)}
+.xpMini{height:5px;background:rgba(255,255,255,.08);margin-top:2px;overflow:hidden;border-radius:2px}
+.xpMini i{display:block;height:100%;width:0%;background:linear-gradient(90deg,#ff9d3d,var(--gold));transition:width .8s}
+.xpTxtMini{font-family:var(--fj);font-size:8px;color:var(--dim);letter-spacing:1px;margin-top:2px}
+/* ====== CHARACTER ANIM ====== */
 #chara{animation:bob 5s ease-in-out infinite}
 @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-11px)}}
 .eyeGrp{transform-box:fill-box;transform-origin:center;animation:blink 5.4s infinite}
@@ -229,11 +201,9 @@ main{position:relative;z-index:4;flex:1;display:grid;
 .hexFloat{animation:hexF 7s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
 .hexFloat.b{animation-delay:2.2s}
 @keyframes hexF{0%,100%{transform:translateY(0) rotate(0deg);opacity:.5}50%{transform:translateY(-14px) rotate(24deg);opacity:.9}}
-/* buff scaling groups */
 #armL,#armR,#torsoG,#legsG{transform-box:fill-box;transition:transform .8s cubic-bezier(.2,.9,.25,1)}
 #armL{transform-origin:72% 8%} #armR{transform-origin:28% 8%}
 #torsoG{transform-origin:50% 0%} #legsG{transform-origin:50% 0%}
-/* hair mesh visibility + form color vars */
 #hairUpMesh,#hairLongMesh,#tailSSJ4,#apeModel{display:none}
 .hs1{stop-color:var(--h1)} .hs2{stop-color:var(--h2)}
 .fs1{stop-color:var(--flameC1)} .fs2{stop-color:var(--flameC2)}
@@ -262,7 +232,6 @@ main{position:relative;z-index:4;flex:1;display:grid;
 #charaSvg.f-ssj4 #tailSSJ4{display:inline}
 #charaSvg:is(.f-oozaru,.f-goldape) #saiyanModel{display:none}
 #charaSvg:is(.f-oozaru,.f-goldape) #apeModel{display:inline}
-/* flames + bolts */
 #flameAura{display:none}
 #charaSvg:is(.f-ssj,.f-ussj,.f-ssj2,.f-ssj3,.f-goldape,.f-ssj4,.f-ssg,.f-ssb,.f-ssbp,.f-ssbk,.f-ssbe,.f-mui,.f-ue,.f-beast) #flameAura{display:inline}
 #charaSvg.f-uis #flameAura{display:inline;opacity:.45}
@@ -277,158 +246,115 @@ main{position:relative;z-index:4;flex:1;display:grid;
 #bolts .b2{animation:boltF 1.3s steps(1) .3s infinite}
 #bolts .b3{animation:boltF .7s steps(1) .55s infinite}
 @keyframes boltF{0%,72%,100%{opacity:0}74%,82%{opacity:1}}
-/* ====== RIGHT: OPS ====== */
-.opsSec{display:flex;flex-direction:column;gap:12px}
-.calTop{display:flex;align-items:center;gap:18px}
-.gauge{position:relative;width:124px;height:124px;flex:none}
-.gauge svg{transform:rotate(-90deg)}
-.gauge .cTot{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1}
-.gauge .cTot b{font-family:var(--fd);font-size:23px;font-weight:400}
-.gauge .cTot span{font-size:11px;color:var(--dim);margin-top:4px}
-#calRing{transition:stroke-dashoffset .7s cubic-bezier(.2,.9,.25,1), stroke .5s}
-.calInfo{display:flex;flex-direction:column;gap:8px;flex:1}
-.calStatus{font-family:var(--fd);font-size:15px;letter-spacing:2px}
-.calStatus.ok{color:var(--good);text-shadow:0 0 12px rgba(87,255,194,.5)}
-.calStatus.warn{color:var(--amber)} .calStatus.bad{color:var(--red)} .calStatus.idle{color:var(--dim)}
-.targetRow{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--dim);letter-spacing:1px}
-.targetRow input{width:84px;background:rgba(255,255,255,.05);border:1px solid var(--line);color:var(--cyan);
-  font-family:var(--fd);font-size:13px;padding:4px 6px;text-align:center;outline:none}
-.targetRow input:focus{border-color:var(--cyan)}
+/* ====== DAILY LOG FORM ====== */
+.field{display:flex;flex-direction:column;gap:7px}
+.field label{font-family:var(--fd);font-size:11px;letter-spacing:1.5px;color:var(--cyan)}
+.field .hint{font-family:var(--fj);font-size:10px;color:var(--dim);letter-spacing:1px}
+.field input[type=number]{background:rgba(255,255,255,.05);border:1px solid var(--line);color:var(--text);
+  font-family:var(--fb);font-weight:600;font-size:18px;padding:11px 14px;outline:none;width:100%}
+.field input[type=number]:focus{border-color:var(--pink)}
+.field input:disabled{opacity:.55;cursor:not-allowed}
 input[type=number]{-moz-appearance:textfield;appearance:textfield}
 input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
-.chips{display:flex;gap:8px;flex-wrap:wrap}
-.chip{font-family:var(--fd);font-size:12px;color:var(--cyan);background:rgba(53,224,255,.07);
-  border:1px solid rgba(53,224,255,.35);padding:7px 13px;cursor:pointer;letter-spacing:1px;
-  clip-path:polygon(6px 0,100% 0,calc(100% - 6px) 100%,0 100%);transition:.15s}
-.chip:hover{background:rgba(53,224,255,.2);box-shadow:0 0 14px rgba(53,224,255,.3)}
-.chip:active{transform:scale(.94)}
-.addRow{display:flex;gap:8px}
-.addRow input{flex:1;background:rgba(255,255,255,.05);border:1px solid var(--line);color:var(--text);
-  font-family:var(--fb);font-weight:600;font-size:15px;padding:8px 12px;outline:none;min-width:0}
-.addRow input:focus{border-color:var(--pink)}
-.addRow button{font-family:var(--fd);font-size:12px;color:var(--pink2);background:rgba(255,46,136,.08);
-  border:1px solid rgba(255,46,136,.4);padding:0 18px;cursor:pointer;letter-spacing:1px;transition:.15s}
-.addRow button:hover{background:rgba(255,46,136,.22)}
-#entryList{list-style:none;display:flex;flex-direction:column;gap:4px;max-height:100px;overflow-y:auto;
-  scrollbar-width:thin;scrollbar-color:rgba(53,224,255,.3) transparent}
-#entryList li{display:flex;align-items:center;gap:10px;font-size:13px;padding:4px 8px;
-  background:rgba(255,255,255,.03);border-left:2px solid rgba(53,224,255,.4)}
-#entryList li b{font-family:var(--fd);font-weight:400;font-size:12px;color:var(--cyan)}
-#entryList li time{color:var(--dim);font-size:11px;margin-left:auto}
-#entryList li button{background:none;border:none;color:var(--dim);cursor:pointer;font-size:14px;padding:0 2px}
-#entryList li button:hover{color:var(--red)}
-#entryList .empty{color:var(--dim);border-left-color:rgba(255,255,255,.1);font-family:var(--fj);font-size:11px;letter-spacing:1px}
-.sportBtn{position:relative;width:100%;padding:15px;cursor:pointer;font-family:var(--fd);font-size:14px;
-  letter-spacing:2px;color:var(--cyan);background:rgba(53,224,255,.04);border:1px dashed rgba(53,224,255,.45);transition:.25s;text-align:center}
-.sportBtn small{display:block;font-family:var(--fj);font-size:10px;color:var(--dim);letter-spacing:3px;margin-top:5px}
-.sportBtn:hover{background:rgba(53,224,255,.12)}
-.sportBtn.on{border:1px solid var(--good);color:var(--bg);background:linear-gradient(120deg,var(--good),var(--cyan));
-  box-shadow:0 0 24px rgba(87,255,194,.4);text-shadow:none}
-.sportBtn.on small{color:rgba(4,5,13,.7)}
-.sportBtn:disabled{cursor:not-allowed;opacity:.75}
-.syncBtn{width:100%;padding:16px;cursor:pointer;font-family:var(--fd);font-size:17px;letter-spacing:3px;
-  color:#fff;border:none;position:relative;overflow:hidden;
-  background:linear-gradient(120deg,#c4176b,var(--pink) 50%,#ff5ea6);
-  clip-path:polygon(14px 0,100% 0,calc(100% - 14px) 100%,0 100%);
-  box-shadow:0 0 28px rgba(255,46,136,.45);transition:.2s;text-shadow:0 0 10px rgba(255,255,255,.5)}
-.syncBtn::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.45),transparent);
-  transform:translateX(-110%);animation:shine 3.2s ease-in-out infinite}
+.dateRow{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border:1px dashed rgba(53,224,255,.35);background:rgba(53,224,255,.04)}
+.dateRow .dk{font-family:var(--fj);font-size:10px;letter-spacing:2px;color:var(--dim);text-transform:uppercase}
+.dateRow .dv{font-family:var(--fd);font-size:16px;color:var(--cyan);text-shadow:0 0 10px rgba(53,224,255,.4)}
+.twoCol{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.toggleRow{display:flex;align-items:center;justify-content:space-between;border:1px solid var(--line);background:rgba(255,255,255,.03);padding:14px 16px}
+.toggleRow .tl{display:flex;flex-direction:column;gap:3px}
+.toggleRow .tl b{font-family:var(--fd);font-size:12px;letter-spacing:1px}
+.toggleRow .tl span{font-family:var(--fj);font-size:10px;color:var(--dim)}
+.switch{width:60px;height:30px;border-radius:16px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.06);
+  position:relative;cursor:pointer;transition:.25s;flex:none}
+.switch::after{content:'';position:absolute;top:2px;left:2px;width:24px;height:24px;border-radius:50%;background:var(--dim);transition:.25s}
+.switch.on{background:linear-gradient(120deg,var(--good),var(--cyan));border-color:transparent;box-shadow:0 0 18px rgba(87,255,194,.4)}
+.switch.on::after{left:32px;background:#04121a}
+.switch:disabled{opacity:.5;cursor:not-allowed}
+.targetsRow{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding-top:4px;border-top:1px solid var(--line)}
+.miniField{display:flex;flex-direction:column;gap:5px}
+.miniField label{font-family:var(--fj);font-size:10px;letter-spacing:1px;color:var(--dim);text-transform:uppercase}
+.miniField input{background:rgba(255,255,255,.05);border:1px solid var(--line);color:var(--cyan);
+  font-family:var(--fd);font-size:14px;padding:8px 10px;outline:none;text-align:center}
+.miniField input:focus{border-color:var(--cyan)}
+.gradePreview{font-family:var(--fj);font-size:11px;letter-spacing:1px;color:var(--dim);text-align:center;min-height:16px}
+.syncBtn{width:100%;padding:17px;cursor:pointer;font-family:var(--fd);font-size:16px;letter-spacing:2px;color:#fff;border:none;
+  position:relative;overflow:hidden;background:linear-gradient(120deg,#c4176b,var(--pink) 50%,#ff5ea6);
+  clip-path:polygon(14px 0,100% 0,calc(100% - 14px) 100%,0 100%);box-shadow:0 0 28px rgba(255,46,136,.45);transition:.2s;text-shadow:0 0 10px rgba(255,255,255,.5)}
+.syncBtn::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.45),transparent);transform:translateX(-110%);animation:shine 3.2s ease-in-out infinite}
 .syncBtn:hover{box-shadow:0 0 44px rgba(255,46,136,.75);transform:translateY(-1px)}
 .syncBtn:disabled{background:linear-gradient(120deg,#1d2a3d,#22394a);cursor:default;transform:none;box-shadow:none;color:var(--good);text-shadow:none}
 .syncBtn:disabled::after{display:none}
-.syncNote{font-family:var(--fj);font-size:10px;color:var(--dim);letter-spacing:2px;text-align:center;min-height:14px}
-.histRow{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
-.hCell{aspect-ratio:1/1.15;border:1px solid rgba(255,255,255,.1);display:flex;flex-direction:column;
-  align-items:center;justify-content:center;gap:4px;font-size:10px;color:var(--dim);
-  font-family:var(--fj);letter-spacing:1px;background:rgba(255,255,255,.02)}
-.hCell i{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.08)}
-.hCell.good i{background:var(--pink);box-shadow:0 0 10px var(--pink)}
-.hCell.part i{background:var(--amber);box-shadow:0 0 8px rgba(255,201,77,.6)}
-.hCell.bad i{background:rgba(255,77,94,.75)}
-.hCell.miss i{background:transparent;border:1px solid var(--red);width:8px;height:8px}
-.hCell.today{border-color:var(--cyan);box-shadow:inset 0 0 12px rgba(53,224,255,.15)}
-.resetBtn{margin-top:auto;align-self:flex-end;background:none;border:1px solid rgba(255,77,94,.3);
-  color:rgba(255,77,94,.7);font-family:var(--fj);font-size:10px;letter-spacing:2px;padding:6px 12px;cursor:pointer;transition:.2s}
+.syncNote{font-family:var(--fj);font-size:11px;color:var(--dim);letter-spacing:1px;text-align:center;min-height:14px}
+.resetBtn{align-self:flex-end;background:none;border:1px solid rgba(255,77,94,.3);color:rgba(255,77,94,.7);
+  font-family:var(--fj);font-size:10px;letter-spacing:2px;padding:7px 14px;cursor:pointer;transition:.2s}
 .resetBtn:hover{background:rgba(255,77,94,.12);color:var(--red)}
-/* ====== MISSION LOG VIEW ====== */
-.logMain{position:relative;z-index:4;flex:1;padding:20px 26px;max-width:1240px;margin:0 auto;width:100%}
-.logPanel{min-height:70vh}
-.logSummary{display:flex;gap:12px;flex-wrap:wrap}
-.lsChip{border:1px solid var(--line);background:rgba(255,255,255,.03);padding:10px 16px;display:flex;flex-direction:column;gap:3px;min-width:120px}
-.lsChip b{font-family:var(--fd);font-size:19px;font-weight:400;color:var(--cyan)}
-.lsChip.pk b{color:var(--pink2)} .lsChip.gd b{color:var(--gold)} .lsChip.gn b{color:var(--good)}
-.lsChip span{font-family:var(--fj);font-size:9px;letter-spacing:2px;color:var(--dim)}
+/* ====== HISTORY ====== */
+.histSummary{display:flex;gap:12px;flex-wrap:wrap}
+.hsChip{border:1px solid var(--line);background:rgba(255,255,255,.03);padding:10px 16px;display:flex;flex-direction:column;gap:3px;min-width:110px}
+.hsChip b{font-family:var(--fd);font-size:18px;font-weight:400;color:var(--cyan)}
+.hsChip.pk b{color:var(--pink2)} .hsChip.gd b{color:var(--gold)} .hsChip.gn b{color:var(--good)}
+.hsChip span{font-family:var(--fj);font-size:9px;letter-spacing:1px;color:var(--dim);text-transform:uppercase}
 .tableWrap{overflow-x:auto;scrollbar-width:thin;scrollbar-color:rgba(53,224,255,.3) transparent}
-.logTable{width:100%;border-collapse:collapse;font-size:14px}
-.logTable th{font-family:var(--fd);font-weight:400;font-size:10px;letter-spacing:2px;color:var(--cyan);
-  text-align:left;padding:10px 12px;border-bottom:1px solid rgba(53,224,255,.3);white-space:nowrap}
-.logTable td{padding:9px 12px;border-bottom:1px solid rgba(255,255,255,.06);white-space:nowrap}
-.logTable tbody tr{transition:background .15s}
-.logTable tbody tr:hover{background:rgba(53,224,255,.05)}
-.logTable tr.rMiss td{color:rgba(255,77,94,.55)}
-.logTable .up{color:var(--good);font-weight:700;font-style:normal;margin-right:6px}
-.logTable .dn{color:var(--red);font-weight:700;font-style:normal;margin-right:6px}
-.logTable .xpc{color:var(--amber)}
-.bq{font-family:var(--fd);font-size:9px;letter-spacing:1.5px;padding:4px 10px;
-  clip-path:polygon(5px 0,100% 0,calc(100% - 5px) 100%,0 100%)}
+.histTable{width:100%;border-collapse:collapse;font-size:14px}
+.histTable th{font-family:var(--fd);font-weight:400;font-size:10px;letter-spacing:1.5px;color:var(--cyan);text-align:left;padding:11px 14px;border-bottom:1px solid rgba(53,224,255,.3);white-space:nowrap}
+.histTable td{padding:11px 14px;border-bottom:1px solid rgba(255,255,255,.06);white-space:nowrap}
+.histTable tbody tr{transition:background .15s}
+.histTable tbody tr:hover{background:rgba(53,224,255,.05)}
+.histTable tr.rMiss td{color:rgba(255,77,94,.5)}
+.yes{color:var(--good);font-weight:700} .no{color:var(--dim)}
+.bq{font-family:var(--fd);font-size:9px;letter-spacing:1px;padding:4px 10px;clip-path:polygon(5px 0,100% 0,calc(100% - 5px) 100%,0 100%)}
 .bq.good{color:var(--bg);background:linear-gradient(120deg,var(--pink),#ff5ea6);box-shadow:0 0 10px rgba(255,46,136,.4)}
 .bq.part{color:var(--bg);background:linear-gradient(120deg,var(--amber),#ff9d3d)}
 .bq.bad{color:#fff;background:rgba(255,77,94,.5)}
 .bq.miss{color:var(--red);border:1px solid rgba(255,77,94,.5)}
-.emptyRow{text-align:center;color:var(--dim);font-family:var(--fj);letter-spacing:2px;padding:34px!important}
-/* ====== TICKER / LEVELUP / MODAL ====== */
-.ticker{position:relative;z-index:5;border-top:1px solid var(--line);overflow:hidden;
-  background:rgba(8,11,26,.8);padding:7px 0;white-space:nowrap}
-.ticker div{display:inline-block;animation:tick 38s linear infinite;font-family:var(--fj);font-size:11px;letter-spacing:3px;color:var(--dim)}
-.ticker b{color:var(--pink2);font-weight:400} .ticker em{color:var(--cyan);font-style:normal}
-@keyframes tick{to{transform:translateX(-50%)}}
+.emptyRow{text-align:center;color:var(--dim);font-family:var(--fj);letter-spacing:1px;padding:34px!important}
+/* ====== BOTTOM NAV ====== */
+.bottomNav{position:fixed;left:0;right:0;bottom:0;z-index:40;display:flex;justify-content:center;gap:6px;
+  padding:8px 10px calc(8px + env(safe-area-inset-bottom));border-top:1px solid var(--line);
+  background:rgba(6,9,20,.92);backdrop-filter:blur(14px)}
+.navBtn{flex:1;max-width:170px;background:none;border:1px solid transparent;color:var(--dim);cursor:pointer;
+  font-family:var(--fd);font-size:11px;letter-spacing:1.5px;padding:10px 8px;display:flex;flex-direction:column;align-items:center;gap:5px;transition:.18s}
+.navBtn svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8}
+.navBtn:hover{color:var(--text)}
+.navBtn.active{color:var(--cyan);border-color:rgba(53,224,255,.35);background:rgba(53,224,255,.07);box-shadow:0 0 16px rgba(53,224,255,.15)}
+/* ====== LEVELUP + MODAL ====== */
 .lvlup{position:fixed;inset:0;z-index:80;display:flex;flex-direction:column;gap:10px;align-items:center;justify-content:center;pointer-events:none;opacity:0}
 .lvlup .ring{position:absolute;width:80px;height:80px;border-radius:50%;border:3px solid var(--amber)}
-.lvlup .txt{font-family:var(--fd);font-size:60px;letter-spacing:6px;
-  background:linear-gradient(180deg,#fff,var(--amber));-webkit-background-clip:text;background-clip:text;color:transparent;
-  filter:drop-shadow(0 0 30px rgba(255,201,77,.8))}
-.lvlup .sub2{font-family:var(--fj);font-size:13px;letter-spacing:4px;color:var(--gold)}
+.lvlup .txt{font-family:var(--fd);font-size:56px;letter-spacing:6px;
+  background:linear-gradient(180deg,#fff,var(--amber));-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 30px rgba(255,201,77,.8))}
+.lvlup .sub2{font-family:var(--fj);font-size:13px;letter-spacing:3px;color:var(--gold)}
 .lvlup.show{opacity:1;animation:lvlFade 2.2s ease forwards}
 .lvlup.show .ring{animation:ringX 1.1s ease-out forwards}
 .lvlup.show .txt{animation:txtPop 2.2s cubic-bezier(.2,1.4,.3,1) forwards}
 @keyframes ringX{to{width:130vmax;height:130vmax;opacity:0;border-width:1px}}
 @keyframes txtPop{0%{transform:scale(.3);opacity:0}12%{transform:scale(1.15);opacity:1}22%{transform:scale(1)}80%{opacity:1}100%{opacity:0;transform:scale(1.05)}}
 @keyframes lvlFade{0%,80%{opacity:1}100%{opacity:0}}
-.modal{position:fixed;inset:0;z-index:90;display:flex;align-items:center;justify-content:center;
-  background:rgba(2,3,10,.72);backdrop-filter:blur(6px)}
-.mBox{position:relative;width:min(480px,92vw);background:rgba(16,18,40,.96);border:1px solid rgba(255,215,94,.5);
-  padding:30px 34px;text-align:center;box-shadow:0 0 60px rgba(255,215,94,.25);
-  clip-path:polygon(20px 0,100% 0,100% calc(100% - 20px),calc(100% - 20px) 100%,0 100%,0 20px);
-  animation:mPop .35s cubic-bezier(.2,1.4,.3,1)}
+.modal{position:fixed;inset:0;z-index:90;display:flex;align-items:center;justify-content:center;background:rgba(2,3,10,.72);backdrop-filter:blur(6px)}
+.mBox{position:relative;width:min(460px,92vw);background:rgba(16,18,40,.96);border:1px solid rgba(255,215,94,.5);padding:30px 34px;text-align:center;box-shadow:0 0 60px rgba(255,215,94,.25);
+  clip-path:polygon(20px 0,100% 0,100% calc(100% - 20px),calc(100% - 20px) 100%,0 100%,0 20px);animation:mPop .35s cubic-bezier(.2,1.4,.3,1)}
 @keyframes mPop{0%{transform:scale(.8);opacity:0}100%{transform:scale(1);opacity:1}}
-.mTitle{font-family:var(--fj);font-size:11px;letter-spacing:4px;color:var(--gold);margin-bottom:14px}
-.mForm{font-family:var(--fd);font-size:26px;letter-spacing:3px;line-height:1.25;
-  background:linear-gradient(180deg,#fff,var(--gold) 60%,#ff9d3d);
-  -webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 16px rgba(255,215,94,.6))}
-.mJp{font-family:var(--fj);font-size:12px;letter-spacing:3px;color:var(--dim);margin-top:6px}
-.mTag{display:inline-block;margin-top:10px;font-family:var(--fd);font-size:9px;letter-spacing:2px;color:var(--gold);
-  border:1px solid rgba(255,215,94,.45);padding:4px 12px}
+.mTitle{font-family:var(--fj);font-size:11px;letter-spacing:3px;color:var(--gold);margin-bottom:14px;text-transform:uppercase}
+.mForm{font-family:var(--fd);font-size:24px;letter-spacing:2px;line-height:1.25;
+  background:linear-gradient(180deg,#fff,var(--gold) 60%,#ff9d3d);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 16px rgba(255,215,94,.6))}
+.mTag{display:inline-block;margin-top:12px;font-family:var(--fd);font-size:9px;letter-spacing:2px;color:var(--gold);border:1px solid rgba(255,215,94,.45);padding:4px 12px}
 .mMult{margin-top:12px;font-family:var(--fd);font-size:15px;color:var(--pink2);letter-spacing:2px}
-.mDesc{margin-top:12px;font-size:14px;color:var(--text);opacity:.85;line-height:1.5;white-space:normal}
+.mDesc{margin-top:12px;font-size:14px;color:var(--text);opacity:.85;line-height:1.5}
 .mBtns{display:flex;gap:12px;margin-top:24px;justify-content:center}
-.mYes{font-family:var(--fd);font-size:14px;letter-spacing:2px;color:var(--bg);border:none;cursor:pointer;
-  background:linear-gradient(120deg,var(--gold),#ff9d3d);padding:13px 26px;
+.mYes{font-family:var(--fd);font-size:14px;letter-spacing:2px;color:var(--bg);border:none;cursor:pointer;background:linear-gradient(120deg,var(--gold),#ff9d3d);padding:13px 26px;
   clip-path:polygon(10px 0,100% 0,calc(100% - 10px) 100%,0 100%);box-shadow:0 0 24px rgba(255,215,94,.45);transition:.15s}
 .mYes:hover{box-shadow:0 0 44px rgba(255,215,94,.8)}
-.mNo{font-family:var(--fd);font-size:12px;letter-spacing:2px;color:var(--dim);background:none;
-  border:1px solid rgba(255,255,255,.18);padding:13px 22px;cursor:pointer;transition:.15s}
+.mNo{font-family:var(--fd);font-size:12px;letter-spacing:2px;color:var(--dim);background:none;border:1px solid rgba(255,255,255,.18);padding:13px 22px;cursor:pointer;transition:.15s}
 .mNo:hover{color:var(--text);border-color:rgba(255,255,255,.4)}
 /* ====== RESPONSIVE ====== */
-@media(max-width:1150px){
-  main{grid-template-columns:1fr 1fr;grid-template-areas:'stage stage' 'left right'}
-  .stage{grid-area:stage;min-height:62vh}
-  .panel.left{grid-area:left}.panel.right{grid-area:right}
+@media(max-width:820px){
+  .homeWrap{grid-template-columns:1fr}
+  .statsCol{order:2}
 }
-@media(max-width:760px){
-  main{grid-template-columns:1fr;grid-template-areas:'stage' 'right' 'left';padding:14px}
-  header{flex-wrap:wrap;gap:12px}
-  .hd-xp{order:3;flex-basis:100%;max-width:none}
-  .formNameBox{min-width:0}
+@media(max-width:560px){
+  .view{padding:16px 14px}
+  .twoCol{grid-template-columns:1fr}
+  .homeMeta{max-width:none}
+  .navBtn{font-size:10px;letter-spacing:1px}
 }
 </style>
 </head>
@@ -441,370 +367,376 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 </div>
 
 <header>
-  <div class="logo"><b>BIO⟠SYNC</b><span>サイヤ人健康リンク</span></div>
-  <nav class="tabs">
-    <button class="tab active" data-view="main">LINK CHAMBER<span>連結室</span></button>
-    <button class="tab" data-view="log">MISSION LOG<span>戦闘記録</span></button>
-  </nav>
-  <div class="hd-xp">
-    <div class="lvlBadge">LV.<span id="lvl">1</span></div>
-    <div class="xpTrack"><i id="xpFill"></i></div>
-    <div class="xpNums" id="xpTxt">0 / 120 XP</div>
-  </div>
-  <div class="hd-right">
-    <div class="hd-streak">
-      <svg width="14" height="18" viewBox="0 0 14 18"><path d="M8.5 0 L1 10.5 H5.5 L4 18 L13 7 H7.8 Z" fill="#ff2e88"/></svg>
-      <span id="hdStreak">0</span>
-    </div>
-    <div>
-      <div class="clock" id="clock">00:00:00</div>
-      <div class="dateStr" id="dateStr">----.--.--</div>
-    </div>
-  </div>
+  <div class="logo"><b>BIO⟠SYNC</b><span>Saiyan Health Tracker</span></div>
+  <div class="viewTitle" id="viewTitle">HOME</div>
 </header>
 
-<main id="viewMain">
-  <!-- ========= LEFT : AVATAR STATUS ========= -->
-  <section class="panel left">
-    <div class="corner-b"></div>
-    <div class="pHead"><h2>AVATAR STATUS</h2><span>状態パラメータ</span></div>
-    <div class="radarWrap">
-      <svg width="230" height="212" viewBox="0 0 230 212">
-        <g stroke="rgba(53,224,255,.14)" fill="none">
-          <polygon points="115,16 205,106 115,196 25,106"/>
-          <polygon points="115,38.5 182.5,106 115,173.5 47.5,106"/>
-          <polygon points="115,61 160,106 115,151 70,106"/>
-          <polygon points="115,83.5 137.5,106 115,128.5 92.5,106"/>
-          <line x1="115" y1="16" x2="115" y2="196"/><line x1="25" y1="106" x2="205" y2="106"/>
-        </g>
-        <polygon id="radarPoly" points="115,106 115,106 115,106 115,106"
-          fill="rgba(255,46,136,.18)" stroke="#ff2e88" stroke-width="2"
-          style="filter:drop-shadow(0 0 8px rgba(255,46,136,.6))"/>
-        <g id="radarDots" fill="#fff"></g>
-        <g font-family="Zen Dots" font-size="10" fill="#7d87ad" text-anchor="middle">
-          <text x="115" y="11" fill="#57ffc2">VIT</text>
-          <text x="218" y="110" fill="#ff7ab8">STR</text>
-          <text x="115" y="209" fill="#35e0ff">AGI</text>
-          <text x="12" y="110" fill="#ffc94d">FOC</text>
-        </g>
-      </svg>
-    </div>
-    <div class="statRow" data-s="vit">
-      <div class="statName"><b>VITALITY</b><span>生命力</span></div>
-      <div class="sTrack"><i id="b-vit"></i></div>
-      <div class="sVal" id="v-vit">0</div><div class="sDelta" id="d-vit"></div>
-    </div>
-    <div class="statRow" data-s="str">
-      <div class="statName"><b>STRENGTH</b><span>筋力</span></div>
-      <div class="sTrack"><i id="b-str"></i></div>
-      <div class="sVal" id="v-str">0</div><div class="sDelta" id="d-str"></div>
-    </div>
-    <div class="statRow" data-s="agi">
-      <div class="statName"><b>AGILITY</b><span>敏捷性</span></div>
-      <div class="sTrack"><i id="b-agi"></i></div>
-      <div class="sVal" id="v-agi">0</div><div class="sDelta" id="d-agi"></div>
-    </div>
-    <div class="statRow" data-s="foc">
-      <div class="statName"><b>FOCUS</b><span>集中力</span></div>
-      <div class="sTrack"><i id="b-foc"></i></div>
-      <div class="sVal" id="v-foc">0</div><div class="sDelta" id="d-foc"></div>
-    </div>
-    <div class="streakBlock">
-      <div class="n" id="streakN">0</div>
-      <div class="lbl"><b>DAY STREAK</b><span>連続同期日数</span></div>
-      <div class="best">BEST<b id="bestN">0</b></div>
-    </div>
-  </section>
-
-  <!-- ========= CENTER : HOLO STAGE ========= -->
-  <section class="stage aura-low f-base" id="stage">
-    <div class="formBar">
-      <button class="fArr" id="fPrev" title="previous form">◂</button>
-      <div class="formNameBox">
-        <div class="formNm" id="formNm">BASE FORM</div>
-        <div class="formJp" id="formJp">基本形態 ─ FORM 1/17</div>
+<!-- ============================= HOME ============================= -->
+<section class="view" id="viewHome" data-view="home">
+  <div class="homeWrap">
+    <div class="charStage aura-low f-base" id="stage">
+      <div class="formBar">
+        <button class="fArr" id="fPrev" title="previous form">◂</button>
+        <div class="formNameBox">
+          <div class="formNm" id="formNm">BASE FORM</div>
+          <div class="formSub" id="formSub">Form 1 / 17</div>
+        </div>
+        <button class="fArr" id="fNext" title="next form">▸</button>
       </div>
-      <button class="fArr" id="fNext" title="next form">▸</button>
-    </div>
-    <button class="tfReady" id="tfReady" hidden>⚡ TRANSFORMATION AVAILABLE ─ 変身可能</button>
-    <div class="holo" id="holo">
-      <div class="aura"></div>
-      <div class="particles"><i></i><i></i><i></i><i></i><i></i><i></i></div>
-      <div id="floatLayer"></div>
-      <div id="shock"></div>
-      <svg id="charaSvg" class="mood-tired f-base" viewBox="0 0 320 470" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="hairGrad" x1="0" y1="0" x2="0" y2="1">
-            <stop class="hs1" offset="0"/><stop class="hs2" offset="1"/>
-          </linearGradient>
-          <linearGradient id="flameGrad" x1="0" y1="1" x2="0" y2="0">
-            <stop class="fs2" offset="0" stop-opacity=".55"/>
-            <stop class="fs1" offset=".6" stop-opacity=".3"/>
-            <stop class="fs1" offset="1" stop-opacity="0"/>
-          </linearGradient>
-          <linearGradient id="furGrad" x1="0" y1="0" x2="0" y2="1">
-            <stop class="fu1" offset="0"/><stop class="fu2" offset="1"/>
-          </linearGradient>
-          <linearGradient id="giG" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0" stop-color="#ffa03a"/><stop offset="1" stop-color="#e8641b"/>
-          </linearGradient>
-          <linearGradient id="coneG" x1="0" y1="1" x2="0" y2="0">
-            <stop offset="0" stop-color="#35e0ff" stop-opacity=".35"/><stop offset="1" stop-color="#35e0ff" stop-opacity="0"/>
-          </linearGradient>
-          <radialGradient id="padG">
-            <stop offset="0" stop-color="#35e0ff" stop-opacity=".5"/><stop offset="1" stop-color="#35e0ff" stop-opacity="0"/>
-          </radialGradient>
-          <filter id="glow" x="-60%" y="-60%" width="220%" height="220%">
-            <feGaussianBlur stdDeviation="3.2" result="b"/>
-            <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
-          </filter>
-          <filter id="blur2"><feGaussianBlur stdDeviation="2.4"/></filter>
-        </defs>
+      <button class="tfReady" id="tfReady" hidden>⚡ TRANSFORMATION AVAILABLE</button>
+      <div class="holo" id="holo">
+        <div class="aura"></div>
+        <div class="particles"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        <div id="floatLayer"></div>
+        <div id="shock"></div>
+        <svg id="charaSvg" class="mood-tired f-base" viewBox="0 0 320 470" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="hairGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop class="hs1" offset="0"/><stop class="hs2" offset="1"/>
+            </linearGradient>
+            <linearGradient id="flameGrad" x1="0" y1="1" x2="0" y2="0">
+              <stop class="fs2" offset="0" stop-opacity=".55"/>
+              <stop class="fs1" offset=".6" stop-opacity=".3"/>
+              <stop class="fs1" offset="1" stop-opacity="0"/>
+            </linearGradient>
+            <linearGradient id="furGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop class="fu1" offset="0"/><stop class="fu2" offset="1"/>
+            </linearGradient>
+            <linearGradient id="giG" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#ffa03a"/><stop offset="1" stop-color="#e8641b"/>
+            </linearGradient>
+            <linearGradient id="coneG" x1="0" y1="1" x2="0" y2="0">
+              <stop offset="0" stop-color="#35e0ff" stop-opacity=".35"/><stop offset="1" stop-color="#35e0ff" stop-opacity="0"/>
+            </linearGradient>
+            <radialGradient id="padG">
+              <stop offset="0" stop-color="#35e0ff" stop-opacity=".5"/><stop offset="1" stop-color="#35e0ff" stop-opacity="0"/>
+            </radialGradient>
+            <filter id="glow" x="-60%" y="-60%" width="220%" height="220%">
+              <feGaussianBlur stdDeviation="3.2" result="b"/>
+              <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+            <filter id="blur2"><feGaussianBlur stdDeviation="2.4"/></filter>
+          </defs>
 
-        <!-- projection cone + base rings -->
-        <polygon points="118,432 202,432 240,36 80,36" fill="url(#coneG)" opacity=".3"/>
-        <ellipse cx="160" cy="432" rx="46" ry="7" fill="url(#padG)"/>
-        <ellipse cx="160" cy="432" rx="92" ry="15" fill="none" stroke="#35e0ff" stroke-width="1.6"
-          stroke-dasharray="12 7" opacity=".8" class="spinDash" style="filter:drop-shadow(0 0 6px rgba(53,224,255,.8))"/>
-        <ellipse cx="160" cy="432" rx="63" ry="10" fill="none" stroke="#ff2e88" stroke-width="1.1"
-          stroke-dasharray="5 9" opacity=".6" class="spinDash2"/>
-        <path class="hexFloat" d="M52 118 l10 6 v12 l-10 6 -10 -6 v-12 Z" fill="none" stroke="#35e0ff" stroke-width="1.4" opacity=".5"/>
-        <path class="hexFloat b" d="M268 168 l8 4.5 v9 l-8 4.5 -8 -4.5 v-9 Z" fill="none" stroke="#ff7ab8" stroke-width="1.4" opacity=".5"/>
+          <!-- projection cone + base rings -->
+          <polygon points="118,432 202,432 240,36 80,36" fill="url(#coneG)" opacity=".3"/>
+          <ellipse cx="160" cy="432" rx="46" ry="7" fill="url(#padG)"/>
+          <ellipse cx="160" cy="432" rx="92" ry="15" fill="none" stroke="#35e0ff" stroke-width="1.6"
+            stroke-dasharray="12 7" opacity=".8" class="spinDash" style="filter:drop-shadow(0 0 6px rgba(53,224,255,.8))"/>
+          <ellipse cx="160" cy="432" rx="63" ry="10" fill="none" stroke="#ff2e88" stroke-width="1.1"
+            stroke-dasharray="5 9" opacity=".6" class="spinDash2"/>
+          <path class="hexFloat" d="M52 118 l10 6 v12 l-10 6 -10 -6 v-12 Z" fill="none" stroke="#35e0ff" stroke-width="1.4" opacity=".5"/>
+          <path class="hexFloat b" d="M268 168 l8 4.5 v9 l-8 4.5 -8 -4.5 v-9 Z" fill="none" stroke="#ff7ab8" stroke-width="1.4" opacity=".5"/>
 
-        <!-- ki flame aura (behind character) -->
-        <g id="flameAura">
-          <path class="flame f1" fill="url(#flameGrad)" filter="url(#blur2)" d="M160 432 C118 424 92 392 88 348 L74 338 L92 322 C84 296 90 282 82 262 L66 250 L88 240 C84 214 96 202 92 182 L78 168 L100 164 C100 138 116 128 116 106 L108 84 L130 92 C134 66 150 60 154 36 L160 16 L166 36 C170 60 186 66 190 92 L212 84 L204 106 C204 128 220 138 220 164 L242 168 L228 182 C224 202 236 214 232 240 L254 250 L238 262 C230 282 236 296 228 322 L246 338 L232 348 C228 392 202 424 160 432 Z"/>
-          <path class="flame f2" fill="url(#flameGrad)" opacity=".8" transform="translate(24,64.8) scale(.85)" d="M160 432 C118 424 92 392 88 348 L74 338 L92 322 C84 296 90 282 82 262 L66 250 L88 240 C84 214 96 202 92 182 L78 168 L100 164 C100 138 116 128 116 106 L108 84 L130 92 C134 66 150 60 154 36 L160 16 L166 36 C170 60 186 66 190 92 L212 84 L204 106 C204 128 220 138 220 164 L242 168 L228 182 C224 202 236 214 232 240 L254 250 L238 262 C230 282 236 296 228 322 L246 338 L232 348 C228 392 202 424 160 432 Z"/>
-        </g>
+          <!-- ki flame aura (behind character) -->
+          <g id="flameAura">
+            <path class="flame f1" fill="url(#flameGrad)" filter="url(#blur2)" d="M160 432 C118 424 92 392 88 348 L74 338 L92 322 C84 296 90 282 82 262 L66 250 L88 240 C84 214 96 202 92 182 L78 168 L100 164 C100 138 116 128 116 106 L108 84 L130 92 C134 66 150 60 154 36 L160 16 L166 36 C170 60 186 66 190 92 L212 84 L204 106 C204 128 220 138 220 164 L242 168 L228 182 C224 202 236 214 232 240 L254 250 L238 262 C230 282 236 296 228 322 L246 338 L232 348 C228 392 202 424 160 432 Z"/>
+            <path class="flame f2" fill="url(#flameGrad)" opacity=".8" transform="translate(24,64.8) scale(.85)" d="M160 432 C118 424 92 392 88 348 L74 338 L92 322 C84 296 90 282 82 262 L66 250 L88 240 C84 214 96 202 92 182 L78 168 L100 164 C100 138 116 128 116 106 L108 84 L130 92 C134 66 150 60 154 36 L160 16 L166 36 C170 60 186 66 190 92 L212 84 L204 106 C204 128 220 138 220 164 L242 168 L228 182 C224 202 236 214 232 240 L254 250 L238 262 C230 282 236 296 228 322 L246 338 L232 348 C228 392 202 424 160 432 Z"/>
+          </g>
 
-        <!-- ============ CHARACTER ============ -->
-        <g id="chara" stroke-linejoin="round" stroke-linecap="round">
+          <!-- ============ CHARACTER ============ -->
+          <g id="chara" stroke-linejoin="round" stroke-linecap="round">
 
-          <!-- ===== SAIYAN MODEL ===== -->
-          <g id="saiyanModel">
-            <!-- legs -->
-            <g id="legsG">
-              <path d="M128 316 L156 316 L153 384 L131 384 Z" fill="url(#giG)" stroke="#7a2d08" stroke-width="2.5"/>
-              <path d="M164 316 L192 316 L189 384 L167 384 Z" fill="url(#giG)" stroke="#7a2d08" stroke-width="2.5"/>
-              <path d="M137 340 L148 344" stroke="#b34a10" stroke-width="2" opacity=".6"/>
-              <path d="M183 340 L172 344" stroke="#b34a10" stroke-width="2" opacity=".6"/>
-              <path d="M130 380 L154 380 L153 408 C152 418 132 418 131 408 Z" fill="#1d2a5e" stroke="#0d1230" stroke-width="2.5"/>
-              <path d="M166 380 L190 380 L189 408 C188 418 168 418 167 408 Z" fill="#1d2a5e" stroke="#0d1230" stroke-width="2.5"/>
-              <path d="M130 383 L154 383 L154 389 L130 389 Z" fill="#ffd75e" stroke="none"/>
-              <path d="M166 383 L190 383 L190 389 L166 389 Z" fill="#ffd75e" stroke="none"/>
-            </g>
-            <!-- torso -->
-            <g id="torsoG">
-              <path d="M148 178 L172 178 L174 200 L146 200 Z" class="faceSkin" fill="#ffd9b8" stroke="#5a2c18" stroke-width="2"/>
-              <path d="M148 178 L172 178 L171 188 L149 188 Z" fill="#d9a077" opacity=".5" stroke="none"/>
-              <path d="M148 190 L122 208 L148 206 Z" fill="#ffd9b8" stroke="#5a2c18" stroke-width="2"/>
-              <path d="M172 190 L198 208 L172 206 Z" fill="#ffd9b8" stroke="#5a2c18" stroke-width="2"/>
-              <path d="M118 204 C136 194 184 194 202 204 C212 224 212 254 206 286 C188 294 132 294 114 286 C108 254 108 224 118 204 Z"
-                fill="url(#giG)" stroke="#7a2d08" stroke-width="2.5"/>
-              <path d="M143 200 L160 224 L177 200 L169 197 L160 210 L151 197 Z" fill="#1d2a5e" stroke="#0d1230" stroke-width="2"/>
-              <path d="M126 248 C142 255 178 255 194 248" fill="none" stroke="#b34a10" stroke-width="2" opacity=".6"/>
-              <path d="M124 268 C142 274 178 274 196 268" fill="none" stroke="#b34a10" stroke-width="2" opacity=".45"/>
-              <circle cx="136" cy="230" r="11" fill="#fff7ea" stroke="#7a2d08" stroke-width="2"/>
-              <text x="136" y="235" font-family="DotGothic16" font-size="13" fill="#b3400f" text-anchor="middle">強</text>
-              <path d="M112 284 L208 284 L206 302 L114 302 Z" fill="#2b4fb8" stroke="#101c44" stroke-width="2.5"/>
-              <path d="M132 300 L126 324 L136 322 L139 302 Z" fill="#2b4fb8" stroke="#101c44" stroke-width="2"/>
-              <path d="M144 302 L142 328 L152 324 L150 302 Z" fill="#2b4fb8" stroke="#101c44" stroke-width="2"/>
-              <path d="M116 300 L204 300 L198 320 L122 320 Z" fill="url(#giG)" stroke="#7a2d08" stroke-width="2.5"/>
-              <path d="M160 300 L160 318" stroke="#b34a10" stroke-width="2" opacity=".6"/>
-            </g>
-            <!-- SSJ4 tail -->
-            <path id="tailSSJ4" d="M196 308 C232 314 246 290 240 264 C254 290 242 330 204 326 Z" fill="#b13c2c" stroke="#5a1408" stroke-width="2"/>
-            <!-- arms -->
-            <g id="armL">
-              <circle cx="118" cy="216" r="15" class="armSkin" fill="#ffd9b8" stroke="#5a2c18" stroke-width="2.5"/>
-              <path d="M106 220 C96 236 92 252 96 266 L116 262 C112 250 114 236 124 226 Z" class="armSkin" fill="#ffd9b8" stroke="#5a2c18" stroke-width="2.5"/>
-              <path d="M96 262 C90 276 90 288 94 298 L112 294 C110 284 110 272 114 262 Z" class="armSkin" fill="#ffd9b8" stroke="#5a2c18" stroke-width="2.5"/>
-              <path d="M108 234 C104 244 104 252 107 258" fill="none" stroke="#d9a077" stroke-width="1.8" opacity=".8"/>
-              <path d="M90 292 L114 289 L115 304 L92 306 Z" fill="#2b4fb8" stroke="#101c44" stroke-width="2.5"/>
-              <circle cx="103" cy="316" r="10.5" class="armSkin" fill="#ffd9b8" stroke="#5a2c18" stroke-width="2.5"/>
-              <path d="M97 312 L109 311" stroke="#c9885e" stroke-width="1.6" opacity=".8"/>
-            </g>
-            <g id="armR">
-              <circle cx="202" cy="216" r="15" class="armSkin" fill="#ffd9b8" stroke="#5a2c18" stroke-width="2.5"/>
-              <path d="M214 220 C224 236 228 252 224 266 L204 262 C208 250 206 236 196 226 Z" class="armSkin" fill="#ffd9b8" stroke="#5a2c18" stroke-width="2.5"/>
-              <path d="M224 262 C230 276 230 288 226 298 L208 294 C210 284 210 272 206 262 Z" class="armSkin" fill="#ffd9b8" stroke="#5a2c18" stroke-width="2.5"/>
-              <path d="M212 234 C216 244 216 252 213 258" fill="none" stroke="#d9a077" stroke-width="1.8" opacity=".8"/>
-              <path d="M230 292 L206 289 L205 304 L228 306 Z" fill="#2b4fb8" stroke="#101c44" stroke-width="2.5"/>
-              <circle cx="217" cy="316" r="10.5" class="armSkin" fill="#ffd9b8" stroke="#5a2c18" stroke-width="2.5"/>
-              <path d="M223 312 L211 311" stroke="#c9885e" stroke-width="1.6" opacity=".8"/>
-            </g>
-            <!-- head -->
-            <path d="M124 98 C120 132 126 156 140 172 C148 181 172 181 180 172 C194 156 200 132 196 98 C186 88 134 88 124 98 Z"
-              class="faceSkin" fill="#ffd9b8" stroke="#5a2c18" stroke-width="2.5"/>
-            <path d="M132 150 L138 154" stroke="#d9a077" stroke-width="1.5" opacity=".6"/>
-            <path d="M188 150 L182 154" stroke="#d9a077" stroke-width="1.5" opacity=".6"/>
-            <g class="eyeGrp">
-              <path d="M130 128 L152 134 L150 145 L133 141 Z" fill="#fff"/>
-              <circle cx="143" cy="138" r="5" class="irisFill"/>
-              <circle cx="143" cy="138" r="2" fill="#0a0c18"/>
-              <circle cx="141.5" cy="136" r="1.2" fill="#fff"/>
-              <path d="M128 127 L153 134" stroke="#1a1226" stroke-width="3"/>
-              <rect class="lid" x="129" y="128" width="24" height="8" rx="3" fill="#ffd9b8"/>
-            </g>
-            <g class="eyeGrp r">
-              <path d="M190 128 L168 134 L170 145 L187 141 Z" fill="#fff"/>
-              <circle cx="177" cy="138" r="5" class="irisFill"/>
-              <circle cx="177" cy="138" r="2" fill="#0a0c18"/>
-              <circle cx="175.5" cy="136" r="1.2" fill="#fff"/>
-              <path d="M192 127 L167 134" stroke="#1a1226" stroke-width="3"/>
-              <rect class="lid" x="167" y="128" width="24" height="8" rx="3" fill="#ffd9b8"/>
-            </g>
-            <path class="brow" d="M128 118 L154 126" stroke="#151a30" stroke-width="5" fill="none"/>
-            <path class="brow" d="M192 118 L166 126" stroke="#151a30" stroke-width="5" fill="none"/>
-            <path d="M160 148 L156 155" stroke="#d19a72" stroke-width="2" fill="none"/>
-            <g id="mHappy">
-              <path d="M146 162 Q162 173 176 159" fill="none" stroke="#4a1f33" stroke-width="3"/>
-              <path d="M174 160 L179 156" stroke="#4a1f33" stroke-width="2.5"/>
-            </g>
-            <path id="mNeutral" d="M150 165 L172 164" fill="none" stroke="#4a1f33" stroke-width="2.5"/>
-            <path id="mTired" d="M148 169 Q160 161 174 168" fill="none" stroke="#4a1f33" stroke-width="2.5"/>
-            <!-- hair meshes -->
-            <path id="hairBaseMesh" d="M120 112 L94 124 L106 92 L76 88 L104 66 L90 38 L122 56 L126 22 L150 52 L162 14 L176 50 L200 24 L202 56 L232 40 L216 68 L244 90 L214 94 L226 124 L200 112 C186 96 168 108 160 100 C152 108 134 96 120 112 Z"
-              fill="url(#hairGrad)" stroke="#10131f" stroke-width="2.5"/>
-            <path id="hairUpMesh" d="M120 110 L100 102 L114 74 L92 56 L120 56 L114 16 L140 44 L148 2 L162 40 L180 6 L188 44 L212 18 L208 56 L234 58 L212 78 L230 102 L200 110 C186 96 168 106 160 98 C152 106 134 96 120 110 Z"
-              fill="url(#hairGrad)" stroke="#10131f" stroke-width="2.5"/>
-            <g id="hairLongMesh">
-              <path d="M116 104 C96 128 88 170 92 214 L78 224 L94 236 C90 264 96 288 106 302 L118 290 C112 264 112 236 118 214 C110 180 114 140 124 116 Z"
+            <!-- ===== SAIYAN MODEL ===== -->
+            <g id="saiyanModel">
+              <!-- legs -->
+              <g id="legsG">
+                <path d="M128 316 L156 316 L153 384 L131 384 Z" fill="url(#giG)" stroke="#7a2d08" stroke-width="2.5"/>
+                <path d="M164 316 L192 316 L189 384 L167 384 Z" fill="url(#giG)" stroke="#7a2d08" stroke-width="2.5"/>
+                <path d="M137 340 L148 344" stroke="#b34a10" stroke-width="2" opacity=".6"/>
+                <path d="M183 340 L172 344" stroke="#b34a10" stroke-width="2" opacity=".6"/>
+                <path d="M130 380 L154 380 L153 408 C152 418 132 418 131 408 Z" fill="#1d2a5e" stroke="#0d1230" stroke-width="2.5"/>
+                <path d="M166 380 L190 380 L189 408 C188 418 168 418 167 408 Z" fill="#1d2a5e" stroke="#0d1230" stroke-width="2.5"/>
+                <path d="M130 383 L154 383 L154 389 L130 389 Z" fill="#ffd75e" stroke="none"/>
+                <path d="M166 383 L190 383 L190 389 L166 389 Z" fill="#ffd75e" stroke="none"/>
+              </g>
+              <!-- torso -->
+              <g id="torsoG">
+                <path d="M148 178 L172 178 L174 200 L146 200 Z" class="faceSkin" fill="#ffd9b8" stroke="#5a2c18" stroke-width="2"/>
+                <path d="M148 178 L172 178 L171 188 L149 188 Z" fill="#d9a077" opacity=".5" stroke="none"/>
+                <path d="M148 190 L122 208 L148 206 Z" fill="#ffd9b8" stroke="#5a2c18" stroke-width="2"/>
+                <path d="M172 190 L198 208 L172 206 Z" fill="#ffd9b8" stroke="#5a2c18" stroke-width="2"/>
+                <path d="M118 204 C136 194 184 194 202 204 C212 224 212 254 206 286 C188 294 132 294 114 286 C108 254 108 224 118 204 Z"
+                  fill="url(#giG)" stroke="#7a2d08" stroke-width="2.5"/>
+                <path d="M143 200 L160 224 L177 200 L169 197 L160 210 L151 197 Z" fill="#1d2a5e" stroke="#0d1230" stroke-width="2"/>
+                <path d="M126 248 C142 255 178 255 194 248" fill="none" stroke="#b34a10" stroke-width="2" opacity=".6"/>
+                <path d="M124 268 C142 274 178 274 196 268" fill="none" stroke="#b34a10" stroke-width="2" opacity=".45"/>
+                <circle cx="136" cy="230" r="11" fill="#fff7ea" stroke="#7a2d08" stroke-width="2"/>
+                <text x="136" y="235" font-family="Zen Dots" font-size="11" fill="#b3400f" text-anchor="middle">S</text>
+                <path d="M112 284 L208 284 L206 302 L114 302 Z" fill="#2b4fb8" stroke="#101c44" stroke-width="2.5"/>
+                <path d="M132 300 L126 324 L136 322 L139 302 Z" fill="#2b4fb8" stroke="#101c44" stroke-width="2"/>
+                <path d="M144 302 L142 328 L152 324 L150 302 Z" fill="#2b4fb8" stroke="#101c44" stroke-width="2"/>
+                <path d="M116 300 L204 300 L198 320 L122 320 Z" fill="url(#giG)" stroke="#7a2d08" stroke-width="2.5"/>
+                <path d="M160 300 L160 318" stroke="#b34a10" stroke-width="2" opacity=".6"/>
+              </g>
+              <!-- SSJ4 tail -->
+              <path id="tailSSJ4" d="M196 308 C232 314 246 290 240 264 C254 290 242 330 204 326 Z" fill="#b13c2c" stroke="#5a1408" stroke-width="2"/>
+              <!-- arms -->
+              <g id="armL">
+                <circle cx="118" cy="216" r="15" class="armSkin" fill="#ffd9b8" stroke="#5a2c18" stroke-width="2.5"/>
+                <path d="M106 220 C96 236 92 252 96 266 L116 262 C112 250 114 236 124 226 Z" class="armSkin" fill="#ffd9b8" stroke="#5a2c18" stroke-width="2.5"/>
+                <path d="M96 262 C90 276 90 288 94 298 L112 294 C110 284 110 272 114 262 Z" class="armSkin" fill="#ffd9b8" stroke="#5a2c18" stroke-width="2.5"/>
+                <path d="M108 234 C104 244 104 252 107 258" fill="none" stroke="#d9a077" stroke-width="1.8" opacity=".8"/>
+                <path d="M90 292 L114 289 L115 304 L92 306 Z" fill="#2b4fb8" stroke="#101c44" stroke-width="2.5"/>
+                <circle cx="103" cy="316" r="10.5" class="armSkin" fill="#ffd9b8" stroke="#5a2c18" stroke-width="2.5"/>
+                <path d="M97 312 L109 311" stroke="#c9885e" stroke-width="1.6" opacity=".8"/>
+              </g>
+              <g id="armR">
+                <circle cx="202" cy="216" r="15" class="armSkin" fill="#ffd9b8" stroke="#5a2c18" stroke-width="2.5"/>
+                <path d="M214 220 C224 236 228 252 224 266 L204 262 C208 250 206 236 196 226 Z" class="armSkin" fill="#ffd9b8" stroke="#5a2c18" stroke-width="2.5"/>
+                <path d="M224 262 C230 276 230 288 226 298 L208 294 C210 284 210 272 206 262 Z" class="armSkin" fill="#ffd9b8" stroke="#5a2c18" stroke-width="2.5"/>
+                <path d="M212 234 C216 244 216 252 213 258" fill="none" stroke="#d9a077" stroke-width="1.8" opacity=".8"/>
+                <path d="M230 292 L206 289 L205 304 L228 306 Z" fill="#2b4fb8" stroke="#101c44" stroke-width="2.5"/>
+                <circle cx="217" cy="316" r="10.5" class="armSkin" fill="#ffd9b8" stroke="#5a2c18" stroke-width="2.5"/>
+                <path d="M223 312 L211 311" stroke="#c9885e" stroke-width="1.6" opacity=".8"/>
+              </g>
+              <!-- head -->
+              <path d="M124 98 C120 132 126 156 140 172 C148 181 172 181 180 172 C194 156 200 132 196 98 C186 88 134 88 124 98 Z"
+                class="faceSkin" fill="#ffd9b8" stroke="#5a2c18" stroke-width="2.5"/>
+              <path d="M132 150 L138 154" stroke="#d9a077" stroke-width="1.5" opacity=".6"/>
+              <path d="M188 150 L182 154" stroke="#d9a077" stroke-width="1.5" opacity=".6"/>
+              <g class="eyeGrp">
+                <path d="M130 128 L152 134 L150 145 L133 141 Z" fill="#fff"/>
+                <circle cx="143" cy="138" r="5" class="irisFill"/>
+                <circle cx="143" cy="138" r="2" fill="#0a0c18"/>
+                <circle cx="141.5" cy="136" r="1.2" fill="#fff"/>
+                <path d="M128 127 L153 134" stroke="#1a1226" stroke-width="3"/>
+                <rect class="lid" x="129" y="128" width="24" height="8" rx="3" fill="#ffd9b8"/>
+              </g>
+              <g class="eyeGrp r">
+                <path d="M190 128 L168 134 L170 145 L187 141 Z" fill="#fff"/>
+                <circle cx="177" cy="138" r="5" class="irisFill"/>
+                <circle cx="177" cy="138" r="2" fill="#0a0c18"/>
+                <circle cx="175.5" cy="136" r="1.2" fill="#fff"/>
+                <path d="M192 127 L167 134" stroke="#1a1226" stroke-width="3"/>
+                <rect class="lid" x="167" y="128" width="24" height="8" rx="3" fill="#ffd9b8"/>
+              </g>
+              <path class="brow" d="M128 118 L154 126" stroke="#151a30" stroke-width="5" fill="none"/>
+              <path class="brow" d="M192 118 L166 126" stroke="#151a30" stroke-width="5" fill="none"/>
+              <path d="M160 148 L156 155" stroke="#d19a72" stroke-width="2" fill="none"/>
+              <g id="mHappy">
+                <path d="M146 162 Q162 173 176 159" fill="none" stroke="#4a1f33" stroke-width="3"/>
+                <path d="M174 160 L179 156" stroke="#4a1f33" stroke-width="2.5"/>
+              </g>
+              <path id="mNeutral" d="M150 165 L172 164" fill="none" stroke="#4a1f33" stroke-width="2.5"/>
+              <path id="mTired" d="M148 169 Q160 161 174 168" fill="none" stroke="#4a1f33" stroke-width="2.5"/>
+              <!-- hair meshes -->
+              <path id="hairBaseMesh" d="M120 112 L94 124 L106 92 L76 88 L104 66 L90 38 L122 56 L126 22 L150 52 L162 14 L176 50 L200 24 L202 56 L232 40 L216 68 L244 90 L214 94 L226 124 L200 112 C186 96 168 108 160 100 C152 108 134 96 120 112 Z"
                 fill="url(#hairGrad)" stroke="#10131f" stroke-width="2.5"/>
-              <path d="M204 104 C224 128 232 170 228 214 L242 224 L226 236 C230 264 224 288 214 302 L202 290 C208 264 208 236 202 214 C210 180 206 140 196 116 Z"
+              <path id="hairUpMesh" d="M120 110 L100 102 L114 74 L92 56 L120 56 L114 16 L140 44 L148 2 L162 40 L180 6 L188 44 L212 18 L208 56 L234 58 L212 78 L230 102 L200 110 C186 96 168 106 160 98 C152 106 134 96 120 110 Z"
                 fill="url(#hairGrad)" stroke="#10131f" stroke-width="2.5"/>
-              <path d="M120 110 L98 96 L114 70 L96 44 L126 52 L136 12 L154 44 L170 8 L182 46 L208 20 L206 54 L232 48 L216 78 L236 96 L200 110 C186 96 168 106 160 98 C152 106 134 96 120 110 Z"
-                fill="url(#hairGrad)" stroke="#10131f" stroke-width="2.5"/>
+              <g id="hairLongMesh">
+                <path d="M116 104 C96 128 88 170 92 214 L78 224 L94 236 C90 264 96 288 106 302 L118 290 C112 264 112 236 118 214 C110 180 114 140 124 116 Z"
+                  fill="url(#hairGrad)" stroke="#10131f" stroke-width="2.5"/>
+                <path d="M204 104 C224 128 232 170 228 214 L242 224 L226 236 C230 264 224 288 214 302 L202 290 C208 264 208 236 202 214 C210 180 206 140 196 116 Z"
+                  fill="url(#hairGrad)" stroke="#10131f" stroke-width="2.5"/>
+                <path d="M120 110 L98 96 L114 70 L96 44 L126 52 L136 12 L154 44 L170 8 L182 46 L208 20 L206 54 L232 48 L216 78 L236 96 L200 110 C186 96 168 106 160 98 C152 106 134 96 120 110 Z"
+                  fill="url(#hairGrad)" stroke="#10131f" stroke-width="2.5"/>
+              </g>
+            </g>
+
+            <!-- ===== GREAT APE MODEL ===== -->
+            <g id="apeModel">
+              <path d="M232 330 C276 320 288 276 268 244 C296 272 296 336 240 352 Z" fill="url(#furGrad)" stroke="#2e1a0c" stroke-width="2.5"/>
+              <path d="M160 150 C104 150 70 196 72 262 C74 318 100 366 160 372 C220 366 246 318 248 262 C250 196 216 150 160 150 Z"
+                fill="url(#furGrad)" stroke="#2e1a0c" stroke-width="2.5"/>
+              <path class="apeChest" d="M160 210 C130 210 112 240 114 280 C118 322 136 348 160 352 C184 348 202 322 206 280 C208 240 190 210 160 210 Z" stroke="#2e1a0c" stroke-width="2"/>
+              <path d="M124 236 C132 232 148 230 160 230" fill="none" stroke="#2e1a0c" stroke-width="1.6" opacity=".4"/>
+              <path d="M196 236 C188 232 172 230 160 230" fill="none" stroke="#2e1a0c" stroke-width="1.6" opacity=".4"/>
+              <path d="M112 186 C76 190 58 232 56 290 C54 330 58 358 70 374 L108 366 C96 322 98 260 118 222 Z" fill="url(#furGrad)" stroke="#2e1a0c" stroke-width="2.5"/>
+              <ellipse cx="86" cy="382" rx="26" ry="18" fill="url(#furGrad)" stroke="#2e1a0c" stroke-width="2.5"/>
+              <path d="M208 186 C244 190 262 232 264 290 C266 330 262 358 250 374 L212 366 C224 322 222 260 202 222 Z" fill="url(#furGrad)" stroke="#2e1a0c" stroke-width="2.5"/>
+              <ellipse cx="234" cy="382" rx="26" ry="18" fill="url(#furGrad)" stroke="#2e1a0c" stroke-width="2.5"/>
+              <path d="M118 356 L152 362 L148 408 L112 402 Z" fill="url(#furGrad)" stroke="#2e1a0c" stroke-width="2.5"/>
+              <path d="M202 356 L168 362 L172 408 L208 402 Z" fill="url(#furGrad)" stroke="#2e1a0c" stroke-width="2.5"/>
+              <ellipse cx="128" cy="412" rx="24" ry="10" fill="url(#furGrad)" stroke="#2e1a0c" stroke-width="2.5"/>
+              <ellipse cx="192" cy="412" rx="24" ry="10" fill="url(#furGrad)" stroke="#2e1a0c" stroke-width="2.5"/>
+              <path d="M112 84 L96 58 L126 70 Z" fill="url(#furGrad)" stroke="#2e1a0c" stroke-width="2.5"/>
+              <path d="M208 84 L224 58 L194 70 Z" fill="url(#furGrad)" stroke="#2e1a0c" stroke-width="2.5"/>
+              <path d="M160 78 C124 78 102 102 104 132 C106 162 128 180 160 182 C192 180 214 162 216 132 C218 102 196 78 160 78 Z"
+                fill="url(#furGrad)" stroke="#2e1a0c" stroke-width="2.5"/>
+              <path d="M116 106 L150 116" stroke="#2e1a0c" stroke-width="6"/>
+              <path d="M204 106 L170 116" stroke="#2e1a0c" stroke-width="6"/>
+              <ellipse cx="134" cy="124" rx="8" ry="5" fill="#ff2222" filter="url(#glow)"/>
+              <ellipse cx="186" cy="124" rx="8" ry="5" fill="#ff2222" filter="url(#glow)"/>
+              <path class="apeMuzzle" d="M160 126 C138 126 126 141 128 157 C130 171 144 180 160 180 C176 180 190 171 192 157 C194 141 182 126 160 126 Z" stroke="#2e1a0c" stroke-width="2"/>
+              <circle cx="150" cy="142" r="2.2" fill="#2e1a0c"/>
+              <circle cx="170" cy="142" r="2.2" fill="#2e1a0c"/>
+              <path d="M136 158 C144 172 176 172 184 158 C176 178 144 178 136 158 Z" fill="#5a1015" stroke="#2e1a0c" stroke-width="2"/>
+              <path d="M141 159 L146 168 L150 159 Z" fill="#fff"/>
+              <path d="M179 159 L174 168 L170 159 Z" fill="#fff"/>
             </g>
           </g>
 
-          <!-- ===== GREAT APE MODEL ===== -->
-          <g id="apeModel">
-            <path d="M232 330 C276 320 288 276 268 244 C296 272 296 336 240 352 Z" fill="url(#furGrad)" stroke="#2e1a0c" stroke-width="2.5"/>
-            <path d="M160 150 C104 150 70 196 72 262 C74 318 100 366 160 372 C220 366 246 318 248 262 C250 196 216 150 160 150 Z"
-              fill="url(#furGrad)" stroke="#2e1a0c" stroke-width="2.5"/>
-            <path class="apeChest" d="M160 210 C130 210 112 240 114 280 C118 322 136 348 160 352 C184 348 202 322 206 280 C208 240 190 210 160 210 Z" stroke="#2e1a0c" stroke-width="2"/>
-            <path d="M124 236 C132 232 148 230 160 230" fill="none" stroke="#2e1a0c" stroke-width="1.6" opacity=".4"/>
-            <path d="M196 236 C188 232 172 230 160 230" fill="none" stroke="#2e1a0c" stroke-width="1.6" opacity=".4"/>
-            <path d="M112 186 C76 190 58 232 56 290 C54 330 58 358 70 374 L108 366 C96 322 98 260 118 222 Z" fill="url(#furGrad)" stroke="#2e1a0c" stroke-width="2.5"/>
-            <ellipse cx="86" cy="382" rx="26" ry="18" fill="url(#furGrad)" stroke="#2e1a0c" stroke-width="2.5"/>
-            <path d="M208 186 C244 190 262 232 264 290 C266 330 262 358 250 374 L212 366 C224 322 222 260 202 222 Z" fill="url(#furGrad)" stroke="#2e1a0c" stroke-width="2.5"/>
-            <ellipse cx="234" cy="382" rx="26" ry="18" fill="url(#furGrad)" stroke="#2e1a0c" stroke-width="2.5"/>
-            <path d="M118 356 L152 362 L148 408 L112 402 Z" fill="url(#furGrad)" stroke="#2e1a0c" stroke-width="2.5"/>
-            <path d="M202 356 L168 362 L172 408 L208 402 Z" fill="url(#furGrad)" stroke="#2e1a0c" stroke-width="2.5"/>
-            <ellipse cx="128" cy="412" rx="24" ry="10" fill="url(#furGrad)" stroke="#2e1a0c" stroke-width="2.5"/>
-            <ellipse cx="192" cy="412" rx="24" ry="10" fill="url(#furGrad)" stroke="#2e1a0c" stroke-width="2.5"/>
-            <path d="M112 84 L96 58 L126 70 Z" fill="url(#furGrad)" stroke="#2e1a0c" stroke-width="2.5"/>
-            <path d="M208 84 L224 58 L194 70 Z" fill="url(#furGrad)" stroke="#2e1a0c" stroke-width="2.5"/>
-            <path d="M160 78 C124 78 102 102 104 132 C106 162 128 180 160 182 C192 180 214 162 216 132 C218 102 196 78 160 78 Z"
-              fill="url(#furGrad)" stroke="#2e1a0c" stroke-width="2.5"/>
-            <path d="M116 106 L150 116" stroke="#2e1a0c" stroke-width="6"/>
-            <path d="M204 106 L170 116" stroke="#2e1a0c" stroke-width="6"/>
-            <ellipse cx="134" cy="124" rx="8" ry="5" fill="#ff2222" filter="url(#glow)"/>
-            <ellipse cx="186" cy="124" rx="8" ry="5" fill="#ff2222" filter="url(#glow)"/>
-            <path class="apeMuzzle" d="M160 126 C138 126 126 141 128 157 C130 171 144 180 160 180 C176 180 190 171 192 157 C194 141 182 126 160 126 Z" stroke="#2e1a0c" stroke-width="2"/>
-            <circle cx="150" cy="142" r="2.2" fill="#2e1a0c"/>
-            <circle cx="170" cy="142" r="2.2" fill="#2e1a0c"/>
-            <path d="M136 158 C144 172 176 172 184 158 C176 178 144 178 136 158 Z" fill="#5a1015" stroke="#2e1a0c" stroke-width="2"/>
-            <path d="M141 159 L146 168 L150 159 Z" fill="#fff"/>
-            <path d="M179 159 L174 168 L170 159 Z" fill="#fff"/>
+          <!-- lightning bolts -->
+          <g id="bolts">
+            <path class="b1" d="M92 150 L108 170 L96 188 L114 210"/>
+            <path class="b2" d="M228 140 L212 164 L226 182 L208 206"/>
+            <path class="b3" d="M120 60 L138 78 L124 94 M200 54 L186 76 L198 92"/>
           </g>
-        </g>
-
-        <!-- lightning bolts -->
-        <g id="bolts">
-          <path class="b1" d="M92 150 L108 170 L96 188 L114 210"/>
-          <path class="b2" d="M228 140 L212 164 L226 182 L208 206"/>
-          <path class="b3" d="M120 60 L138 78 L124 94 M200 54 L186 76 L198 92"/>
-        </g>
-        <use href="#chara" class="ghost ghostA"/>
-        <use href="#chara" class="ghost ghostB"/>
-      </svg>
-      <div id="flash"></div>
-    </div>
-    <div class="powerRead">
-      <div class="lbl">POWER LEVEL ／ 戦闘力</div>
-      <div class="num" id="powerN">0</div>
-      <div class="sub"><span id="plBase">BASE 0</span> ▸ <b id="syncRate">0%</b> SYNC</div>
-      <div class="nextForm" id="nextForm"></div>
-    </div>
-  </section>
-
-  <!-- ========= RIGHT : DAILY OPS ========= -->
-  <section class="panel right">
-    <div class="corner-b"></div>
-    <div class="pHead"><h2>DAILY OPS</h2><span>本日の任務</span></div>
-    <div class="opsSec">
-      <div class="pHead" style="border:none;padding:0"><h2 style="font-size:11px;color:var(--cyan)">ENERGY INTAKE</h2><span>カロリー</span></div>
-      <div class="calTop">
-        <div class="gauge">
-          <svg width="124" height="124" viewBox="0 0 124 124">
-            <circle cx="62" cy="62" r="52" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="8"/>
-            <circle id="calRing" cx="62" cy="62" r="52" fill="none" stroke="#35e0ff" stroke-width="8"
-              stroke-linecap="round" stroke-dasharray="326.7" stroke-dashoffset="326.7"
-              style="filter:drop-shadow(0 0 8px rgba(53,224,255,.6))"/>
-          </svg>
-          <div class="cTot"><b id="calTotal">0</b><span id="calTargetLbl">/ 2200 kcal</span></div>
+          <use href="#chara" class="ghost ghostA"/>
+          <use href="#chara" class="ghost ghostB"/>
+        </svg>
+        <div id="flash"></div>
+      </div>
+      <div class="powerRead">
+        <div class="lbl">Power Level</div>
+        <div class="num" id="powerN">0</div>
+        <div class="sub"><span id="plBase">BASE 0</span> ▸ <b id="syncRate">0%</b> SYNC</div>
+        <div class="nextForm" id="nextForm"></div>
+      </div>
+      <div class="homeMeta">
+        <div class="mTile lvl">
+          <div class="k">Level</div>
+          <div class="v" id="mLevel">1</div>
+          <div class="xpMini"><i id="xpFill"></i></div>
+          <div class="xpTxtMini" id="xpTxt">0 / 100 XP</div>
         </div>
-        <div class="calInfo">
-          <div class="calStatus idle" id="calStatus">AWAITING INPUT</div>
-          <div class="targetRow">TARGET <input type="number" id="calTargetInput" min="800" max="6000" step="50" value="2200"> KCAL／日</div>
-          <div class="chips">
-            <button class="chip" data-kcal="150">+150</button>
-            <button class="chip" data-kcal="300">+300</button>
-            <button class="chip" data-kcal="500">+500</button>
-            <button class="chip" data-kcal="750">+750</button>
-          </div>
+        <div class="mTile frm">
+          <div class="k">Current Form</div>
+          <div class="v" id="mForm">Base Form</div>
+        </div>
+        <div class="mTile strk">
+          <div class="k">Streak</div>
+          <div class="v" id="mStreak">0</div>
         </div>
       </div>
-      <div class="addRow">
-        <input type="number" id="calInput" min="1" max="5000" placeholder="custom kcal…">
-        <button id="calAdd">ADD</button>
-      </div>
-      <ul id="entryList"></ul>
     </div>
-    <div class="opsSec">
-      <div class="pHead" style="border:none;padding:0"><h2 style="font-size:11px;color:var(--cyan)">TRAINING</h2><span>トレーニング</span></div>
-      <button class="sportBtn" id="sportBtn">LOG TRAINING SESSION<small>タップして訓練を記録</small></button>
-    </div>
-    <div class="opsSec">
-      <button class="syncBtn" id="syncBtn">SYNC DAY ▸▸</button>
-      <div class="syncNote" id="syncNote"></div>
-    </div>
-    <div class="opsSec">
-      <div class="pHead" style="border:none;padding:0"><h2 style="font-size:11px;color:var(--cyan)">7-DAY LOG</h2><span>週間記録</span></div>
-      <div class="histRow" id="hist"></div>
-    </div>
-    <button class="resetBtn" id="resetBtn">⟲ REBOOT SAVE DATA</button>
-  </section>
-</main>
 
-<!-- ========= MISSION LOG VIEW ========= -->
-<div class="logMain" id="viewLog" hidden>
-  <section class="panel logPanel">
+    <aside class="statsCol">
+      <div class="pHead"><h2>STATS</h2><span>Character parameters</span></div>
+      <div class="radarWrap">
+        <svg width="220" height="204" viewBox="0 0 230 212">
+          <g stroke="rgba(53,224,255,.14)" fill="none">
+            <polygon points="115,16 205,106 115,196 25,106"/>
+            <polygon points="115,38.5 182.5,106 115,173.5 47.5,106"/>
+            <polygon points="115,61 160,106 115,151 70,106"/>
+            <polygon points="115,83.5 137.5,106 115,128.5 92.5,106"/>
+            <line x1="115" y1="16" x2="115" y2="196"/><line x1="25" y1="106" x2="205" y2="106"/>
+          </g>
+          <polygon id="radarPoly" points="115,106 115,106 115,106 115,106"
+            fill="rgba(255,46,136,.18)" stroke="#ff2e88" stroke-width="2"
+            style="filter:drop-shadow(0 0 8px rgba(255,46,136,.6))"/>
+          <g id="radarDots" fill="#fff"></g>
+          <g font-family="Zen Dots" font-size="10" fill="#7d87ad" text-anchor="middle">
+            <text x="115" y="11" fill="#57ffc2">VIT</text>
+            <text x="218" y="110" fill="#ff7ab8">STR</text>
+            <text x="115" y="209" fill="#35e0ff">AGI</text>
+            <text x="12" y="110" fill="#ffc94d">FOC</text>
+          </g>
+        </svg>
+      </div>
+      <div class="statRow" data-s="vit">
+        <div class="statName"><b>VITALITY</b><span>Health</span></div>
+        <div class="sTrack"><i id="b-vit"></i></div>
+        <div class="sVal" id="v-vit">0</div>
+      </div>
+      <div class="statRow" data-s="str">
+        <div class="statName"><b>STRENGTH</b><span>Muscle</span></div>
+        <div class="sTrack"><i id="b-str"></i></div>
+        <div class="sVal" id="v-str">0</div>
+      </div>
+      <div class="statRow" data-s="agi">
+        <div class="statName"><b>AGILITY</b><span>Speed</span></div>
+        <div class="sTrack"><i id="b-agi"></i></div>
+        <div class="sVal" id="v-agi">0</div>
+      </div>
+      <div class="statRow" data-s="foc">
+        <div class="statName"><b>FOCUS</b><span>Discipline</span></div>
+        <div class="sTrack"><i id="b-foc"></i></div>
+        <div class="sVal" id="v-foc">0</div>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<!-- ============================= DAILY LOG ============================= -->
+<section class="view" id="viewDaily" data-view="daily" hidden>
+  <div class="panel">
     <div class="corner-b"></div>
-    <div class="pHead"><h2>MISSION LOG</h2><span>過去の戦闘記録</span></div>
-    <div class="logSummary" id="logSummary"></div>
+    <div class="pHead"><h2>DAILY LOG</h2><span>Enter today's progress</span></div>
+    <div class="dateRow">
+      <span class="dk">Date</span>
+      <span class="dv" id="dlDate">—</span>
+    </div>
+    <div class="twoCol">
+      <div class="field">
+        <label>CALORIES CONSUMED</label>
+        <input type="number" id="dlCal" min="0" max="12000" placeholder="e.g. 2200">
+        <span class="hint" id="calHint">Target 2200 kcal</span>
+      </div>
+      <div class="field">
+        <label>PROTEIN CONSUMED (g)</label>
+        <input type="number" id="dlProtein" min="0" max="600" placeholder="e.g. 150">
+        <span class="hint" id="proHint">Target 150 g</span>
+      </div>
+    </div>
+    <div class="twoCol">
+      <div class="toggleRow">
+        <div class="tl"><b>WORKOUT</b><span>Did you train today?</span></div>
+        <button class="switch" id="wkToggle" role="switch" aria-label="Workout completed"></button>
+      </div>
+      <div class="toggleRow">
+        <div class="tl"><b>CREATINE</b><span>Taken today?</span></div>
+        <button class="switch" id="crToggle" role="switch" aria-label="Creatine taken"></button>
+      </div>
+    </div>
+    <div class="targetsRow">
+      <div class="miniField">
+        <label>Calorie Target</label>
+        <input type="number" id="calTargetInput" min="800" max="8000" step="50" value="2200">
+      </div>
+      <div class="miniField">
+        <label>Protein Target (g)</label>
+        <input type="number" id="proteinTargetInput" min="30" max="400" step="5" value="150">
+      </div>
+    </div>
+    <div class="gradePreview" id="gradePreview"></div>
+    <button class="syncBtn" id="syncBtn">SYNC TO CHARACTER</button>
+    <div class="syncNote" id="syncNote"></div>
+    <button class="resetBtn" id="resetBtn">⟲ Reset all save data</button>
+  </div>
+</section>
+
+<!-- ============================= HISTORY ============================= -->
+<section class="view" id="viewHistory" data-view="history" hidden>
+  <div class="panel">
+    <div class="corner-b"></div>
+    <div class="pHead"><h2>HISTORY</h2><span>All logged days</span></div>
+    <div class="histSummary" id="histSummary"></div>
     <div class="tableWrap">
-      <table class="logTable">
+      <table class="histTable">
         <thead><tr>
-          <th>DATE ／ 日付</th><th>DAY</th><th>INTAKE</th><th>VS TARGET</th><th>TRAINING</th><th>STAT Δ</th><th>XP</th><th>RESULT</th>
+          <th>Date</th><th>Calories</th><th>Protein</th><th>Workout</th><th>Creatine</th><th>Result</th>
         </tr></thead>
-        <tbody id="logBody"></tbody>
+        <tbody id="histBody"></tbody>
       </table>
     </div>
-  </section>
-</div>
+  </div>
+</section>
 
-<div class="ticker"><div id="tickerTxt"></div></div>
+<!-- ============================= BOTTOM NAV ============================= -->
+<nav class="bottomNav">
+  <button class="navBtn active" data-view="home">
+    <svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
+    HOME
+  </button>
+  <button class="navBtn" data-view="daily">
+    <svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="17" rx="2"/><path d="M8 3v3M16 3v3M4 10h16M9 15l2 2 4-4"/></svg>
+    DAILY LOG
+  </button>
+  <button class="navBtn" data-view="history">
+    <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+    HISTORY
+  </button>
+</nav>
 
-<div class="lvlup" id="lvlup"><div class="ring"></div><div class="txt">LEVEL UP</div><div class="sub2">全ステータス +2 ─ POWER RISING</div></div>
+<div class="lvlup" id="lvlup"><div class="ring"></div><div class="txt">LEVEL UP</div><div class="sub2">ALL STATS +2 ─ POWER RISING</div></div>
 
 <div class="modal" id="tfModal" hidden>
   <div class="mBox">
-    <div class="mTitle">▸ TRANSFORMATION AVAILABLE ─ 変身可能 ◂</div>
+    <div class="mTitle">▸ Transformation Available ◂</div>
     <div class="mForm" id="tfName">SUPER SAIYAN</div>
-    <div class="mJp" id="tfJp">超サイヤ人</div>
     <div><span class="mTag" id="tfTag" hidden></span></div>
     <div class="mMult" id="tfMult">POWER ×50</div>
     <div class="mDesc" id="tfDesc"></div>
@@ -817,48 +749,50 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 <script>
 'use strict';
 /* ================= STATE ================= */
-const KEY='biosync_save_v3';
+const KEY='biosync_save_v4';
 const $=s=>document.querySelector(s);
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 const todayStr=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');};
 const parseDay=s=>{const[y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d);};
 const daysBetween=(a,b)=>Math.round((parseDay(b)-parseDay(a))/86400000);
 const xpNeed=l=>100+(l-1)*60;
-const WD=['SUN','MON','TUE','WED','THU','FRI','SAT'];
+const WD=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+const MO=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+function prettyDate(ds){const d=parseDay(ds);return WD[d.getDay()]+', '+MO[d.getMonth()]+' '+d.getDate()+' '+d.getFullYear();}
 
 /* ================= FORMS ================= */
 const FORMS=[
-{id:'base',   nm:'BASE FORM',              jp:'基本形態',            pl:0,     mult:1,       fx:1,   tag:'',            desc:'Natural state. Build your power through daily discipline.'},
-{id:'oozaru', nm:'GREAT APE ─ OOZARU',     jp:'大猿',                pl:300,   mult:10,      fx:1,   tag:'×10 ─ FULL MOON', desc:'10× power multiplier. Requires a tail and a full moon ─ the chamber simulates both.'},
-{id:'ssj',    nm:'SUPER SAIYAN',           jp:'超サイヤ人',          pl:800,   mult:50,      fx:1,   tag:'THE LEGENDARY',desc:'The legendary transformation, triggered by need... or by relentless training.'},
-{id:'ussj',   nm:'ULTRA SUPER SAIYAN',     jp:'超サイヤ人第3段階',   pl:1500,  mult:60,      fx:1.45,tag:'GRADE 3',      desc:'Maximum muscle mass. Raw power over speed ─ Trunks’ hulking form.'},
-{id:'ssj2',   nm:'SUPER SAIYAN 2',         jp:'超サイヤ人2',         pl:2600,  mult:100,     fx:1,   tag:'ASCENDED',     desc:'Ascended Saiyan. Lightning wreathes the body.'},
-{id:'ssj3',   nm:'SUPER SAIYAN 3',         jp:'超サイヤ人3',         pl:4200,  mult:400,     fx:1,   tag:'FULL POWER',   desc:'Hair grows to the waist, eyebrows vanish. Enormous ki drain.'},
-{id:'goldape',nm:'GOLDEN GREAT APE',       jp:'黄金大猿',            pl:6000,  mult:500,     fx:1,   tag:'GT',           desc:'Primal Oozaru power fused with Super Saiyan energy.'},
-{id:'ssj4',   nm:'SUPER SAIYAN 4',         jp:'超サイヤ人4',         pl:8000,  mult:4000,    fx:1.1, tag:'GT',           desc:'Crimson fur, black mane ─ primal power under full control.'},
-{id:'ssg',    nm:'SUPER SAIYAN GOD',       jp:'超サイヤ人ゴッド',    pl:9800,  mult:10000,   fx:.9,  tag:'DIVINE',       desc:'Divine ki. A lean crimson god-form of pure efficiency.'},
-{id:'ssb',    nm:'SUPER SAIYAN BLUE',      jp:'超サイヤ人ブルー',    pl:11800, mult:50000,   fx:1,   tag:'SSGSS',        desc:'Super Saiyan God Super Saiyan ─ god ki, mastered.'},
-{id:'ssbp',   nm:'PERFECTED SSB',          jp:'完成されたブルー',    pl:14000, mult:100000,  fx:1,   tag:'MASTERED',     desc:'Blue, perfected. Stamina loss eliminated.'},
-{id:'ssbk',   nm:'SSB KAIOKEN',            jp:'ブルー界王拳',        pl:16500, mult:200000,  fx:1,   tag:'GOKU ONLY',    desc:'Blue × Kaioken. A gamble of body and soul.'},
-{id:'ssbe',   nm:'SSB EVOLVED',            jp:'ブルー進化',          pl:19200, mult:300000,  fx:1.12,tag:'VEGETA ONLY',  desc:'Beyond Blue. Royal pride made manifest.'},
-{id:'uis',    nm:'ULTRA INSTINCT SIGN',    jp:'身勝手の極意「兆」',  pl:22200, mult:500000,  fx:1,   tag:'OMEN ─ GOKU',  desc:'The omen. The body begins to move on its own.'},
-{id:'mui',    nm:'MASTERED ULTRA INSTINCT',jp:'身勝手の極意',        pl:25500, mult:1000000, fx:1,   tag:'GOKU ONLY',    desc:'Silver hair, absolute calm. A divine technique beyond Saiyan forms.'},
-{id:'ue',     nm:'ULTRA EGO',              jp:'我儘の極意',          pl:29000, mult:2000000, fx:1.15,tag:'VEGETA ONLY',  desc:'God of Destruction technique. Power grows with damage taken.'},
-{id:'beast',  nm:'BEAST',                  jp:'ビースト',            pl:33000, mult:5000000, fx:1.05,tag:'GOHAN ONLY',   desc:'Gohan’s furthest evolution. The beast unleashed.'}
+{id:'base',   nm:'BASE FORM',              pl:0,     mult:1,       fx:1,   tag:'',            desc:'Natural state. Build your power through daily discipline.'},
+{id:'oozaru', nm:'GREAT APE ─ OOZARU',     pl:300,   mult:10,      fx:1,   tag:'×10 ─ FULL MOON', desc:'10x power multiplier. Requires a tail and a full moon ─ the chamber simulates both.'},
+{id:'ssj',    nm:'SUPER SAIYAN',           pl:800,   mult:50,      fx:1,   tag:'THE LEGENDARY',desc:'The legendary transformation, triggered by need... or by relentless training.'},
+{id:'ussj',   nm:'ULTRA SUPER SAIYAN',     pl:1500,  mult:60,      fx:1.45,tag:'GRADE 3',      desc:'Maximum muscle mass. Raw power over speed ─ the hulking Grade 3 form.'},
+{id:'ssj2',   nm:'SUPER SAIYAN 2',         pl:2600,  mult:100,     fx:1,   tag:'ASCENDED',     desc:'Ascended Saiyan. Lightning wreathes the body.'},
+{id:'ssj3',   nm:'SUPER SAIYAN 3',         pl:4200,  mult:400,     fx:1,   tag:'FULL POWER',   desc:'Hair grows to the waist, eyebrows vanish. Enormous ki drain.'},
+{id:'goldape',nm:'GOLDEN GREAT APE',       pl:6000,  mult:500,     fx:1,   tag:'GT',           desc:'Primal Oozaru power fused with Super Saiyan energy.'},
+{id:'ssj4',   nm:'SUPER SAIYAN 4',         pl:8000,  mult:4000,    fx:1.1, tag:'GT',           desc:'Crimson fur, black mane ─ primal power under full control.'},
+{id:'ssg',    nm:'SUPER SAIYAN GOD',       pl:9800,  mult:10000,   fx:.9,  tag:'DIVINE',       desc:'Divine ki. A lean crimson god-form of pure efficiency.'},
+{id:'ssb',    nm:'SUPER SAIYAN BLUE',      pl:11800, mult:50000,   fx:1,   tag:'SSGSS',        desc:'Super Saiyan God Super Saiyan ─ god ki, mastered.'},
+{id:'ssbp',   nm:'PERFECTED SSB',          pl:14000, mult:100000,  fx:1,   tag:'MASTERED',     desc:'Blue, perfected. Stamina loss eliminated.'},
+{id:'ssbk',   nm:'SSB KAIOKEN',            pl:16500, mult:200000,  fx:1,   tag:'GOKU ONLY',    desc:'Blue x Kaioken. A gamble of body and soul.'},
+{id:'ssbe',   nm:'SSB EVOLVED',            pl:19200, mult:300000,  fx:1.12,tag:'VEGETA ONLY',  desc:'Beyond Blue. Royal pride made manifest.'},
+{id:'uis',    nm:'ULTRA INSTINCT SIGN',    pl:22200, mult:500000,  fx:1,   tag:'OMEN ─ GOKU',  desc:'The omen. The body begins to move on its own.'},
+{id:'mui',    nm:'MASTERED ULTRA INSTINCT',pl:25500, mult:1000000, fx:1,   tag:'GOKU ONLY',    desc:'Silver hair, absolute calm. A divine technique beyond Saiyan forms.'},
+{id:'ue',     nm:'ULTRA EGO',              pl:29000, mult:2000000, fx:1.15,tag:'VEGETA ONLY',  desc:'God of Destruction technique. Power grows with damage taken.'},
+{id:'beast',  nm:'BEAST',                  pl:33000, mult:5000000, fx:1.05,tag:'GOHAN ONLY',   desc:'The furthest evolution. The beast unleashed.'}
 ];
 
-function freshDay(date){return{date,entries:[],sport:false,synced:false,deltas:null};}
+function freshDay(date){return{date,cal:0,protein:0,sport:false,creatine:false,synced:false,deltas:null};}
 function defaultState(){return{
   level:1,xp:0,
   stats:{vit:1,str:1,agi:1,foc:1},
-  streak:0,best:0,calTarget:2200,
+  streak:0,best:0,calTarget:2200,proteinTarget:150,
   today:freshDay(todayStr()),
   history:[],lastSync:null,form:0,formMax:0};}
 
 let st=load();
 function load(){
   try{const raw=localStorage.getItem(KEY);if(raw){const s=JSON.parse(raw);
-    if(s&&s.stats){s.form=s.form||0;s.formMax=s.formMax||0;return s;}}}catch(e){}
+    if(s&&s.stats){s.form=s.form||0;s.formMax=s.formMax||0;s.proteinTarget=s.proteinTarget||150;return s;}}}catch(e){}
   return defaultState();
 }
 function save(){try{localStorage.setItem(KEY,JSON.stringify(st));}catch(e){}}
@@ -881,12 +815,11 @@ function rollover(){
   st.today=freshDay(t);
   save();
 }
-function pushHistory(h){st.history.push(h);if(st.history.length>180)st.history=st.history.slice(-180);}
+function pushHistory(h){st.history.push(h);if(st.history.length>365)st.history=st.history.slice(-365);}
 
 /* ================= GAME RULES ================= */
-function totalCal(){return st.today.entries.reduce((a,e)=>a+e.kcal,0);}
 function calGrade(){
-  const c=totalCal();if(c===0)return'empty';
+  const c=st.today.cal;if(!c)return'empty';
   const r=c/st.calTarget;
   if(r>=.9&&r<=1.1)return'optimal';
   if(r>=.72&&r<=1.28)return'fair';
@@ -894,6 +827,7 @@ function calGrade(){
   if(r<.55)return'critical';
   return'low';
 }
+function proteinRatio(){return st.today.protein/(st.proteinTarget||150);}
 function computeDeltas(){
   const d={vit:0,str:0,agi:0,foc:0};
   const g=calGrade();
@@ -902,7 +836,13 @@ function computeDeltas(){
   else if(g==='over'){d.vit-=3;d.agi-=2;}
   else if(g==='critical'||g==='empty'){d.vit-=3;d.str-=2;}
   else{d.vit-=1;}
-  if(st.today.sport){d.str+=4;d.agi+=3;d.vit+=1;}else{d.str-=2;d.agi-=1;}
+  const pr=proteinRatio();
+  if(pr>=.9){d.str+=4;d.vit+=1;}
+  else if(pr>=.6){d.str+=2;}
+  else if(pr>0){d.str+=1;}
+  else{d.str-=1;}
+  if(st.today.sport){d.str+=3;d.agi+=3;d.vit+=1;}else{d.str-=2;d.agi-=1;}
+  if(st.today.creatine){d.str+=2;d.foc+=1;}
   d.foc+=Math.min(3,1+Math.floor((st.streak+1)/4));
   return d;
 }
@@ -919,22 +859,25 @@ function fmtPL(n){
 function syncDay(){
   if(st.today.synced)return;
   const g=calGrade();
-  if(g==='empty'&&!st.today.sport){
-    if(!confirm('No intake logged and no training — syncing an empty day will damage your avatar. Sync anyway?'))return;
+  if(g==='empty'&&!st.today.sport&&!st.today.protein&&!st.today.creatine){
+    if(!confirm('Nothing logged today — syncing an empty day will damage your character. Sync anyway?'))return;
   }
   const d=computeDeltas();
   for(const k in d)st.stats[k]=clamp(st.stats[k]+d[k],1,100);
   st.streak++;st.best=Math.max(st.best,st.streak);
-  const gain=40+(st.today.sport?30:0)+(g==='optimal'?30:g==='fair'?15:0)+Math.min(30,st.streak*2);
+  const calOk=(g==='optimal'||g==='fair');
+  const proOk=proteinRatio()>=.8;
+  const gain=30+(st.today.sport?25:0)+(calOk?20:0)+(proOk?15:0)+(st.today.creatine?10:0)+Math.min(30,st.streak*2);
   st.xp+=gain;
   let leveled=false;
   while(st.xp>=xpNeed(st.level)){st.xp-=xpNeed(st.level);st.level++;leveled=true;
     for(const k in st.stats)st.stats[k]=clamp(st.stats[k]+2,1,100);}
   st.today.synced=true;st.today.deltas=d;st.lastSync=st.today.date;
-  const calOk=(g==='optimal'||g==='fair');
-  pushHistory({date:st.today.date,cal:totalCal(),sport:st.today.sport,t:st.calTarget,d:d,xp:gain,
-    q:(st.today.sport&&calOk)?'good':(st.today.sport||calOk)?'part':'bad'});
+  const q=(st.today.sport&&calOk&&proOk)?'good':(st.today.sport||calOk||proOk)?'part':'bad';
+  pushHistory({date:st.today.date,cal:st.today.cal,protein:st.today.protein,sport:st.today.sport,
+    creatine:st.today.creatine,t:st.calTarget,pt:st.proteinTarget,d:d,xp:gain,q:q});
   save();
+  showView('home');
   const stage=$('#stage');stage.classList.remove('burst');void stage.offsetWidth;stage.classList.add('burst');
   let i=0;
   for(const k in d){if(d[k]!==0){const v=d[k];
@@ -956,11 +899,11 @@ function canUnlock(){return st.formMax<FORMS.length-1&&basePL()>=FORMS[st.formMa
 function openTfModal(idx){
   const f=FORMS[idx];
   $('#tfName').textContent=f.nm;
-  $('#tfJp').textContent=f.jp;
   $('#tfMult').textContent='POWER ×'+f.mult.toLocaleString();
   $('#tfDesc').textContent=f.desc;
   const tag=$('#tfTag');
   if(f.tag){tag.textContent=f.tag;tag.hidden=false;}else tag.hidden=true;
+  showView('home');
   $('#tfModal').hidden=false;
   $('#tfYes').onclick=()=>{$('#tfModal').hidden=true;doTransform(idx);};
   beep(660,.12,'triangle',.04);
@@ -1039,7 +982,6 @@ function paintStats(){
   $('#powerN').textContent=fmtPL(pl*f.mult);
   $('#plBase').textContent='BASE '+Math.round(pl).toLocaleString()+' ×'+f.mult.toLocaleString();
   $('#syncRate').textContent=Math.round(avg)+'%';
-  /* buff scaling: lean at 1, jacked at 100 (×form modifier) */
   const buff=clamp((avg-1)/74,0,1),fx=f.fx;
   const armS=clamp((0.72+0.5*buff)*fx,.6,1.8);
   $('#armL').style.transform=`scale(${armS.toFixed(3)})`;
@@ -1055,7 +997,8 @@ function paintStats(){
 function renderForm(){
   const f=FORMS[st.form];
   $('#formNm').textContent=f.nm;
-  $('#formJp').textContent=f.jp+' ─ FORM '+(st.form+1)+'/'+FORMS.length+(f.tag?' ─ '+f.tag:'');
+  $('#formSub').textContent='Form '+(st.form+1)+' / '+FORMS.length+(f.tag?' ─ '+f.tag:'');
+  $('#mForm').textContent=f.nm;
   $('#fPrev').disabled=st.form===0;
   $('#fNext').disabled=st.form>=st.formMax;
   const svg=$('#charaSvg'),stage=$('#stage');
@@ -1066,91 +1009,69 @@ function renderForm(){
     const nx=FORMS[st.formMax+1];
     if(basePL()>=nx.pl){ready.hidden=false;nfEl.textContent='⚡ THRESHOLD REACHED ─ '+nx.nm;}
     else{ready.hidden=true;nfEl.textContent='NEXT FORM: '+nx.nm+' @ BASE PL '+nx.pl.toLocaleString();}
-  }else{ready.hidden=true;nfEl.textContent='FINAL FORM ACHIEVED ─ 最終形態';}
+  }else{ready.hidden=true;nfEl.textContent='FINAL FORM ACHIEVED';}
 }
-function renderDeltas(){
-  for(const k of['vit','str','agi','foc']){
-    const el=$('#d-'+k),d=st.today.deltas;
-    if(d&&st.today.synced&&d[k]!==0){el.textContent=(d[k]>0?'+':'')+d[k];el.className='sDelta '+(d[k]>0?'up':'dn');}
-    else{el.textContent='';el.className='sDelta';}
+function renderMeta(){
+  $('#mLevel').textContent=st.level;
+  const need=xpNeed(st.level);
+  $('#xpFill').style.width=clamp(st.xp/need*100,0,100)+'%';
+  $('#xpTxt').textContent=st.xp+' / '+need+' XP';
+  $('#mStreak').textContent=st.streak;
+}
+function setSwitch(sel,on,locked){
+  const el=$(sel);el.classList.toggle('on',!!on);el.disabled=!!locked;
+  el.setAttribute('aria-checked',on?'true':'false');
+}
+function renderDaily(){
+  $('#dlDate').textContent=prettyDate(st.today.date);
+  const locked=st.today.synced;
+  const cal=$('#dlCal'),pro=$('#dlProtein');
+  if(document.activeElement!==cal)cal.value=st.today.cal||'';
+  if(document.activeElement!==pro)pro.value=st.today.protein||'';
+  cal.disabled=pro.disabled=locked;
+  if(document.activeElement!==$('#calTargetInput'))$('#calTargetInput').value=st.calTarget;
+  if(document.activeElement!==$('#proteinTargetInput'))$('#proteinTargetInput').value=st.proteinTarget;
+  $('#calTargetInput').disabled=$('#proteinTargetInput').disabled=locked;
+  $('#calHint').textContent='Target '+st.calTarget+' kcal';
+  $('#proHint').textContent='Target '+st.proteinTarget+' g';
+  setSwitch('#wkToggle',st.today.sport,locked);
+  setSwitch('#crToggle',st.today.creatine,locked);
+  const sy=$('#syncBtn');sy.disabled=locked;
+  sy.textContent=locked?'SYNCED ✔':'SYNC TO CHARACTER';
+  $('#syncNote').textContent=locked?'Day locked. Come back tomorrow to log again.':'Applies your day to the character. Once per day.';
+  const gp=$('#gradePreview');
+  if(locked){gp.textContent='';}
+  else{
+    const g=calGrade();
+    const gm={empty:'No calories entered yet',critical:'Calories very low',low:'Under calorie target',
+      optimal:'Calories on target ✦',fair:'Calories within range',over:'Calories over target'}[g];
+    const pr=proteinRatio();
+    const pm=st.today.protein?(pr>=.9?'protein on point':pr>=.6?'protein decent':'protein low'):'no protein yet';
+    gp.textContent=gm+' · '+pm;
   }
 }
-function renderXP(){
-  $('#lvl').textContent=st.level;
-  $('#xpFill').style.width=clamp(st.xp/xpNeed(st.level)*100,0,100)+'%';
-  $('#xpTxt').textContent=st.xp+' / '+xpNeed(st.level)+' XP';
-  $('#hdStreak').textContent=st.streak;
-  $('#streakN').textContent=st.streak;
-  $('#bestN').textContent=st.best;
-}
-function renderCal(){
-  const tot=totalCal(),g=calGrade(),ring=$('#calRing'),C=326.7;
-  $('#calTotal').textContent=tot;
-  $('#calTargetLbl').textContent='/ '+st.calTarget+' kcal';
-  $('#calTargetInput').value=st.calTarget;
-  ring.style.strokeDashoffset=C*(1-clamp(tot/st.calTarget,0,1));
-  const colors={empty:'#35e0ff',critical:'#ff4d5e',low:'#ffc94d',optimal:'#57ffc2',fair:'#35e0ff',over:'#ff4d5e'};
-  ring.style.stroke=colors[g];
-  const stat=$('#calStatus');
-  const map={empty:['AWAITING INPUT','idle'],critical:['CRITICAL LOW','bad'],low:['UNDER TARGET','warn'],
-    optimal:['OPTIMAL ✦','ok'],fair:['WITHIN RANGE','ok'],over:['OVERLOAD','bad']};
-  stat.textContent=map[g][0];stat.className='calStatus '+map[g][1];
-  const ul=$('#entryList');
-  if(st.today.entries.length===0){ul.innerHTML='<li class="empty">NO INTAKE LOGGED ─ 記録なし</li>';}
-  else{ul.innerHTML=st.today.entries.map((e,i)=>
-    `<li><b>${e.kcal} kcal</b><time>${e.t}</time>${st.today.synced?'':`<button data-del="${i}" aria-label="remove">✕</button>`}</li>`).join('');}
-}
-function renderOps(){
-  const sp=$('#sportBtn');
-  sp.classList.toggle('on',st.today.sport);
-  sp.innerHTML=st.today.sport
-    ?'TRAINING COMPLETE ✔<small>訓練完了 ─ STR/AGI ブースト</small>'
-    :'LOG TRAINING SESSION<small>タップして訓練を記録</small>';
-  sp.disabled=st.today.synced;
-  const sy=$('#syncBtn');
-  sy.disabled=st.today.synced;
-  sy.textContent=st.today.synced?'DAY SYNCED ✔':'SYNC DAY ▸▸';
-  $('#syncNote').textContent=st.today.synced
-    ?'NEXT SYNC AT MIDNIGHT ─ 明日また会おう'
-    :'SYNC ONCE PER DAY TO APPLY RESULTS';
-}
-function renderHist(){
-  const cells=[];const t=parseDay(todayStr());
-  for(let i=6;i>=0;i--){
-    const d=new Date(t);d.setDate(d.getDate()-i);
-    const ds=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
-    let q='';
-    const h=[...st.history].reverse().find(x=>x.date===ds);
-    if(h)q=h.q;
-    cells.push(`<div class="hCell ${q} ${i===0?'today':''}"><i></i>${WD[d.getDay()]}</div>`);
-  }
-  $('#hist').innerHTML=cells.join('');
-}
-function renderLog(){
-  const hist=[...st.history].reverse();
+function renderHistory(){
   const logged=st.history.filter(h=>h.q!=='miss');
-  const perfect=st.history.filter(h=>h.q==='good').length;
-  const trained=st.history.filter(h=>h.sport).length;
-  const avgIn=logged.length?Math.round(logged.reduce((a,h)=>a+(h.cal||0),0)/logged.length):0;
-  $('#logSummary').innerHTML=
-    `<div class="lsChip"><b>${logged.length}</b><span>DAYS SYNCED ─ 同期日数</span></div>`+
-    `<div class="lsChip pk"><b>${perfect}</b><span>PERFECT DAYS ─ 完璧</span></div>`+
-    `<div class="lsChip gn"><b>${trained}</b><span>TRAINING DAYS ─ 訓練</span></div>`+
-    `<div class="lsChip"><b>${avgIn||'─'}</b><span>AVG INTAKE KCAL</span></div>`+
-    `<div class="lsChip gd"><b>${st.best}</b><span>BEST STREAK ─ 最高連続</span></div>`+
-    `<div class="lsChip gd"><b style="font-size:13px">${FORMS[st.form].nm}</b><span>CURRENT FORM</span></div>`;
-  const rows=hist.map(h=>{
-    const wd=WD[parseDay(h.date).getDay()];
-    if(h.q==='miss')return`<tr class="rMiss"><td>${h.date}</td><td>${wd}</td><td>─</td><td>─</td><td>─</td><td><i class="dn">-2 ALL</i></td><td>─</td><td><span class="bq miss">MISSED</span></td></tr>`;
-    const t=h.t||st.calTarget,pct=Math.round((h.cal||0)/t*100);
-    const dTxt=h.d?['vit','str','agi','foc'].filter(k=>h.d[k]).map(k=>
-      `<i class="${h.d[k]>0?'up':'dn'}">${h.d[k]>0?'+':''}${h.d[k]}${k[0].toUpperCase()}</i>`).join(''):'─';
-    const badge={good:['PERFECT','good'],part:['PARTIAL','part'],bad:['POOR','bad']}[h.q]||['─',''];
-    return`<tr><td>${h.date}</td><td>${wd}</td><td>${h.cal} kcal</td><td>${pct}%</td><td>${h.sport?'✔':'─'}</td><td>${dTxt}</td><td class="xpc">${h.xp?'+'+h.xp:'─'}</td><td><span class="bq ${badge[1]}">${badge[0]}</span></td></tr>`;
+  const workouts=st.history.filter(h=>h.sport).length;
+  const creatines=st.history.filter(h=>h.creatine).length;
+  const avgP=logged.length?Math.round(logged.reduce((a,h)=>a+(h.protein||0),0)/logged.length):0;
+  $('#histSummary').innerHTML=
+    `<div class="hsChip"><b>${logged.length}</b><span>Days Logged</span></div>`+
+    `<div class="hsChip gn"><b>${workouts}</b><span>Workouts</span></div>`+
+    `<div class="hsChip pk"><b>${creatines}</b><span>Creatine Days</span></div>`+
+    `<div class="hsChip"><b>${avgP||'—'}</b><span>Avg Protein g</span></div>`+
+    `<div class="hsChip gd"><b>${st.best}</b><span>Best Streak</span></div>`;
+  const rows=[...st.history].reverse().map(h=>{
+    if(h.q==='miss')return`<tr class="rMiss"><td>${prettyDate(h.date)}</td><td>—</td><td>—</td><td class="no">✕</td><td class="no">✕</td><td><span class="bq miss">MISSED</span></td></tr>`;
+    const badge={good:['PERFECT','good'],part:['PARTIAL','part'],bad:['POOR','bad']}[h.q]||['—',''];
+    return`<tr><td>${prettyDate(h.date)}</td><td>${h.cal} kcal</td><td>${h.protein||0} g</td>`+
+      `<td class="${h.sport?'yes':'no'}">${h.sport?'✔':'✕'}</td>`+
+      `<td class="${h.creatine?'yes':'no'}">${h.creatine?'✔':'✕'}</td>`+
+      `<td><span class="bq ${badge[1]}">${badge[0]}</span></td></tr>`;
   });
-  $('#logBody').innerHTML=rows.join('')||`<tr><td colspan="8" class="emptyRow">NO RECORDS YET ─ 記録なし ─ SYNC YOUR FIRST DAY</td></tr>`;
+  $('#histBody').innerHTML=rows.join('')||`<tr><td colspan="6" class="emptyRow">No records yet ─ log your first day</td></tr>`;
 }
-function renderAll(){renderXP();renderCal();renderOps();renderHist();renderDeltas();renderForm();renderLog();paintStats();animateStats();}
+function renderAll(){renderForm();renderMeta();renderDaily();renderHistory();paintStats();animateStats();}
 
 /* ================= FX HELPERS ================= */
 function spawnFloat(txt,cls){
@@ -1161,33 +1082,35 @@ function spawnFloat(txt,cls){
   l.appendChild(el);setTimeout(()=>el.remove(),1800);
 }
 
-/* ================= EVENTS ================= */
-function addEntry(kcal){
-  if(st.today.synced)return;
-  kcal=Math.round(Number(kcal));
-  if(!kcal||kcal<=0||kcal>5000)return;
-  const n=new Date();
-  st.today.entries.push({kcal,t:String(n.getHours()).padStart(2,'0')+':'+String(n.getMinutes()).padStart(2,'0')});
-  save();renderCal();beep(980,.05,'square',.02);
+/* ================= VIEW SWITCHING ================= */
+function showView(v){
+  document.querySelectorAll('.view').forEach(s=>{s.hidden=s.dataset.view!==v;});
+  document.querySelectorAll('.navBtn').forEach(b=>b.classList.toggle('active',b.dataset.view===v));
+  $('#viewTitle').textContent=v==='home'?'HOME':v==='daily'?'DAILY LOG':'HISTORY';
+  if(v==='daily')renderDaily();
+  if(v==='history')renderHistory();
 }
-document.querySelectorAll('.chip').forEach(c=>c.addEventListener('click',()=>addEntry(c.dataset.kcal)));
-$('#calAdd').addEventListener('click',()=>{addEntry($('#calInput').value);$('#calInput').value='';});
-$('#calInput').addEventListener('keydown',e=>{if(e.key==='Enter'){addEntry($('#calInput').value);$('#calInput').value='';}});
-$('#entryList').addEventListener('click',e=>{
-  const b=e.target.closest('[data-del]');if(!b||st.today.synced)return;
-  st.today.entries.splice(Number(b.dataset.del),1);save();renderCal();
-});
-$('#calTargetInput').addEventListener('change',e=>{
-  st.calTarget=clamp(Math.round(Number(e.target.value)||2200),800,6000);save();renderCal();renderForm();
-});
-$('#sportBtn').addEventListener('click',()=>{
+document.querySelectorAll('.navBtn').forEach(b=>b.addEventListener('click',()=>{showView(b.dataset.view);beep(880,.05,'square',.02);}));
+
+/* ================= EVENTS ================= */
+$('#dlCal').addEventListener('input',e=>{if(st.today.synced)return;st.today.cal=clamp(Math.round(Number(e.target.value)||0),0,12000);save();$('#gradePreview')&&renderGradeOnly();});
+$('#dlProtein').addEventListener('input',e=>{if(st.today.synced)return;st.today.protein=clamp(Math.round(Number(e.target.value)||0),0,600);save();renderGradeOnly();});
+function renderGradeOnly(){
   if(st.today.synced)return;
-  st.today.sport=!st.today.sport;save();renderOps();
-  beep(st.today.sport?1320:440,.08,'triangle',.03);
-});
+  const g=calGrade();
+  const gm={empty:'No calories entered yet',critical:'Calories very low',low:'Under calorie target',
+    optimal:'Calories on target ✦',fair:'Calories within range',over:'Calories over target'}[g];
+  const pr=proteinRatio();
+  const pm=st.today.protein?(pr>=.9?'protein on point':pr>=.6?'protein decent':'protein low'):'no protein yet';
+  $('#gradePreview').textContent=gm+' · '+pm;
+}
+$('#calTargetInput').addEventListener('change',e=>{st.calTarget=clamp(Math.round(Number(e.target.value)||2200),800,8000);save();renderDaily();renderForm();});
+$('#proteinTargetInput').addEventListener('change',e=>{st.proteinTarget=clamp(Math.round(Number(e.target.value)||150),30,400);save();renderDaily();});
+$('#wkToggle').addEventListener('click',()=>{if(st.today.synced)return;st.today.sport=!st.today.sport;save();renderDaily();beep(st.today.sport?1320:440,.08,'triangle',.03);});
+$('#crToggle').addEventListener('click',()=>{if(st.today.synced)return;st.today.creatine=!st.today.creatine;save();renderDaily();beep(st.today.creatine?1200:440,.08,'triangle',.03);});
 $('#syncBtn').addEventListener('click',syncDay);
 $('#resetBtn').addEventListener('click',()=>{
-  if(confirm('Reboot save data? Your Saiyan, level, forms and history will be wiped.')){
+  if(confirm('Reset all save data? Your character, level, forms and history will be wiped.')){
     localStorage.removeItem(KEY);location.reload();
   }
 });
@@ -1196,25 +1119,9 @@ $('#tfNo').addEventListener('click',()=>{$('#tfModal').hidden=true;});
 $('#tfModal').addEventListener('click',e=>{if(e.target.id==='tfModal')$('#tfModal').hidden=true;});
 $('#fPrev').addEventListener('click',()=>switchForm(st.form-1));
 $('#fNext').addEventListener('click',()=>switchForm(st.form+1));
-document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
-  document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x===t));
-  const v=t.dataset.view;
-  $('#viewMain').style.display=v==='main'?'':'none';
-  $('#viewLog').hidden=v!=='log';
-  if(v==='log')renderLog();
-  beep(880,.05,'square',.02);
-}));
 
-/* ================= CLOCK + TICKER + BOOT ================= */
-function tickClock(){
-  const n=new Date();
-  $('#clock').textContent=[n.getHours(),n.getMinutes(),n.getSeconds()].map(x=>String(x).padStart(2,'0')).join(':');
-  $('#dateStr').textContent=n.getFullYear()+'.'+String(n.getMonth()+1).padStart(2,'0')+'.'+String(n.getDate()).padStart(2,'0');
-}
-setInterval(tickClock,1000);tickClock();
+/* ================= BOOT ================= */
 setInterval(()=>{if(st.today.date!==todayStr()){rollover();renderAll();}},30000);
-const tick='▸ REACH POWER THRESHOLDS TO UNLOCK <b>17 TRANSFORMATIONS</b> ─ BASE TO <em>BEAST</em> ▸ MAINTAIN CALORIC EQUILIBRIUM <em>±10%</em> FOR VIT ▸ DAILY TRAINING RAISES <b>STR / AGI</b> ▸ MISSED DAYS DECAY ALL STATS <b>-2</b> ▸ 修行は裏切らない ─ TRAINING NEVER BETRAYS ▸ ';
-$('#tickerTxt').innerHTML=tick+tick;
 rollover();
 renderAll();
 paintStats();
