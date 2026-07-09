@@ -267,6 +267,16 @@ header{position:relative;z-index:5;display:flex;align-items:center;justify-conte
   font-family:var(--fb);font-weight:600;font-size:18px;padding:11px 14px;outline:none;width:100%}
 .field input[type=number]:focus{border-color:var(--pink)}
 .field input:disabled{opacity:.55;cursor:not-allowed}
+.wkGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:2px}
+.wkOpt{display:flex;flex-direction:column;align-items:center;gap:5px;padding:11px 4px;border-radius:11px;
+  border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--dim);cursor:pointer;transition:.15s;
+  font-family:var(--fd);font-size:10px;letter-spacing:.5px;text-transform:uppercase}
+.wkOpt .wi{font-size:20px;line-height:1;filter:grayscale(.4) opacity(.8);transition:.15s}
+.wkOpt:hover:not(:disabled){border-color:var(--cyan);color:var(--text)}
+.wkOpt.sel{background:linear-gradient(160deg,rgba(53,224,255,.24),rgba(53,224,255,.05));border-color:var(--cyan);
+  color:#fff;box-shadow:0 0 16px rgba(53,224,255,.25)}
+.wkOpt.sel .wi{filter:none;transform:scale(1.12)}
+.wkOpt:disabled{opacity:.45;cursor:not-allowed}
 input[type=number]{-moz-appearance:textfield;appearance:textfield}
 input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
 .dateRow{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border:1px dashed rgba(53,224,255,.35);background:rgba(53,224,255,.04)}
@@ -315,6 +325,7 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 .histTable tbody tr:hover{background:rgba(53,224,255,.05)}
 .histTable tr.rMiss td{color:rgba(255,77,94,.5)}
 .yes{color:var(--good);font-weight:700} .no{color:var(--dim)}
+.wkCell{color:var(--text);font-weight:600}
 .bq{font-family:var(--fd);font-size:9px;letter-spacing:1px;padding:4px 10px;clip-path:polygon(5px 0,100% 0,calc(100% - 5px) 100%,0 100%)}
 .bq.good{color:var(--bg);background:linear-gradient(120deg,var(--pink),#ff5ea6);box-shadow:0 0 10px rgba(255,46,136,.4)}
 .bq.part{color:var(--bg);background:linear-gradient(120deg,var(--amber),#ff9d3d)}
@@ -775,10 +786,16 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
         <span class="hint" id="proHint">Target 150 g</span>
       </div>
     </div>
+    <div class="field">
+      <label>WORKOUT TYPE</label>
+      <div class="wkGrid" id="wkGrid"></div>
+      <span class="hint" id="wkHint">Each type trains different stats</span>
+    </div>
     <div class="twoCol togWrap">
-      <div class="toggleRow">
-        <div class="tl"><b>WORKOUT</b><span>Did you train today?</span></div>
-        <button class="switch" id="wkToggle" role="switch" aria-label="Workout completed"></button>
+      <div class="field">
+        <label>SLEEP (hours)</label>
+        <input type="number" id="dlSleep" min="0" max="16" step="0.5" placeholder="e.g. 8">
+        <span class="hint" id="sleepHint">Target 8 h</span>
       </div>
       <div class="toggleRow">
         <div class="tl"><b>CREATINE</b><span>Taken today?</span></div>
@@ -811,7 +828,7 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
     <div class="tableWrap">
       <table class="histTable">
         <thead><tr>
-          <th>Date</th><th>Calories</th><th>Protein</th><th>Workout</th><th>Creatine</th><th>Result</th>
+          <th>Date</th><th>Calories</th><th>Protein</th><th>Workout</th><th>Sleep</th><th>Creatine</th><th>Result</th>
         </tr></thead>
         <tbody id="histBody"></tbody>
       </table>
@@ -881,7 +898,30 @@ const FORMS=[
 {id:'ue',     nm:'ULTRA EGO',           img:'img/ue.jpg',      pl:20500, mult:2000000, fx:1.15,tag:'VEGETA ONLY',        desc:'God of Destruction technique. Power grows with damage taken.'}
 ];
 
-function freshDay(date){return{date,cal:0,protein:0,sport:false,creatine:false,synced:false,deltas:null};}
+/* ================= WORKOUTS ================= */
+const WORKOUTS=[
+  {id:'none',    nm:'Rest',    icon:'🛌', d:{str:-2,agi:-1}},
+  {id:'weights', nm:'Weights', icon:'🏋️', d:{str:5,vit:1}},
+  {id:'boxing',  nm:'Boxing',  icon:'🥊', d:{str:3,agi:3,foc:2}},
+  {id:'cali',    nm:'Calisth.',icon:'🤸', d:{str:4,agi:2,vit:1}},
+  {id:'running', nm:'Running', icon:'🏃', d:{agi:4,vit:3}},
+  {id:'cycling', nm:'Bicycle', icon:'🚴', d:{agi:3,vit:3,str:1}},
+  {id:'other',   nm:'Other',   icon:'✦',  d:{str:2,agi:2,vit:1}}
+];
+function workoutDef(){return WORKOUTS.find(w=>w.id===(st.today.workout||'none'))||WORKOUTS[0];}
+const SLEEP_TARGET=8;
+function sleepGrade(){
+  const s=st.today.sleep;
+  if(!s)return'none';
+  if(s>=7.5&&s<=9)return'optimal';
+  if(s>=6.5&&s<7.5)return'good';
+  if(s>9&&s<=10.5)return'much';
+  if(s>=5&&s<6.5)return'low';
+  return'poor';
+}
+const SLEEP_DELTA={optimal:{vit:3,foc:2},good:{vit:1,foc:1},much:{vit:1},low:{foc:-1},poor:{vit:-2,foc:-2,str:-1},none:{}};
+
+function freshDay(date){return{date,cal:0,protein:0,workout:'none',sleep:0,creatine:false,synced:false,deltas:null};}
 function defaultState(){return{
   level:1,xp:0,
   stats:{vit:1,str:1,agi:1,foc:1},
@@ -892,7 +932,9 @@ function defaultState(){return{
 let st=load();
 function load(){
   try{const raw=localStorage.getItem(KEY);if(raw){const s=JSON.parse(raw);
-    if(s&&s.stats){s.form=Math.min(s.form||0,FORMS.length-1);s.formMax=Math.min(s.formMax||0,FORMS.length-1);s.proteinTarget=s.proteinTarget||150;return s;}}}catch(e){}
+    if(s&&s.stats){s.form=Math.min(s.form||0,FORMS.length-1);s.formMax=Math.min(s.formMax||0,FORMS.length-1);s.proteinTarget=s.proteinTarget||150;
+      if(s.today){if(s.today.workout===undefined)s.today.workout=s.today.sport?'other':'none';if(s.today.sleep===undefined)s.today.sleep=0;}
+      return s;}}}catch(e){}
   return defaultState();
 }
 function save(){try{localStorage.setItem(KEY,JSON.stringify(st));}catch(e){}}
@@ -941,8 +983,9 @@ function computeDeltas(){
   else if(pr>=.6){d.str+=2;}
   else if(pr>0){d.str+=1;}
   else{d.str-=1;}
-  if(st.today.sport){d.str+=3;d.agi+=3;d.vit+=1;}else{d.str-=2;d.agi-=1;}
+  const w=workoutDef();for(const k in w.d)d[k]=(d[k]||0)+w.d[k];
   if(st.today.creatine){d.str+=2;d.foc+=1;}
+  const sd=SLEEP_DELTA[sleepGrade()];for(const k in sd)d[k]=(d[k]||0)+sd[k];
   d.foc+=Math.min(3,1+Math.floor((st.streak+1)/4));
   return d;
 }
@@ -959,7 +1002,8 @@ function fmtPL(n){
 function syncDay(){
   if(st.today.synced)return;
   const g=calGrade();
-  if(g==='empty'&&!st.today.sport&&!st.today.protein&&!st.today.creatine){
+  const trained=workoutDef().id!=='none';
+  if(g==='empty'&&!trained&&!st.today.protein&&!st.today.creatine&&!st.today.sleep){
     if(!confirm('Nothing logged today — syncing an empty day will damage your character. Sync anyway?'))return;
   }
   const d=computeDeltas();
@@ -967,15 +1011,17 @@ function syncDay(){
   st.streak++;st.best=Math.max(st.best,st.streak);
   const calOk=(g==='optimal'||g==='fair');
   const proOk=proteinRatio()>=.8;
-  const gain=30+(st.today.sport?25:0)+(calOk?20:0)+(proOk?15:0)+(st.today.creatine?10:0)+Math.min(30,st.streak*2);
+  const sg=sleepGrade();
+  const sleepBonus=sg==='optimal'?15:sg==='good'?8:0;
+  const gain=30+(trained?25:0)+(calOk?20:0)+(proOk?15:0)+(st.today.creatine?10:0)+sleepBonus+Math.min(30,st.streak*2);
   st.xp+=gain;
   let leveled=false;
   while(st.xp>=xpNeed(st.level)){st.xp-=xpNeed(st.level);st.level++;leveled=true;
     for(const k in st.stats)st.stats[k]=clamp(st.stats[k]+2,1,100);}
   st.today.synced=true;st.today.deltas=d;st.lastSync=st.today.date;
-  const q=(st.today.sport&&calOk&&proOk)?'good':(st.today.sport||calOk||proOk)?'part':'bad';
-  pushHistory({date:st.today.date,cal:st.today.cal,protein:st.today.protein,sport:st.today.sport,
-    creatine:st.today.creatine,t:st.calTarget,pt:st.proteinTarget,d:d,xp:gain,q:q});
+  const q=(trained&&calOk&&proOk)?'good':(trained||calOk||proOk)?'part':'bad';
+  pushHistory({date:st.today.date,cal:st.today.cal,protein:st.today.protein,workout:st.today.workout,sport:trained,
+    sleep:st.today.sleep,creatine:st.today.creatine,t:st.calTarget,pt:st.proteinTarget,d:d,xp:gain,q:q});
   save();
   showView('home');
   const stage=$('#stage');stage.classList.remove('burst');void stage.offsetWidth;stage.classList.add('burst');
@@ -1140,42 +1186,66 @@ function renderDaily(){
   $('#calTargetInput').disabled=$('#proteinTargetInput').disabled=locked;
   $('#calHint').textContent='Target '+st.calTarget+' kcal';
   $('#proHint').textContent='Target '+st.proteinTarget+' g';
-  setSwitch('#wkToggle',st.today.sport,locked);
+  const wg=$('#wkGrid');
+  if(!wg.dataset.built){
+    wg.innerHTML=WORKOUTS.map(w=>`<button class="wkOpt" data-w="${w.id}"><span class="wi">${w.icon}</span>${w.nm}</button>`).join('');
+    wg.dataset.built='1';
+  }
+  const cur=st.today.workout||'none';
+  wg.querySelectorAll('.wkOpt').forEach(b=>{b.classList.toggle('sel',b.dataset.w===cur);b.disabled=locked;});
+  const wd=workoutDef();
+  $('#wkHint').textContent=wd.id==='none'?'Rest day — no training bonus':'Trains '+Object.keys(wd.d).map(k=>k.toUpperCase()).join(' + ');
+  const sl=$('#dlSleep');
+  if(document.activeElement!==sl)sl.value=st.today.sleep||'';
+  sl.disabled=locked;
+  const sg0=sleepGrade();
+  $('#sleepHint').textContent=st.today.sleep?({optimal:'Perfect rest ✦',good:'Solid rest',much:'A bit much',low:'Under-rested',poor:'Too little sleep',none:''}[sg0]):'Target 8 h';
   setSwitch('#crToggle',st.today.creatine,locked);
   const sy=$('#syncBtn');sy.disabled=locked;
   sy.textContent=locked?'SYNCED ✔':'SYNC TO CHARACTER';
   $('#syncNote').textContent=locked?'Day locked. Come back tomorrow to log again.':'Applies your day to the character. Once per day.';
   const gp=$('#gradePreview');
-  if(locked){gp.textContent='';}
-  else{
-    const g=calGrade();
-    const gm={empty:'No calories entered yet',critical:'Calories very low',low:'Under calorie target',
-      optimal:'Calories on target ✦',fair:'Calories within range',over:'Calories over target'}[g];
-    const pr=proteinRatio();
-    const pm=st.today.protein?(pr>=.9?'protein on point':pr>=.6?'protein decent':'protein low'):'no protein yet';
-    gp.textContent=gm+' · '+pm;
-  }
+  gp.textContent=locked?'':gradeText();
+}
+function gradeText(){
+  const g=calGrade();
+  const gm={empty:'No calories yet',critical:'Calories very low',low:'Under calorie target',
+    optimal:'Calories on target ✦',fair:'Calories within range',over:'Calories over target'}[g];
+  const pr=proteinRatio();
+  const pm=st.today.protein?(pr>=.9?'protein on point':pr>=.6?'protein decent':'protein low'):'no protein';
+  const wd=workoutDef();
+  const wm=wd.id==='none'?'rest day':wd.nm.toLowerCase().replace('.','')+' session';
+  const sg=sleepGrade();
+  const sm=st.today.sleep?({optimal:'great sleep',good:'ok sleep',much:'overslept',low:'low sleep',poor:'poor sleep'}[sg]):'no sleep logged';
+  return gm+' · '+pm+' · '+wm+' · '+sm;
 }
 function renderHistory(){
   const logged=st.history.filter(h=>h.q!=='miss');
   const workouts=st.history.filter(h=>h.sport).length;
   const creatines=st.history.filter(h=>h.creatine).length;
   const avgP=logged.length?Math.round(logged.reduce((a,h)=>a+(h.protein||0),0)/logged.length):0;
+  const slept=logged.filter(h=>h.sleep>0);
+  const avgS=slept.length?(slept.reduce((a,h)=>a+h.sleep,0)/slept.length).toFixed(1):0;
+  const wkName=id=>{const w=WORKOUTS.find(x=>x.id===id);return w?w.icon+' '+w.nm:null;};
   $('#histSummary').innerHTML=
     `<div class="hsChip"><b>${logged.length}</b><span>Days Logged</span></div>`+
     `<div class="hsChip gn"><b>${workouts}</b><span>Workouts</span></div>`+
+    `<div class="hsChip cy"><b>${avgS||'—'}</b><span>Avg Sleep h</span></div>`+
     `<div class="hsChip pk"><b>${creatines}</b><span>Creatine Days</span></div>`+
     `<div class="hsChip"><b>${avgP||'—'}</b><span>Avg Protein g</span></div>`+
     `<div class="hsChip gd"><b>${st.best}</b><span>Best Streak</span></div>`;
   const rows=[...st.history].reverse().map(h=>{
-    if(h.q==='miss')return`<tr class="rMiss"><td>${prettyDate(h.date)}</td><td>—</td><td>—</td><td class="no">✕</td><td class="no">✕</td><td><span class="bq miss">MISSED</span></td></tr>`;
+    if(h.q==='miss')return`<tr class="rMiss"><td>${prettyDate(h.date)}</td><td>—</td><td>—</td><td>—</td><td>—</td><td class="no">✕</td><td><span class="bq miss">MISSED</span></td></tr>`;
     const badge={good:['PERFECT','good'],part:['PARTIAL','part'],bad:['POOR','bad']}[h.q]||['—',''];
+    const wk=h.workout?wkName(h.workout):(h.sport?'✦ Other':null);
+    const wkCell=wk?`<td class="wkCell">${wk}</td>`:`<td class="no">✕</td>`;
+    const slCell=h.sleep>0?`<td>${h.sleep} h</td>`:`<td class="no">—</td>`;
     return`<tr><td>${prettyDate(h.date)}</td><td>${h.cal} kcal</td><td>${h.protein||0} g</td>`+
-      `<td class="${h.sport?'yes':'no'}">${h.sport?'✔':'✕'}</td>`+
+      wkCell+slCell+
       `<td class="${h.creatine?'yes':'no'}">${h.creatine?'✔':'✕'}</td>`+
       `<td><span class="bq ${badge[1]}">${badge[0]}</span></td></tr>`;
   });
-  $('#histBody').innerHTML=rows.join('')||`<tr><td colspan="6" class="emptyRow">No records yet ─ log your first day</td></tr>`;
+  $('#histBody').innerHTML=rows.join('')||`<tr><td colspan="7" class="emptyRow">No records yet ─ log your first day</td></tr>`;
 }
 function renderAll(){renderForm();renderMeta();renderDaily();renderHistory();paintStats();animateStats();}
 
@@ -1203,16 +1273,14 @@ $('#dlCal').addEventListener('input',e=>{if(st.today.synced)return;st.today.cal=
 $('#dlProtein').addEventListener('input',e=>{if(st.today.synced)return;st.today.protein=clamp(Math.round(Number(e.target.value)||0),0,600);save();renderGradeOnly();});
 function renderGradeOnly(){
   if(st.today.synced)return;
-  const g=calGrade();
-  const gm={empty:'No calories entered yet',critical:'Calories very low',low:'Under calorie target',
-    optimal:'Calories on target ✦',fair:'Calories within range',over:'Calories over target'}[g];
-  const pr=proteinRatio();
-  const pm=st.today.protein?(pr>=.9?'protein on point':pr>=.6?'protein decent':'protein low'):'no protein yet';
-  $('#gradePreview').textContent=gm+' · '+pm;
+  $('#gradePreview').textContent=gradeText();
 }
+$('#dlSleep').addEventListener('input',e=>{if(st.today.synced)return;st.today.sleep=clamp(Number(e.target.value)||0,0,16);save();renderGradeOnly();
+  const sg=sleepGrade();$('#sleepHint').textContent=st.today.sleep?({optimal:'Perfect rest ✦',good:'Solid rest',much:'A bit much',low:'Under-rested',poor:'Too little sleep',none:''}[sg]):'Target 8 h';});
+$('#wkGrid').addEventListener('click',e=>{const b=e.target.closest('.wkOpt');if(!b||st.today.synced)return;
+  st.today.workout=b.dataset.w;save();renderDaily();beep(b.dataset.w==='none'?440:1100,.08,'triangle',.03);});
 $('#calTargetInput').addEventListener('change',e=>{st.calTarget=clamp(Math.round(Number(e.target.value)||2200),800,8000);save();renderDaily();renderForm();});
 $('#proteinTargetInput').addEventListener('change',e=>{st.proteinTarget=clamp(Math.round(Number(e.target.value)||150),30,400);save();renderDaily();});
-$('#wkToggle').addEventListener('click',()=>{if(st.today.synced)return;st.today.sport=!st.today.sport;save();renderDaily();beep(st.today.sport?1320:440,.08,'triangle',.03);});
 $('#crToggle').addEventListener('click',()=>{if(st.today.synced)return;st.today.creatine=!st.today.creatine;save();renderDaily();beep(st.today.creatine?1200:440,.08,'triangle',.03);});
 $('#syncBtn').addEventListener('click',syncDay);
 $('#resetBtn').addEventListener('click',()=>{
