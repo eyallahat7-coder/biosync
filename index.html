@@ -454,6 +454,49 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 .brXp{font-family:var(--fd);color:var(--cyan);margin-top:14px;font-size:14px}
 .brBtns{display:flex;gap:10px;justify-content:center;margin-top:24px}
 
+/* ---- battle: number readouts on bars ---- */
+.barRow{display:flex;align-items:center;gap:8px;margin-top:6px}
+.barRow .hpbar,.barRow .kibar{flex:1;margin-top:0}
+.barNum{font-family:var(--fj);font-size:11px;color:var(--dim);letter-spacing:.3px;text-align:right;
+  min-width:78px;flex:0 0 auto;font-variant-numeric:tabular-nums}
+.barNum.ki{color:var(--gold);min-width:52px}
+
+/* ---- battle: climbing path ---- */
+.regionBar{display:flex;align-items:center;justify-content:space-between;gap:12px;position:relative;
+  border:1px solid var(--line);background:rgba(13,17,38,.7);border-radius:6px;padding:12px 16px;margin-bottom:8px}
+.regionBar::before{content:"";position:absolute;top:-1px;left:-1px;width:12px;height:12px;border-top:2px solid var(--pink);border-left:2px solid var(--pink)}
+.rbName{font-family:var(--fd);font-size:14px;color:var(--pink2);letter-spacing:1px}
+.rbSaga{font-family:var(--fj);font-size:10px;color:var(--dim);letter-spacing:1px;text-transform:uppercase;margin-top:3px}
+.rbProg{font-family:var(--fd);font-size:13px;color:var(--cyan);white-space:nowrap}
+.pathWrap{position:relative;width:100%;margin:6px auto 12px}
+.pathSvg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+.pathSvg path{fill:none;stroke:#4fc9ff;stroke-width:3;stroke-linecap:round;stroke-dasharray:0.5 12;
+  filter:drop-shadow(0 0 5px rgba(53,224,255,.7));opacity:.8}
+.pNode{position:absolute;transform:translate(-50%,-50%);width:62px;height:62px;padding:0;border:none;background:none;cursor:pointer}
+.pNode[disabled]{cursor:not-allowed}
+.pArt{position:absolute;inset:0;border-radius:50%;overflow:hidden;border:2px solid var(--line);
+  background:linear-gradient(160deg,#161a30,#0b0e1c);display:flex;align-items:center;justify-content:center;transition:.2s}
+.pArt img{width:100%;height:100%;object-fit:cover}
+.pArt.ph::before{content:"";position:absolute;inset:26% 30% 18%;background:rgba(255,59,78,.28);border-radius:50% 50% 40% 40%}
+.pArt.ph::after{content:"?";position:relative;font-family:var(--fd);font-size:19px;color:rgba(255,90,110,.6)}
+.pLabel{position:absolute;top:66px;left:50%;transform:translateX(-50%);white-space:nowrap;text-align:center;line-height:1.12}
+.pLabel b{display:block;font-family:var(--fd);font-size:10px;font-weight:400;color:var(--text);letter-spacing:.4px}
+.pLabel i{font-family:var(--fj);font-style:normal;font-size:9.5px;color:var(--gold);letter-spacing:.4px}
+.pNode.boss{width:80px;height:80px}
+.pNode.boss .pLabel{top:84px}
+.pNode.boss .pArt{border-color:var(--redline);box-shadow:0 0 16px rgba(255,59,78,.35)}
+.pNode.done .pArt{border-color:var(--good);box-shadow:0 0 12px rgba(87,255,194,.3)}
+.pNode.locked .pArt{filter:grayscale(1) brightness(.42);border-color:rgba(125,135,173,.3)}
+.pNode.locked .pLabel b,.pNode.locked .pLabel i{color:var(--faint)}
+.pNode.current .pArt{border-color:var(--gold);box-shadow:0 0 22px rgba(255,215,94,.6);animation:npulse 1.5s infinite}
+@keyframes npulse{0%,100%{box-shadow:0 0 14px rgba(255,215,94,.4)}50%{box-shadow:0 0 30px rgba(255,215,94,.85)}}
+.pBadge{position:absolute;top:-3px;right:-3px;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;z-index:3}
+.pBadge.done{background:var(--good);color:#04140c}
+.pBadge.lock{background:rgba(10,14,28,.92);border:1px solid var(--line);font-size:11px}
+.pTag{position:absolute;top:-15px;left:50%;transform:translateX(-50%);font-family:var(--fd);font-size:8px;letter-spacing:1px;
+  background:var(--gold);color:#1a1400;padding:2px 8px;border-radius:6px;z-index:4;box-shadow:0 0 12px rgba(255,215,94,.6)}
+@media(prefers-reduced-motion:reduce){.pNode.current .pArt{animation:none}}
+
 /* ====== RESPONSIVE ====== */
 @media(max-width:820px){
   .homeWrap{grid-template-columns:1fr}
@@ -932,10 +975,11 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 <!-- ============================= BATTLE ============================= -->
 <section class="view" id="viewBattle" data-view="battle" hidden>
   <div id="battleLadder">
-    <div class="panel">
-      <div class="pHead"><h2>BATTLE</h2><span id="battleSub"></span></div>
-      <div class="ladderWrap" id="ladderWrap"></div>
+    <div class="regionBar">
+      <div><div class="rbName" id="regionName"></div><div class="rbSaga" id="regionSaga"></div></div>
+      <div class="rbProg" id="battleSub"></div>
     </div>
+    <div class="pathWrap" id="pathWrap"></div>
   </div>
   <div id="battleFight" hidden>
     <div class="arena" id="arena">
@@ -944,7 +988,7 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
         <div class="combatInfo">
           <div class="cName" id="foeName"></div>
           <div class="cSub" id="foeTier"></div>
-          <div class="hpbar foe"><i id="foeHp"></i></div>
+          <div class="barRow"><div class="hpbar foe"><i id="foeHp"></i></div><span class="barNum" id="foeHpNum"></span></div>
         </div>
       </div>
       <div class="clash"><div id="battleFlash"></div><div id="battleFloat"></div></div>
@@ -953,8 +997,8 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
         <div class="combatInfo">
           <div class="cName">YOU</div>
           <div class="meForm" id="meForm"></div>
-          <div class="hpbar me"><i id="meHp"></i></div>
-          <div class="kibar"><i id="meKi"></i></div>
+          <div class="barRow"><div class="hpbar me"><i id="meHp"></i></div><span class="barNum" id="meHpNum"></span></div>
+          <div class="barRow"><div class="kibar"><i id="meKi"></i></div><span class="barNum ki" id="meKiNum"></span></div>
         </div>
       </div>
       <div class="log" id="battleLog"></div>
@@ -1128,6 +1172,7 @@ function basePL(){
   return Math.round((s.vit*1.2+s.str*1.4+s.agi*1.1+s.foc*1.3)*(1+st.level*.2)*7);
 }
 function fmtPL(n){
+  if(n>=1e12)return(n/1e12).toFixed(2)+'T';
   if(n>=1e9)return(n/1e9).toFixed(2)+'B';
   if(n>=1e6)return(n/1e6).toFixed(2)+'M';
   if(n>=1e5)return Math.round(n/1e3)+'K';
@@ -1411,19 +1456,19 @@ const E_REFL=[3,6,9,13,17,21,25,30,34,38,42,46,50];
 const ROLE={grunt:{hp:1.4,atk:0.9,def:1.0,spd:0.95},elite:{hp:1.7,atk:1.05,def:1.1,spd:1.05},boss:{hp:2.2,atk:1.25,def:1.2,spd:1.0}};
 function defaultBattle(){return{cleared:[],tierUnlocked:0,wins:0,losses:0,trophies:{}};}
 const ENEMIES=[
-  {s:'raditz',n:'Raditz',r:'grunt',t:0},{s:'saibaman',n:'Saibaman Swarm',r:'elite',t:0},{s:'nappa',n:'Nappa',r:'boss',t:0},
-  {s:'vegeta-scouter',n:'Vegeta',r:'grunt',t:1},{s:'dodoria',n:'Dodoria',r:'elite',t:1},{s:'zarbon',n:'Zarbon',r:'boss',t:1},
-  {s:'recoome',n:'Recoome',r:'grunt',t:2},{s:'ginyu',n:'Captain Ginyu',r:'elite',t:2},{s:'frieza-final',n:'Frieza',r:'boss',t:2},
-  {s:'android-19',n:'Android 19',r:'grunt',t:3,tr:['kidrain']},{s:'android-20',n:'Dr. Gero',r:'elite',t:3,tr:['lifesteal']},{s:'android-17',n:'Android 17',r:'boss',t:3},
-  {s:'cell-imperfect',n:'Imperfect Cell',r:'grunt',t:4,tr:['lifesteal']},{s:'cell-semi',n:'Semi-Perfect Cell',r:'elite',t:4,tr:['regen']},{s:'cell-perfect',n:'Perfect Cell',r:'boss',t:4},
-  {s:'dabura',n:'Dabura',r:'grunt',t:5},{s:'majin-vegeta',n:'Majin Vegeta',r:'elite',t:5},{s:'buu-fat',n:'Majin Buu',r:'boss',t:5,tr:['regen']},
-  {s:'buu-super',n:'Super Buu',r:'grunt',t:6},{s:'buu-kid',n:'Kid Buu',r:'elite',t:6},{s:'broly-lssj',n:'Broly (LSSJ)',r:'boss',t:6,tr:['rampage']},
-  {s:'baby-vegeta',n:'Baby Vegeta',r:'grunt',t:7,tr:['lifesteal']},{s:'super-17',n:'Super Android 17',r:'elite',t:7},{s:'omega-shenron',n:'Omega Shenron',r:'boss',t:7,tr:['revive']},
-  {s:'beerus',n:'Beerus',r:'grunt',t:8},{s:'frieza-gold',n:'Golden Frieza',r:'elite',t:8},{s:'hit',n:'Hit',r:'boss',t:8,tr:['swift']},
-  {s:'goku-black',n:'Goku Black',r:'grunt',t:9},{s:'fused-zamasu',n:'Fused Zamasu',r:'elite',t:9,tr:['revive']},{s:'broly-dbs',n:'Broly (DBS)',r:'boss',t:9,tr:['rampage']},
-  {s:'dyspo',n:'Dyspo',r:'grunt',t:10,tr:['swift']},{s:'kefla',n:'Kefla',r:'elite',t:10},{s:'jiren',n:'Jiren',r:'boss',t:10},
-  {s:'moro',n:'Moro',r:'grunt',t:11,tr:['lifesteal']},{s:'granolah',n:'Granolah',r:'elite',t:11},{s:'gas',n:'Gas',r:'boss',t:11,tr:['rampage']},
-  {s:'cell-max',n:'Cell Max',r:'grunt',t:12},{s:'gas-ultimate',n:'Gas (Ultimate)',r:'elite',t:12,tr:['rampage']},{s:'black-frieza',n:'Black Frieza',r:'boss',t:12,tr:['rampage']}
+  {s:'raditz',n:'Raditz',r:'grunt',t:0,pl:1200},{s:'saibaman',n:'Saibaman Swarm',r:'elite',t:0,pl:1800},{s:'nappa',n:'Nappa',r:'boss',t:0,pl:4000},
+  {s:'vegeta-scouter',n:'Vegeta',r:'grunt',t:1,pl:12000},{s:'dodoria',n:'Dodoria',r:'elite',t:1,pl:18000},{s:'zarbon',n:'Zarbon',r:'boss',t:1,pl:30000},
+  {s:'recoome',n:'Recoome',r:'grunt',t:2,pl:90000},{s:'ginyu',n:'Captain Ginyu',r:'elite',t:2,pl:180000},{s:'frieza-final',n:'Frieza',r:'boss',t:2,pl:530000},
+  {s:'android-19',n:'Android 19',r:'grunt',t:3,pl:1200000,tr:['kidrain']},{s:'android-20',n:'Dr. Gero',r:'elite',t:3,pl:1800000,tr:['lifesteal']},{s:'android-17',n:'Android 17',r:'boss',t:3,pl:3000000},
+  {s:'cell-imperfect',n:'Imperfect Cell',r:'grunt',t:4,pl:6000000,tr:['lifesteal']},{s:'cell-semi',n:'Semi-Perfect Cell',r:'elite',t:4,pl:9000000,tr:['regen']},{s:'cell-perfect',n:'Perfect Cell',r:'boss',t:4,pl:14000000},
+  {s:'dabura',n:'Dabura',r:'grunt',t:5,pl:28000000},{s:'majin-vegeta',n:'Majin Vegeta',r:'elite',t:5,pl:42000000},{s:'buu-fat',n:'Majin Buu',r:'boss',t:5,pl:70000000,tr:['regen']},
+  {s:'buu-super',n:'Super Buu',r:'grunt',t:6,pl:130000000},{s:'buu-kid',n:'Kid Buu',r:'elite',t:6,pl:200000000},{s:'broly-lssj',n:'Broly (LSSJ)',r:'boss',t:6,pl:320000000,tr:['rampage']},
+  {s:'baby-vegeta',n:'Baby Vegeta',r:'grunt',t:7,pl:600000000,tr:['lifesteal']},{s:'super-17',n:'Super Android 17',r:'elite',t:7,pl:900000000},{s:'omega-shenron',n:'Omega Shenron',r:'boss',t:7,pl:1400000000,tr:['revive']},
+  {s:'beerus',n:'Beerus',r:'grunt',t:8,pl:3000000000},{s:'frieza-gold',n:'Golden Frieza',r:'elite',t:8,pl:5000000000},{s:'hit',n:'Hit',r:'boss',t:8,pl:8000000000,tr:['swift']},
+  {s:'goku-black',n:'Goku Black',r:'grunt',t:9,pl:18000000000},{s:'fused-zamasu',n:'Fused Zamasu',r:'elite',t:9,pl:30000000000,tr:['revive']},{s:'broly-dbs',n:'Broly (DBS)',r:'boss',t:9,pl:48000000000,tr:['rampage']},
+  {s:'dyspo',n:'Dyspo',r:'grunt',t:10,pl:90000000000,tr:['swift']},{s:'kefla',n:'Kefla',r:'elite',t:10,pl:140000000000},{s:'jiren',n:'Jiren',r:'boss',t:10,pl:220000000000},
+  {s:'moro',n:'Moro',r:'grunt',t:11,pl:500000000000,tr:['lifesteal']},{s:'granolah',n:'Granolah',r:'elite',t:11,pl:800000000000},{s:'gas',n:'Gas',r:'boss',t:11,pl:1300000000000,tr:['rampage']},
+  {s:'cell-max',n:'Cell Max',r:'grunt',t:12,pl:3000000000000},{s:'gas-ultimate',n:'Gas (Ultimate)',r:'elite',t:12,pl:6000000000000,tr:['rampage']},{s:'black-frieza',n:'Black Frieza',r:'boss',t:12,pl:12000000000000,tr:['rampage']}
 ];
 let fight=null;
 function hasTrait(t){return fight&&fight.en.tr&&fight.en.tr.includes(t);}
@@ -1461,19 +1506,24 @@ function mvBtn(id,label,ki,disabled,hidden){return hidden?'':`<button class="mvB
 function renderFight(){
   const f=fight;if(!f)return;
   $('#foeName').textContent=f.en.n;
-  $('#foeTier').textContent='Tier '+(f.en.t+1)+' · '+f.en.r+(f.enraged?' · ENRAGED':'');
+  $('#foeTier').textContent='T'+(f.en.t+1)+' · '+f.en.r.toUpperCase()+' · PL '+fmtPL(f.en.pl)+(f.enraged?' · ENRAGED':'');
   $('#foeHp').style.width=clamp(f.eHp/f.eHpMax*100,0,100)+'%';
+  $('#foeHpNum').textContent=Math.max(0,Math.round(f.eHp))+' / '+Math.round(f.eHpMax);
   $('#meHp').style.width=clamp(f.pHp/f.pHpMax*100,0,100)+'%';
+  $('#meHpNum').textContent=Math.max(0,Math.round(f.pHp))+' / '+Math.round(f.pHpMax);
   $('#meKi').style.width=clamp(f.ki/f.pc.kiMax*100,0,100)+'%';
+  $('#meKiNum').textContent=Math.round(f.ki)+' / '+Math.round(f.pc.kiMax);
   $('#meForm').textContent=FORMS[f.pForm].nm;
-  setFoeArt(f.en);setMeArt(f.pForm);
+  if(f._af!==f.en.s){setFoeArt(f.en);f._af=f.en.s;}
+  if(f._mf!==f.pForm){setMeArt(f.pForm);f._mf=f.pForm;}
+  const busy=!!f.busy;
   $('#moveBar').innerHTML=[
-    mvBtn('strike','Strike','+8',false,false),
-    mvBtn('ki','Ki Blast','-25',f.ki<25,false),
-    mvBtn('ult','Ultimate','-60',!(f.pForm>=5&&f.ki>=60),st.formMax<5),
-    mvBtn('xform','Transform','-30',f.ki<30,st.formMax<=f.pForm),
-    mvBtn('guard','Guard','+18',false,false),
-    mvBtn('charge','Charge','+35',false,false)
+    mvBtn('strike','Strike','+8',busy,false),
+    mvBtn('ki','Ki Blast','-25',busy||f.ki<25,false),
+    mvBtn('ult','Ultimate','-60',busy||!(f.pForm>=5&&f.ki>=60),st.formMax<5),
+    mvBtn('xform','Transform','-30',busy||f.ki<30,st.formMax<=f.pForm),
+    mvBtn('guard','Guard','+18',busy,false),
+    mvBtn('charge','Charge','+35',busy,false)
   ].join('');
 }
 function pAttack(power,ign,label){
@@ -1490,25 +1540,25 @@ function transformFight(){
   beep(180,.18,'sawtooth',.04);setTimeout(()=>beep(1240,.16,'triangle',.05),160);
 }
 function playerMove(m){
-  if(!fight||fight.over)return;const f=fight;
+  if(!fight||fight.over||fight.busy)return;const f=fight;
   if(m==='strike'){pAttack(1,0,'Strike');f.ki=Math.min(f.pc.kiMax,f.ki+8);}
   else if(m==='ki'){if(f.ki<25)return;f.ki-=25;pAttack(1.9,.3,'Ki Blast');}
   else if(m==='ult'){if(f.pForm<5||f.ki<60)return;f.ki-=60;pAttack(3.2,0,'Ultimate');bigFx();}
-  else if(m==='xform'){if(st.formMax<=f.pForm||f.ki<30)return;f.ki-=30;transformFight();afterPlayer();return;}
+  else if(m==='xform'){if(st.formMax<=f.pForm||f.ki<30)return;f.ki-=30;transformFight();}
   else if(m==='guard'){f.guard=true;f.ki=Math.min(f.pc.kiMax,f.ki+18);blog('You brace for the next blow.');}
   else if(m==='charge'){f.ki=Math.min(f.pc.kiMax,f.ki+35);f.pHp=Math.min(f.pHpMax,f.pHp+f.pHpMax*0.06);blog('You gather energy — Ki restored.');beep(400,.2,'sine',.04);}
-  afterPlayer();
-}
-function afterPlayer(){
-  const f=fight;
   if(f.eHp<=0){
-    if(hasTrait('revive')&&!f.revived){f.revived=true;f.eHp=Math.round(f.eHpMax*0.4);blog(f.en.n+' refuses to fall — revived!');bfloat('REVIVE','crit');renderFight();return;}
-    return winFight();
+    if(hasTrait('revive')&&!f.revived){f.revived=true;f.eHp=Math.round(f.eHpMax*0.4);blog(f.en.n+' refuses to fall — revived!');bfloat('REVIVE','crit');}
+    else{f.busy=true;renderFight();setTimeout(winFight,650);return;}
   }
-  enemyTurn();
-  if(f.pHp<=0)return loseFight();
-  f.ki=Math.min(f.pc.kiMax,f.ki+f.pc.kiRegen);
-  renderFight();
+  f.busy=true;renderFight();                       // lock input, show your hit land
+  setTimeout(()=>{                                  // then the enemy responds
+    if(!fight||fight.over)return;
+    enemyTurn();
+    if(fight.pHp<=0){renderFight();setTimeout(loseFight,480);return;}
+    fight.ki=Math.min(fight.pc.kiMax,fight.ki+fight.pc.kiRegen);
+    fight.busy=false;renderFight();
+  },720);
 }
 function enemyTurn(){
   const f=fight;f.eTurn++;
@@ -1554,23 +1604,38 @@ function showResult(win,e,xp,first){
   $('#brBack').onclick=()=>{r.hidden=true;fight=null;renderBattleHome();};
   if(!win)$('#brRetry').onclick=()=>{r.hidden=true;startFight(e);};
 }
+function nodeState(e){
+  if(st.battle.cleared.includes(e.s))return'done';
+  if(e.t>st.battle.tierUnlocked)return'locked';
+  return'open';
+}
 function renderBattleHome(){
   $('#battleFight').hidden=true;$('#battleResult').hidden=true;$('#battleLadder').hidden=false;
   const b=st.battle;
-  $('#battleSub').textContent=b.cleared.length+'/39 cleared · '+b.wins+'W–'+b.losses+'L · tiers open '+(b.tierUnlocked+1)+'/13';
-  let html='';
-  for(let t=0;t<13;t++){
-    const locked=t>b.tierUnlocked,es=ENEMIES.filter(x=>x.t===t);
-    html+=`<div class="tierBlock${locked?' locked':''}"><div class="tierHead"><span class="tNo">TIER ${t+1}</span><span class="tForm">${FORMS[t].nm}</span><span class="tSaga">${SAGA[t]}</span></div><div class="foeRow">`;
-    es.forEach(e=>{const done=b.cleared.includes(e.s);
-      html+=`<button class="foeCard r-${e.r}${done?' done':''}" data-foe="${e.s}"${locked?' disabled':''}><span class="fcArt"><img src="img/enemies/${e.s}.jpg" alt="" onerror="this.parentNode.classList.add('ph');this.remove();"></span><span class="fcRole">${e.r}</span><span class="fcName">${e.n}</span>${done?'<span class="fcDone">✓</span>':''}</button>`;});
-    html+=`</div>${locked?'<div class="tLock">◈ Clear Tier '+t+' to unlock</div>':''}</div>`;
-  }
-  $('#ladderWrap').innerHTML=html;
+  $('#regionName').textContent='TIER '+(b.tierUnlocked+1)+' — '+FORMS[b.tierUnlocked].nm;
+  $('#regionSaga').textContent=SAGA[b.tierUnlocked];
+  $('#battleSub').textContent=b.cleared.length+'/39 · '+b.wins+'W';
+  let current=null;
+  for(const e of ENEMIES){if(e.t<=b.tierUnlocked&&!b.cleared.includes(e.s)){current=e.s;break;}}
+  const SP=112,PAD=56,n=ENEMIES.length,H=PAD*2+(n-1)*SP;
+  const wrap=$('#pathWrap');wrap.style.height=H+'px';
+  const W=wrap.clientWidth||340,pts=[];
+  const nodes=ENEMIES.map((e,i)=>{
+    const x=50+27*Math.sin(i*0.9),y=PAD+i*SP;pts.push([x/100*W,y]);
+    const stt=nodeState(e),cur=e.s===current,boss=e.r==='boss';
+    return `<button class="pNode ${stt}${boss?' boss':''}${cur?' current':''}" data-foe="${e.s}" style="left:${x.toFixed(2)}%;top:${y}px"${stt==='locked'?' disabled':''}>`+
+      `<span class="pArt"><img src="img/enemies/${e.s}.jpg" alt="" onerror="this.parentNode.classList.add('ph');this.remove();"></span>`+
+      (stt==='done'?'<span class="pBadge done">✓</span>':stt==='locked'?'<span class="pBadge lock">🔒</span>':'')+
+      (cur?'<span class="pTag">FIGHT</span>':'')+
+      `<span class="pLabel"><b>${e.n}</b><i>PL ${fmtPL(e.pl)}</i></span></button>`;
+  }).join('');
+  const path='<svg class="pathSvg" viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="none"><path d="'+pts.map((p,i)=>(i?'L':'M')+p[0].toFixed(1)+' '+p[1]).join(' ')+'"/></svg>';
+  wrap.innerHTML=path+nodes;
+  const cn=wrap.querySelector('.pNode.current');if(cn)cn.scrollIntoView({block:'center'});
 }
 document.addEventListener('click',e=>{
   const mb=e.target.closest('.mvBtn');if(mb&&!mb.disabled){playerMove(mb.dataset.mv);return;}
-  const fc=e.target.closest('.foeCard');if(fc&&!fc.disabled){const en=ENEMIES.find(x=>x.s===fc.dataset.foe);if(en)startFight(en);return;}
+  const fc=e.target.closest('.pNode,.foeCard');if(fc&&!fc.disabled){const en=ENEMIES.find(x=>x.s===fc.dataset.foe);if(en)startFight(en);return;}
 });
 $('#retreatBtn').addEventListener('click',()=>{fight=null;renderBattleHome();beep(300,.1,'sine',.03);});
 
