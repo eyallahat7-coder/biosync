@@ -24,7 +24,7 @@
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{height:100%}
-body{background:var(--bg);color:var(--text);font-family:var(--fb);overflow-x:hidden;min-height:100vh;display:flex;flex-direction:column;padding-bottom:74px}
+body{background:var(--bg);color:var(--text);font-family:var(--fb);overflow-x:hidden;min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;padding-bottom:74px}
 [hidden]{display:none!important}
 /* ====== ATMOSPHERE ====== */
 .bgfx{position:fixed;inset:0;z-index:-1;overflow:hidden;background:
@@ -403,7 +403,7 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
   /* character sized to leave room for stats */
   #viewHome{display:flex;flex-direction:column;justify-content:center}
   .holo{flex:0 0 auto;min-height:0;max-width:100%}
-  #charaBox{max-height:33vh}
+  #charaBox{max-height:33vh;max-height:33dvh}
   .powerRead{margin-top:0}
   .powerRead .lbl{font-size:9px}
   .powerRead .num{font-size:26px}
