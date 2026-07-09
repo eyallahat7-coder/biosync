@@ -53,6 +53,8 @@ body::before{content:'';position:fixed;inset:0;z-index:59;pointer-events:none;
 /* ====== HEADER ====== */
 header{position:relative;z-index:5;display:flex;align-items:center;justify-content:space-between;gap:14px;
   padding:13px 22px;border-bottom:1px solid var(--line);background:linear-gradient(180deg, rgba(10,14,32,.85), rgba(10,14,32,.3))}
+.brand{display:flex;align-items:center;gap:12px}
+.logoMark{width:44px;height:44px;object-fit:contain;mix-blend-mode:screen;filter:drop-shadow(0 0 10px rgba(255,46,88,.45))}
 .logo{display:flex;flex-direction:column;line-height:1}
 .logo b{font-family:var(--fd);font-weight:400;font-size:20px;letter-spacing:3px;
   background:linear-gradient(90deg,var(--pink) 20%,var(--cyan) 80%);
@@ -377,6 +379,8 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 @media(max-width:640px){
   body{padding-bottom:80px}
   header{padding:9px 15px}
+  .logoMark{width:34px;height:34px}
+  .brand{gap:9px}
   .logo b{font-size:16px;letter-spacing:2px}
   .logo span{font-size:8px;letter-spacing:2px}
   .viewTitle{font-size:11px}
@@ -442,7 +446,10 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 </div>
 
 <header>
-  <div class="logo"><b>BIO⟠SYNC</b><span>Saiyan Health Tracker</span></div>
+  <div class="brand">
+    <img class="logoMark" src="logo.jpg" alt="Z logo">
+    <div class="logo"><b>BIO⟠SYNC</b><span>Saiyan Health Tracker</span></div>
+  </div>
   <div class="viewTitle" id="viewTitle">HOME</div>
 </header>
 
