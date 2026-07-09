@@ -384,37 +384,38 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
   .statsCol{order:2}
 }
 @media(max-width:640px){
-  body{padding-bottom:80px}
-  header{padding:9px 15px}
-  .logoMark{width:34px;height:34px}
+  body{padding-bottom:calc(72px + env(safe-area-inset-bottom))}
+  header{padding:8px 15px}
+  .logoMark{width:32px;height:32px}
   .brand{gap:9px}
   .logo b{font-size:16px;letter-spacing:2px}
   .logo span{font-size:8px;letter-spacing:2px}
   .viewTitle{font-size:11px}
-  .view{padding:12px 12px 6px}
-  .homeWrap{gap:12px}
-  .charStage{gap:4px}
+  .view{padding:8px 12px 4px}
+  .homeWrap{gap:8px}
+  .charStage{gap:3px}
   .formBar{gap:10px}
   .formNameBox{min-width:0}
   .formNm{font-size:14px;letter-spacing:1.5px}
   .formSub{font-size:9px}
   .fArr{width:26px;height:26px}
-  .tfReady{font-size:10px;padding:8px 14px;margin-top:2px}
+  .tfReady{font-size:10px;padding:7px 14px;margin-top:1px}
   /* character sized to leave room for stats */
+  #viewHome{display:flex;flex-direction:column;justify-content:center}
   .holo{flex:0 0 auto;min-height:0;max-width:100%}
-  #charaBox{max-height:38vh}
-  .powerRead{margin-top:2px}
+  #charaBox{max-height:33vh}
+  .powerRead{margin-top:0}
   .powerRead .lbl{font-size:9px}
-  .powerRead .num{font-size:30px}
-  .powerRead .sub{font-size:11px}
+  .powerRead .num{font-size:26px}
+  .powerRead .sub{font-size:10px}
   .nextForm{font-size:9px}
-  .homeMeta{gap:8px;margin-top:8px;max-width:none}
-  .mTile{padding:9px 6px;gap:4px}
-  .mTile .v{font-size:16px}
+  .homeMeta{gap:7px;margin-top:5px;max-width:none}
+  .mTile{padding:7px 6px;gap:3px}
+  .mTile .v{font-size:15px}
   .mTile.frm .v{font-size:10px}
   .mTile .k{font-size:8px}
   /* compact 2x2 stats, radar hidden to save vertical space */
-  .statsCol{display:grid;grid-template-columns:1fr 1fr;gap:11px 14px;padding:14px;background:rgba(13,17,38,.62)}
+  .statsCol{display:grid;grid-template-columns:1fr 1fr;gap:9px 14px;padding:12px 13px;background:rgba(13,17,38,.62)}
   .statsCol>.pHead,.statsCol>.radarWrap{display:none}
   .statRow{grid-template-columns:1fr auto;grid-template-areas:'name val' 'bar bar';gap:3px 8px}
   .statRow .statName{grid-area:name;flex-direction:row;align-items:baseline;gap:5px}
