@@ -522,6 +522,47 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
   background:var(--gold);color:#1a1400;padding:2px 8px;border-radius:6px;z-index:4;box-shadow:0 0 12px rgba(255,215,94,.6)}
 @media(prefers-reduced-motion:reduce){.pNode.current .pArt{animation:none}}
 
+/* ====== SKILLS / PATH ====== */
+#viewSkills{display:flex;flex-direction:column;gap:16px}
+.skHeader{border:1px solid var(--line);background:var(--panel);border-radius:6px;padding:14px 16px;position:relative}
+.skHeader::before{content:"";position:absolute;top:-1px;left:-1px;width:12px;height:12px;border-top:2px solid var(--cyan);border-left:2px solid var(--cyan)}
+.skPointsRow{display:flex;gap:12px}
+.skPill{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:12px;border-radius:8px;border:1px solid var(--line);background:rgba(255,255,255,.03)}
+.skPill b{font-family:var(--fd);font-size:26px;line-height:1}
+.skPill span{font-family:var(--fj);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--dim)}
+.skPill.asc b{color:var(--pink2)} .skPill.skl b{color:var(--gold)}
+.skStreak{font-family:var(--fj);font-size:12px;letter-spacing:.5px;color:var(--dim);text-align:center;margin-top:12px}
+.skStreak.on{color:var(--good)}
+.skH{font-family:var(--fd);font-size:12px;letter-spacing:1.5px;color:var(--cyan);margin:0 0 10px}
+.statGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.statCard{border:1px solid var(--line);border-radius:8px;background:var(--panel);padding:12px 13px;display:flex;flex-direction:column;gap:9px}
+.scTop{display:flex;justify-content:space-between;align-items:baseline}
+.scName{font-family:var(--fd);font-size:11px;letter-spacing:1px}
+.statCard.s-vit .scName{color:var(--good)} .statCard.s-str .scName{color:var(--red)}
+.statCard.s-agi .scName{color:var(--cyan)} .statCard.s-foc .scName{color:var(--gold)}
+.scVal{font-family:var(--fd);font-size:17px;color:var(--text)}
+.scVal i{font-family:var(--fj);font-style:normal;font-size:11px;color:var(--good)}
+.scPlus{font-family:var(--fd);font-size:12px;letter-spacing:.5px;padding:8px;border-radius:7px;border:1px solid var(--pink);
+  background:rgba(255,46,136,.12);color:var(--pink2);cursor:pointer;transition:.12s}
+.scPlus:hover:not(:disabled){background:rgba(255,46,136,.25);color:#fff}
+.scPlus:disabled{opacity:.32;cursor:not-allowed;border-color:var(--line);background:rgba(255,255,255,.03);color:var(--dim)}
+.skillGrid{display:flex;flex-direction:column;gap:10px}
+.skillCard{border:1px solid var(--line);border-radius:9px;background:var(--panel);padding:13px 15px;display:flex;flex-direction:column;gap:9px}
+.scHead{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+.skNm{font-family:var(--fd);font-size:15px;color:var(--text);letter-spacing:.5px}
+.skNext{font-family:var(--fj);font-size:11px;color:var(--gold);letter-spacing:.5px;white-space:nowrap}
+.skNext.dim{color:var(--faint)}
+.skPips{display:flex;gap:5px}
+.skPips i{flex:1;height:6px;border-radius:3px;background:rgba(255,255,255,.1)}
+.skPips i.on{background:linear-gradient(90deg,var(--cyan),var(--pink));box-shadow:0 0 8px rgba(53,224,255,.4)}
+.scFoot{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.skEff{font-family:var(--fj);font-size:11px;color:var(--dim);letter-spacing:.3px}
+.skUp{font-family:var(--fd);font-size:12px;letter-spacing:.5px;padding:8px 16px;border-radius:7px;border:1px solid var(--cyan);
+  background:rgba(53,224,255,.12);color:var(--cyan);cursor:pointer;transition:.12s;white-space:nowrap}
+.skUp:hover:not(:disabled){background:rgba(53,224,255,.26);color:#fff}
+.skUp:disabled{opacity:.34;cursor:not-allowed;border-color:var(--line);background:rgba(255,255,255,.03);color:var(--dim)}
+.skUp.maxed{border-color:var(--gold);color:var(--gold);background:rgba(255,215,94,.1)}
+
 /* ====== RESPONSIVE ====== */
 @media(max-width:820px){
   .homeWrap{grid-template-columns:1fr}
@@ -1034,6 +1075,15 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 </section>
 <div class="battleResult" id="battleResult" hidden></div>
 
+<section class="view" id="viewSkills" data-view="skills" hidden>
+  <div class="skHeader">
+    <div class="skPointsRow" id="skPoints"></div>
+    <div class="skStreak" id="skStreak"></div>
+  </div>
+  <div class="skSection"><h3 class="skH">STATS — Ascension Points ⬡</h3><div class="statGrid" id="skStats"></div></div>
+  <div class="skSection"><h3 class="skH">TECHNIQUES — Skill Points ✦</h3><div class="skillGrid" id="skSkills"></div></div>
+</section>
+
 <!-- ============================= BOTTOM NAV ============================= -->
 <nav class="bottomNav">
   <button class="navBtn active" data-view="home">
@@ -1043,6 +1093,10 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
   <button class="navBtn" data-view="daily">
     <svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="17" rx="2"/><path d="M8 3v3M16 3v3M4 10h16M9 15l2 2 4-4"/></svg>
     DAILY LOG
+  </button>
+  <button class="navBtn" data-view="skills">
+    <svg viewBox="0 0 24 24"><path d="M12 2l2.4 6.5L21 9l-5 4.2L17.6 20 12 16.3 6.4 20 8 13.2 3 9l6.6-.5z"/></svg>
+    SKILLS
   </button>
   <button class="navBtn" data-view="battle">
     <svg viewBox="0 0 24 24"><path d="M6 4l4 4M4 6l4 4M3 21l7-7M14 10l7-7M17 4h3v3M13 11l8 8M21 18v3h-3M18 21l-4-4"/></svg>
@@ -1129,7 +1183,10 @@ function defaultState(){return{
   stats:{vit:1,str:1,agi:1,foc:1},
   streak:0,best:0,calTarget:2200,proteinTarget:150,
   today:freshDay(todayStr()),
-  history:[],lastSync:null,form:0,formMax:0,battle:defaultBattle()};}
+  history:[],lastSync:null,form:0,formMax:0,battle:defaultBattle(),
+  ascPoints:0,skillPoints:0,streakPaid:0,
+  trained:{vit:0,str:0,agi:0,foc:0},
+  skills:{strike:0,ki:0,ult:0,guard:0,charge:0}};}
 
 let st=load();
 function load(){
@@ -1137,6 +1194,11 @@ function load(){
     if(s&&s.stats){s.form=Math.min(s.form||0,FORMS.length-1);s.formMax=Math.min(s.formMax||0,FORMS.length-1);s.proteinTarget=s.proteinTarget||150;
       if(s.today){if(s.today.workout===undefined)s.today.workout=s.today.sport?'other':'none';if(s.today.sleep===undefined)s.today.sleep=0;}
       if(!s.battle)s.battle=defaultBattle();
+      if(s.ascPoints===undefined)s.ascPoints=0;
+      if(s.skillPoints===undefined)s.skillPoints=0;
+      if(s.streakPaid===undefined)s.streakPaid=s.streak||0;
+      if(!s.trained)s.trained={vit:0,str:0,agi:0,foc:0};
+      if(!s.skills)s.skills={strike:0,ki:0,ult:0,guard:0,charge:0};
       return s;}}}catch(e){}
   return defaultState();
 }
@@ -1155,7 +1217,7 @@ function rollover(){
   }
   if(missed>0){
     for(const k in st.stats)st.stats[k]=clamp(st.stats[k]-2*missed,1,100);
-    st.streak=0;
+    st.streak=0;st.streakPaid=0;
   }
   st.today=freshDay(t);
   save();
@@ -1192,9 +1254,31 @@ function computeDeltas(){
   d.foc+=Math.min(3,1+Math.floor((st.streak+1)/4));
   return d;
 }
+/* ===== SKILLS & TRAINED STATS ===== */
+function effOf(k){return Math.min(100,st.stats[k])+((st.trained&&st.trained[k])||0);}
+const SKILLS={
+  strike:{base:1.0,kind:'atk',tiers:[[0,'Strike'],[2,'Meteor Combo'],[4,'Wolf Fang Fist'],[6,'Dragon Fist']]},
+  ki:{base:1.9,kind:'atk',tiers:[[0,'Ki Blast'],[2,'Kamehameha'],[4,'Super Kamehameha'],[6,'Big Bang Kamehameha']]},
+  ult:{base:3.2,kind:'atk',tiers:[[0,'Ultimate'],[2,'Special Beam Cannon'],[4,'Spirit Bomb'],[6,'Super Spirit Bomb']]},
+  guard:{kind:'guard',tiers:[[0,'Guard'],[3,'Ki Barrier'],[6,'Instant Transmission']]},
+  charge:{kind:'charge',tiers:[[0,'Charge'],[3,'Meditation'],[6,'Divine Focus']]}
+};
+const SKILL_MAX=6, SKILL_COST=[1,1,2,2,3,3];
+function skillLevel(id){return (st.skills&&st.skills[id])||0;}
+function skillName(id){let nm=SKILLS[id].tiers[0][1];for(const[lv,n]of SKILLS[id].tiers)if(skillLevel(id)>=lv)nm=n;return nm;}
+function skillMult(id){return 1+skillLevel(id)*0.11;}
+function skillUpCost(id){const lv=skillLevel(id);return lv>=SKILL_MAX?null:SKILL_COST[lv];}
+function nextTier(id){const lv=skillLevel(id);for(const[tlv,n]of SKILLS[id].tiers)if(tlv>lv)return{lv:tlv,n};return null;}
+function guardMitig(){return Math.max(0.1,0.4-skillLevel('guard')*0.05);}
+function awardStreakPoints(){
+  let ap=0,sp=0;
+  for(let d=(st.streakPaid||0)+1;d<=st.streak;d++){if(d>=4)sp++;if(d>=3&&d%3===0)ap++;}
+  st.streakPaid=st.streak;
+  st.ascPoints=(st.ascPoints||0)+ap;st.skillPoints=(st.skillPoints||0)+sp;
+  return {ap,sp};
+}
 function basePL(){
-  const s=st.stats;
-  return Math.round((s.vit*1.2+s.str*1.4+s.agi*1.1+s.foc*1.3)*(1+st.level*.2)*7);
+  return Math.round((effOf('vit')*1.2+effOf('str')*1.4+effOf('agi')*1.1+effOf('foc')*1.3)*(1+st.level*.2)*7);
 }
 function fmtPL(n){
   if(n>=1e12)return(n/1e12).toFixed(2)+'T';
@@ -1213,6 +1297,7 @@ function syncDay(){
   const d=computeDeltas();
   for(const k in d)st.stats[k]=clamp(st.stats[k]+d[k],1,100);
   st.streak++;st.best=Math.max(st.best,st.streak);
+  const pts=awardStreakPoints();
   const calOk=(g==='optimal'||g==='fair');
   const proOk=proteinRatio()>=.8;
   const sg=sleepGrade();
@@ -1233,6 +1318,8 @@ function syncDay(){
   for(const k in d){if(d[k]!==0){const v=d[k];
     setTimeout(()=>spawnFloat((v>0?'+':'')+v+' '+k.toUpperCase(),v>0?'up':'dn'),i*260);i++;}}
   setTimeout(()=>spawnFloat('+'+gain+' XP','xp'),i*260+150);
+  if(pts.ap)setTimeout(()=>spawnFloat('+'+pts.ap+' ASCENSION ⬡','up'),i*260+420);
+  if(pts.sp)setTimeout(()=>spawnFloat('+'+pts.sp+' SKILL ✦','up'),i*260+620);
   beep(740,.09);setTimeout(()=>beep(1180,.12),90);
   if(leveled)setTimeout(levelUpFX,700);
   renderAll();
@@ -1318,17 +1405,20 @@ function animateStats(){
   animReq=requestAnimationFrame(step);
 }
 function paintStats(){
+  const tr=st.trained||{},ev={};
   for(const k of['vit','str','agi','foc']){
-    $('#b-'+k).style.width=disp[k]+'%';
-    $('#v-'+k).textContent=Math.round(disp[k]);
+    ev[k]=Math.min(100,disp[k])+(tr[k]||0);
+    $('#b-'+k).style.width=clamp(ev[k],0,100)+'%';
+    $('#v-'+k).textContent=Math.round(ev[k]);
   }
   const R=90,cx=115,cy=106;
-  const pts=[[cx,cy-R*disp.vit/100],[cx+R*disp.str/100,cy],[cx,cy+R*disp.agi/100],[cx-R*disp.foc/100,cy]];
+  const cl=v=>Math.min(100,v);
+  const pts=[[cx,cy-R*cl(ev.vit)/100],[cx+R*cl(ev.str)/100,cy],[cx,cy+R*cl(ev.agi)/100],[cx-R*cl(ev.foc)/100,cy]];
   $('#radarPoly').setAttribute('points',pts.map(p=>p.map(n=>n.toFixed(1)).join(',')).join(' '));
   $('#radarDots').innerHTML=pts.map(p=>`<circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="3"/>`).join('');
-  const avg=(disp.vit+disp.str+disp.agi+disp.foc)/4;
+  const avg=(ev.vit+ev.str+ev.agi+ev.foc)/4;
   const f=FORMS[st.form];
-  const pl=(disp.vit*1.2+disp.str*1.4+disp.agi*1.1+disp.foc*1.3)*(1+st.level*.2)*7;
+  const pl=(ev.vit*1.2+ev.str*1.4+ev.agi*1.1+ev.foc*1.3)*(1+st.level*.2)*7;
   $('#powerN').textContent=fmtPL(pl*f.mult);
   $('#plBase').textContent='BASE '+Math.round(pl).toLocaleString()+' ×'+f.mult.toLocaleString();
   $('#syncRate').textContent=Math.round(avg)+'%';
@@ -1466,9 +1556,10 @@ function spawnFloat(txt,cls){
 function showView(v){
   document.querySelectorAll('.view').forEach(s=>{s.hidden=s.dataset.view!==v;});
   document.querySelectorAll('.navBtn').forEach(b=>b.classList.toggle('active',b.dataset.view===v));
-  $('#viewTitle').textContent=v==='home'?'HOME':v==='daily'?'DAILY LOG':v==='battle'?'BATTLE':'HISTORY';
+  $('#viewTitle').textContent={home:'HOME',daily:'DAILY LOG',skills:'SKILLS',battle:'BATTLE',history:'HISTORY'}[v]||'';
   if(v==='daily')renderDaily();
   if(v==='history')renderHistory();
+  if(v==='skills')renderSkills();
   if(v==='battle'){if(fight&&!fight.over)showFight();else renderBattleHome();}
 }
 document.querySelectorAll('.navBtn').forEach(b=>b.addEventListener('click',()=>{showView(b.dataset.view);beep(880,.05,'square',.02);}));
@@ -1498,7 +1589,7 @@ const ENEMIES=[
 let fight=null;
 function hasTrait(t){return fight&&fight.en.tr&&fight.en.tr.includes(t);}
 function playerCombat(f){
-  const s=st.stats,l=st.level,M=BM[f];
+  const s={vit:effOf('vit'),str:effOf('str'),agi:effOf('agi'),foc:effOf('foc')},l=st.level,M=BM[f];
   return {form:f,M,hpMax:Math.round((s.vit*6+l*8+40)*Math.sqrt(M)),atk:(s.str*1.4+l+8)*M,
     def:s.vit*0.5+l*0.7+5,spd:s.agi+l*0.3,kiMax:Math.round(s.foc*0.7+25),
     kiRegen:Math.round(4+s.foc*0.15),crit:Math.min(55,5+s.foc*0.45)};
@@ -1549,12 +1640,12 @@ function renderFight(){
   if(f._mf!==f.pForm){setMeArt(f.pForm);f._mf=f.pForm;}
   const busy=!!f.busy;
   $('#moveBar').innerHTML=[
-    mvBtn('strike','Strike','+8',busy,false),
-    mvBtn('ki','Ki Blast','-25',busy||f.ki<25,false),
-    mvBtn('ult','Ultimate','-60',busy||!(f.pForm>=5&&f.ki>=60),st.formMax<5),
+    mvBtn('strike',skillName('strike'),'+8',busy,false),
+    mvBtn('ki',skillName('ki'),'-25',busy||f.ki<25,false),
+    mvBtn('ult',skillName('ult'),'-60',busy||!(f.pForm>=5&&f.ki>=60),st.formMax<5),
     mvBtn('xform','Transform','-30',busy||f.ki<30,st.formMax<=f.pForm),
-    mvBtn('guard','Guard','+18',busy,false),
-    mvBtn('charge','Charge','+35',busy,false)
+    mvBtn('guard',skillName('guard'),'+'+(18+skillLevel('guard')*2),busy,false),
+    mvBtn('charge',skillName('charge'),'+'+(35+skillLevel('charge')*3),busy,false)
   ].join('');
 }
 function pAttack(power,ign,label){
@@ -1573,12 +1664,12 @@ function transformFight(){
 }
 function playerMove(m){
   if(!fight||fight.over||fight.busy)return;const f=fight;
-  if(m==='strike'){pAttack(1,0,'Strike');f.ki=Math.min(f.pc.kiMax,f.ki+8);}
-  else if(m==='ki'){if(f.ki<25)return;f.ki-=25;pAttack(1.9,.3,'Ki Blast');}
-  else if(m==='ult'){if(f.pForm<5||f.ki<60)return;f.ki-=60;pAttack(3.2,0,'Ultimate');bigFx();}
+  if(m==='strike'){pAttack(1*skillMult('strike'),0,skillName('strike'));f.ki=Math.min(f.pc.kiMax,f.ki+8);}
+  else if(m==='ki'){if(f.ki<25)return;f.ki-=25;pAttack(1.9*skillMult('ki'),.3,skillName('ki'));}
+  else if(m==='ult'){if(f.pForm<5||f.ki<60)return;f.ki-=60;pAttack(3.2*skillMult('ult'),0,skillName('ult'));bigFx();}
   else if(m==='xform'){if(st.formMax<=f.pForm||f.ki<30)return;f.ki-=30;transformFight();}
-  else if(m==='guard'){f.guard=true;f.ki=Math.min(f.pc.kiMax,f.ki+18);blog('You brace for the next blow.');}
-  else if(m==='charge'){f.ki=Math.min(f.pc.kiMax,f.ki+35);const h=Math.round(f.pHpMax*0.06);f.pHp=Math.min(f.pHpMax,f.pHp+h);blog('You gather energy — Ki restored.');bfloat('+'+h,'heal');spark('#meArt',false);buzz(12);beep(400,.2,'sine',.04);}
+  else if(m==='guard'){f.guard=true;f.ki=Math.min(f.pc.kiMax,f.ki+18+skillLevel('guard')*2);blog('You raise your '+skillName('guard')+'.');}
+  else if(m==='charge'){f.ki=Math.min(f.pc.kiMax,f.ki+35+skillLevel('charge')*3);const h=Math.round(f.pHpMax*(0.06+skillLevel('charge')*0.01));f.pHp=Math.min(f.pHpMax,f.pHp+h);blog(skillName('charge')+' — Ki and vitality restored.');bfloat('+'+h,'heal');spark('#meArt',false);buzz(12);beep(400,.2,'sine',.04);}
   if(f.eHp<=0){
     if(hasTrait('revive')&&!f.revived){f.revived=true;f.eHp=Math.round(f.eHpMax*0.4);blog(f.en.n+' refuses to fall — revived!');bfloat('REVIVE','crit');}
     else{f.busy=true;renderFight();setTimeout(winFight,650);return;}
@@ -1604,7 +1695,9 @@ function enemyTurn(){
     const dodge=Math.max(0,Math.min(35,(f.pc.spd-f.es.spd)*0.5));
     if(roll(dodge)){bfloat('DODGE','miss');blog('You dodged '+f.en.n+'’s attack!');anim('#meArt','lunge',420);buzz(8);continue;}
     const r=calcHit(atk,power,f.es.crit,f.pc.def);let d=r.d;
-    if(f.guard){d=Math.round(d*0.4);f.guard=false;bfloat('GUARD','miss');}
+    if(f.guard){f.guard=false;
+      if(skillLevel('guard')>=6){d=0;bfloat('COUNTER','crit');const cd=Math.round(f.pc.atk*0.6);f.eHp-=cd;anim('#foeArt','hurt',440);blog('Instant Transmission! You phase out and counter for '+cd+'.');}
+      else{d=Math.round(d*guardMitig());bfloat('BLOCK','miss');}}
     f.pHp-=d;bfloat('-'+d,'foe');
     hitFx('#meArt','#foeArt',r.c,power>1);buzz(power>1?[16,18,38]:14);
     blog(f.en.n+(power>1?' unleashes a heavy blow':' strikes')+' for '+d+'.');beep(220,.09,'square',.03);
@@ -1669,8 +1762,58 @@ function renderBattleHome(){
 document.addEventListener('click',e=>{
   const mb=e.target.closest('.mvBtn');if(mb&&!mb.disabled){playerMove(mb.dataset.mv);return;}
   const fc=e.target.closest('.pNode,.foeCard');if(fc&&!fc.disabled){const en=ENEMIES.find(x=>x.s===fc.dataset.foe);if(en)startFight(en);return;}
+  const sp=e.target.closest('.scPlus');if(sp&&!sp.disabled){spendAsc(sp.dataset.stat);return;}
+  const su=e.target.closest('.skUp');if(su&&!su.disabled&&su.dataset.skill){upgradeSkill(su.dataset.skill);return;}
 });
 $('#retreatBtn').addEventListener('click',()=>{fight=null;renderBattleHome();beep(300,.1,'sine',.03);});
+
+/* ================= SKILLS SCREEN ================= */
+const STAT_NAME={vit:'VITALITY',str:'STRENGTH',agi:'AGILITY',foc:'FOCUS'};
+function skillEffText(id){
+  const lv=skillLevel(id),k=SKILLS[id].kind;
+  if(k==='atk')return lv?('Power +'+Math.round(lv*11)+'%'):'Base attack';
+  if(k==='guard')return lv>=6?'Negates a hit + counter':('Blocks '+Math.round((1-guardMitig())*100)+'%');
+  return '+'+(35+lv*3)+' Ki · heal '+(6+lv)+'%';
+}
+function renderSkills(){
+  $('#skPoints').innerHTML=`<div class="skPill asc"><b>${st.ascPoints||0}</b><span>Ascension ⬡</span></div>`+
+    `<div class="skPill skl"><b>${st.skillPoints||0}</b><span>Skill ✦</span></div>`;
+  const on=st.streak>=3;
+  $('#skStreak').className='skStreak'+(on?' on':'');
+  $('#skStreak').textContent=on?('🔥 '+st.streak+'-day streak — earning every day'):('Reach a 3-day streak to start earning — '+st.streak+'/3');
+  let sh='';
+  for(const k of['vit','str','agi','foc']){
+    const base=Math.min(100,Math.round(st.stats[k])),tr=(st.trained&&st.trained[k])||0,eff=base+tr;
+    const can=(st.ascPoints||0)>0;
+    sh+=`<div class="statCard s-${k}"><div class="scTop"><span class="scName">${STAT_NAME[k]}</span><span class="scVal">${eff}${tr?` <i>+${tr}</i>`:''}</span></div>`+
+      `<button class="scPlus" data-stat="${k}"${can?'':' disabled'}>+2  ·  spend ⬡</button></div>`;
+  }
+  $('#skStats').innerHTML=sh;
+  let kh='';
+  for(const id of['strike','ki','ult','guard','charge']){
+    const lv=skillLevel(id),cost=skillUpCost(id),nt=nextTier(id);
+    const pips=Array.from({length:SKILL_MAX},(_,i)=>`<i class="${i<lv?'on':''}"></i>`).join('');
+    const teaser=nt?(nt.lv===lv+1?`<span class="skNext">→ ${nt.n}</span>`:`<span class="skNext dim">next: ${nt.n} (Lv ${nt.lv})</span>`):'';
+    const canUp=cost!==null&&(st.skillPoints||0)>=cost;
+    const btn=cost===null?`<button class="skUp maxed" disabled>MAX</button>`:`<button class="skUp" data-skill="${id}"${canUp?'':' disabled'}>Upgrade ✦${cost}</button>`;
+    kh+=`<div class="skillCard"><div class="scHead"><span class="skNm">${skillName(id)}</span>${teaser}</div>`+
+      `<div class="skPips">${pips}</div>`+
+      `<div class="scFoot"><span class="skEff">Lv ${lv}/${SKILL_MAX} · ${skillEffText(id)}</span>${btn}</div></div>`;
+  }
+  $('#skSkills').innerHTML=kh;
+}
+function spendAsc(k){
+  if((st.ascPoints||0)<=0)return;
+  st.ascPoints--;st.trained[k]=((st.trained[k])||0)+2;save();
+  renderSkills();renderAll();beep(660,.08,'triangle',.04);setTimeout(()=>beep(990,.09,'triangle',.04),70);
+}
+function upgradeSkill(id){
+  const c=skillUpCost(id);if(c===null||(st.skillPoints||0)<c)return;
+  st.skillPoints-=c;st.skills[id]=skillLevel(id)+1;save();
+  const transformed=SKILLS[id].tiers.some(t=>t[0]===st.skills[id]&&t[0]>0);
+  renderSkills();beep(880,.09,'triangle',.05);
+  if(transformed)[1046,1318,1568].forEach((fq,i)=>setTimeout(()=>beep(fq,.14,'triangle',.05),i*90));
+}
 
 /* ================= EVENTS ================= */
 $('#dlCal').addEventListener('input',e=>{if(st.today.synced)return;st.today.cal=clamp(Math.round(Number(e.target.value)||0),0,12000);save();$('#gradePreview')&&renderGradeOnly();});
