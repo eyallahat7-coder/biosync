@@ -418,9 +418,14 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 .combatInfo .cName{font-family:var(--fd);font-size:15px;color:var(--text)}
 .combatInfo .cSub{font-family:var(--fj);font-size:10px;color:var(--dim);letter-spacing:1px;text-transform:uppercase;margin-top:2px}
 .hpbar{height:14px;border-radius:7px;background:rgba(255,255,255,.08);overflow:hidden;border:1px solid var(--line);margin-top:6px}
-.hpbar i{display:block;height:100%;transition:width .35s ease}
-.hpbar.foe i{background:linear-gradient(90deg,#ff2e88,var(--red))}
-.hpbar.me i{background:linear-gradient(90deg,#1272b8,var(--good))}
+.hpbar{position:relative}
+.hpbar i{position:absolute;left:0;top:0;height:100%;border-radius:inherit}
+.hpbar .ghost{transition:width .6s cubic-bezier(.4,0,.2,1) .14s}
+.hpbar .fill{transition:width .16s ease}
+.hpbar.foe .fill{background:linear-gradient(90deg,#ff2e88,var(--red))}
+.hpbar.foe .ghost{background:rgba(255,150,170,.5)}
+.hpbar.me .fill{background:linear-gradient(90deg,#1272b8,var(--good))}
+.hpbar.me .ghost{background:rgba(190,255,225,.5)}
 .kibar{height:8px;border-radius:5px;background:rgba(255,255,255,.08);overflow:hidden;border:1px solid var(--line);margin-top:5px}
 .kibar i{display:block;height:100%;background:linear-gradient(90deg,var(--amber),var(--gold));transition:width .3s}
 .meForm{font-family:var(--fd);font-size:11px;color:var(--cyan);margin-top:4px;letter-spacing:1px}
@@ -432,6 +437,26 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 #battleFlash{position:absolute;inset:-30px 0;background:radial-gradient(circle,rgba(255,255,255,.55),transparent 62%);opacity:0;pointer-events:none}
 #battleFlash.go{animation:bfsh .3s}
 @keyframes bfsh{0%{opacity:.85}100%{opacity:0}}
+.bnum.heal{color:var(--good)}
+.bnum.crit{text-shadow:0 0 15px rgba(255,215,94,.85),0 2px 8px #000}
+/* combat juice: portraits react to every hit */
+.portrait::after,.foeArt::after,.meArt::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;z-index:2;
+  background:radial-gradient(circle,rgba(255,60,80,.9),rgba(255,0,20,.35) 60%,transparent 76%);mix-blend-mode:screen}
+.foeArt.hurt::after,.meArt.hurt::after{animation:hurtFlash .42s ease-out}
+@keyframes hurtFlash{0%{opacity:.95}100%{opacity:0}}
+.foeArt.hurt,.meArt.hurt{animation:hurtShake .42s}
+@keyframes hurtShake{0%,100%{transform:translate(0,0)}18%{transform:translate(-6px,3px) rotate(-1.5deg)}38%{transform:translate(6px,-2px) rotate(1.5deg)}58%{transform:translate(-5px,2px)}78%{transform:translate(4px,-1px)}}
+.meArt.lunge{animation:lungeUp .4s ease-out}
+.foeArt.lunge{animation:lungeDown .4s ease-out}
+@keyframes lungeUp{0%,100%{transform:translateY(0)}34%{transform:translateY(-20px) scale(1.06)}}
+@keyframes lungeDown{0%,100%{transform:translateY(0)}34%{transform:translateY(20px) scale(1.06)}}
+.spark{position:absolute;top:46%;left:50%;width:46px;height:46px;transform:translate(-50%,-50%);border-radius:50%;pointer-events:none;z-index:5;
+  background:radial-gradient(circle,rgba(255,255,255,.95),rgba(255,224,130,.7) 42%,transparent 70%);animation:sparkPop .38s ease-out forwards}
+.spark.crit{width:78px;height:78px;background:radial-gradient(circle,#fff,var(--gold) 40%,rgba(255,120,40,.45) 66%,transparent 80%)}
+@keyframes sparkPop{0%{opacity:0;transform:translate(-50%,-50%) scale(.2)}28%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-50%) scale(1.6)}}
+.arena.punch{animation:apunch .2s ease-out}
+@keyframes apunch{50%{transform:scale(1.03)}}
+@media(prefers-reduced-motion:reduce){.foeArt.hurt,.meArt.hurt,.meArt.lunge,.foeArt.lunge,.arena.punch,.arena.shake{animation:none}}
 .log{font-family:var(--fj);font-size:12px;color:var(--dim);letter-spacing:.5px;text-align:center;min-height:34px;
   display:flex;align-items:center;justify-content:center;border:1px solid var(--line);border-radius:6px;padding:8px 12px;background:rgba(0,0,0,.25)}
 .moves{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
@@ -988,7 +1013,7 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
         <div class="combatInfo">
           <div class="cName" id="foeName"></div>
           <div class="cSub" id="foeTier"></div>
-          <div class="barRow"><div class="hpbar foe"><i id="foeHp"></i></div><span class="barNum" id="foeHpNum"></span></div>
+          <div class="barRow"><div class="hpbar foe"><i class="ghost" id="foeHpG"></i><i class="fill" id="foeHp"></i></div><span class="barNum" id="foeHpNum"></span></div>
         </div>
       </div>
       <div class="clash"><div id="battleFlash"></div><div id="battleFloat"></div></div>
@@ -997,7 +1022,7 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
         <div class="combatInfo">
           <div class="cName">YOU</div>
           <div class="meForm" id="meForm"></div>
-          <div class="barRow"><div class="hpbar me"><i id="meHp"></i></div><span class="barNum" id="meHpNum"></span></div>
+          <div class="barRow"><div class="hpbar me"><i class="ghost" id="meHpG"></i><i class="fill" id="meHp"></i></div><span class="barNum" id="meHpNum"></span></div>
           <div class="barRow"><div class="kibar"><i id="meKi"></i></div><span class="barNum ki" id="meKiNum"></span></div>
         </div>
       </div>
@@ -1491,6 +1516,11 @@ function bflash(){const f=$('#battleFlash');if(f){f.classList.remove('go');void 
 function bfloat(txt,cls){const l=$('#battleFloat');if(!l)return;const s=document.createElement('span');
   s.className='bnum '+cls;s.textContent=txt;s.style.left=(20+Math.random()*58)+'%';l.appendChild(s);setTimeout(()=>s.remove(),1050);}
 function blog(t){const el=$('#battleLog');if(el)el.textContent=t;}
+function buzz(p){try{navigator.vibrate&&navigator.vibrate(p);}catch(e){}}
+function anim(sel,cls,ms){const el=$(sel);if(!el)return;el.classList.remove(cls);void el.offsetWidth;el.classList.add(cls);setTimeout(()=>el.classList.remove(cls),ms||440);}
+function spark(sel,crit){const p=$(sel);if(!p)return;const s=document.createElement('span');s.className='spark'+(crit?' crit':'');p.appendChild(s);setTimeout(()=>s.remove(),400);}
+function punch(){anim('#arena','punch',220);}
+function hitFx(defender,attacker,crit,heavy){anim(attacker,'lunge',420);anim(defender,'hurt',440);spark(defender,crit||heavy);if(crit||heavy)punch();}
 
 function startFight(e){
   const pc=playerCombat(0);
@@ -1507,9 +1537,10 @@ function renderFight(){
   const f=fight;if(!f)return;
   $('#foeName').textContent=f.en.n;
   $('#foeTier').textContent='T'+(f.en.t+1)+' · '+f.en.r.toUpperCase()+' · PL '+fmtPL(f.en.pl)+(f.enraged?' · ENRAGED':'');
-  $('#foeHp').style.width=clamp(f.eHp/f.eHpMax*100,0,100)+'%';
+  const eHpW=clamp(f.eHp/f.eHpMax*100,0,100)+'%',pHpW=clamp(f.pHp/f.pHpMax*100,0,100)+'%';
+  $('#foeHp').style.width=eHpW;$('#foeHpG').style.width=eHpW;
   $('#foeHpNum').textContent=Math.max(0,Math.round(f.eHp))+' / '+Math.round(f.eHpMax);
-  $('#meHp').style.width=clamp(f.pHp/f.pHpMax*100,0,100)+'%';
+  $('#meHp').style.width=pHpW;$('#meHpG').style.width=pHpW;
   $('#meHpNum').textContent=Math.max(0,Math.round(f.pHp))+' / '+Math.round(f.pHpMax);
   $('#meKi').style.width=clamp(f.ki/f.pc.kiMax*100,0,100)+'%';
   $('#meKiNum').textContent=Math.round(f.ki)+' / '+Math.round(f.pc.kiMax);
@@ -1528,15 +1559,16 @@ function renderFight(){
 }
 function pAttack(power,ign,label){
   const f=fight,dodge=Math.max(0,Math.min(25,(f.es.spd-f.pc.spd)*0.4));
-  if(roll(dodge)){bfloat('MISS','miss');blog(f.en.n+' evaded your '+label+'!');return;}
+  if(roll(dodge)){bfloat('MISS','miss');blog(f.en.n+' evaded your '+label+'!');anim('#meArt','lunge',420);beep(300,.06,'sine',.02);return;}
   const r=calcHit(f.pc.atk,power,f.pc.crit,f.es.def,ign);
   f.eHp-=r.d;bflash();bfloat('-'+r.d+(r.c?'!':''),r.c?'crit':'dmg');
+  hitFx('#foeArt','#meArt',r.c,power>1.5);buzz(r.c?[22,28,55]:power>1.5?26:16);
   blog('Your '+label+' hits for '+r.d+(r.c?' — critical!':'.'));beep(r.c?900:620,.07,'square',.03);
 }
 function transformFight(){
   const f=fight;f.pForm=st.formMax;const pc=playerCombat(f.pForm);
   f.pc=pc;f.pHpMax=pc.hpMax;f.pHp=Math.min(pc.hpMax,f.pHp+pc.hpMax*0.10);
-  blog('You transform — '+FORMS[f.pForm].nm+'!');bigFx();bflash();
+  blog('You transform — '+FORMS[f.pForm].nm+'!');bigFx();bflash();spark('#meArt',true);buzz([20,25,20,25,80]);
   beep(180,.18,'sawtooth',.04);setTimeout(()=>beep(1240,.16,'triangle',.05),160);
 }
 function playerMove(m){
@@ -1546,7 +1578,7 @@ function playerMove(m){
   else if(m==='ult'){if(f.pForm<5||f.ki<60)return;f.ki-=60;pAttack(3.2,0,'Ultimate');bigFx();}
   else if(m==='xform'){if(st.formMax<=f.pForm||f.ki<30)return;f.ki-=30;transformFight();}
   else if(m==='guard'){f.guard=true;f.ki=Math.min(f.pc.kiMax,f.ki+18);blog('You brace for the next blow.');}
-  else if(m==='charge'){f.ki=Math.min(f.pc.kiMax,f.ki+35);f.pHp=Math.min(f.pHpMax,f.pHp+f.pHpMax*0.06);blog('You gather energy — Ki restored.');beep(400,.2,'sine',.04);}
+  else if(m==='charge'){f.ki=Math.min(f.pc.kiMax,f.ki+35);const h=Math.round(f.pHpMax*0.06);f.pHp=Math.min(f.pHpMax,f.pHp+h);blog('You gather energy — Ki restored.');bfloat('+'+h,'heal');spark('#meArt',false);buzz(12);beep(400,.2,'sine',.04);}
   if(f.eHp<=0){
     if(hasTrait('revive')&&!f.revived){f.revived=true;f.eHp=Math.round(f.eHpMax*0.4);blog(f.en.n+' refuses to fall — revived!');bfloat('REVIVE','crit');}
     else{f.busy=true;renderFight();setTimeout(winFight,650);return;}
@@ -1562,7 +1594,7 @@ function playerMove(m){
 }
 function enemyTurn(){
   const f=fight;f.eTurn++;
-  if(f.en.r==='boss'&&f.eHp<=f.eHpMax*0.3&&!f.enraged){f.enraged=true;blog(f.en.n.toUpperCase()+' POWERS UP!');bfloat('ENRAGED','crit');beep(140,.3,'sawtooth',.05);}
+  if(f.en.r==='boss'&&f.eHp<=f.eHpMax*0.3&&!f.enraged){f.enraged=true;blog(f.en.n.toUpperCase()+' POWERS UP!');bfloat('ENRAGED','crit');bigFx();bflash();anim('#foeArt','lunge',420);buzz([50,40,70]);beep(140,.3,'sawtooth',.05);}
   if(hasTrait('rampage'))f.eAtk*=1.06;
   const atk=f.eAtk*(f.enraged?1.3:1);
   const attacks=(hasTrait('swift')&&roll(30))?2:1;
@@ -1570,10 +1602,11 @@ function enemyTurn(){
     if(f.pHp<=0)break;
     const power=(f.eTurn%3===0)?1.7:1.0;
     const dodge=Math.max(0,Math.min(35,(f.pc.spd-f.es.spd)*0.5));
-    if(roll(dodge)){bfloat('DODGE','miss');blog('You dodged '+f.en.n+'’s attack!');continue;}
+    if(roll(dodge)){bfloat('DODGE','miss');blog('You dodged '+f.en.n+'’s attack!');anim('#meArt','lunge',420);buzz(8);continue;}
     const r=calcHit(atk,power,f.es.crit,f.pc.def);let d=r.d;
-    if(f.guard){d=Math.round(d*0.4);f.guard=false;}
-    f.pHp-=d;bfloat('-'+d,'foe');bigFx();
+    if(f.guard){d=Math.round(d*0.4);f.guard=false;bfloat('GUARD','miss');}
+    f.pHp-=d;bfloat('-'+d,'foe');
+    hitFx('#meArt','#foeArt',r.c,power>1);buzz(power>1?[16,18,38]:14);
     blog(f.en.n+(power>1?' unleashes a heavy blow':' strikes')+' for '+d+'.');beep(220,.09,'square',.03);
     if(hasTrait('lifesteal'))f.eHp=Math.min(f.eHpMax,f.eHp+d*0.3);
     if(hasTrait('kidrain'))f.ki=Math.max(0,f.ki-8);
@@ -1591,9 +1624,9 @@ function winFight(){
   if(tier.every(x=>st.battle.cleared.includes(x.s))&&e.t+1>st.battle.tierUnlocked)st.battle.tierUnlocked=Math.min(12,e.t+1);
   st.battle.wins++;save();renderAll();
   showResult(true,e,xp,first);
-  beep(660,.12,'triangle',.05);setTimeout(()=>beep(990,.16,'triangle',.05),130);
+  buzz([40,50,40,90]);beep(660,.12,'triangle',.05);setTimeout(()=>beep(990,.16,'triangle',.05),130);
 }
-function loseFight(){fight.over=true;st.battle.losses++;save();showResult(false,fight.en,0,false);beep(150,.4,'sawtooth',.06);}
+function loseFight(){fight.over=true;st.battle.losses++;save();showResult(false,fight.en,0,false);buzz(160);beep(150,.4,'sawtooth',.06);}
 function showResult(win,e,xp,first){
   const r=$('#battleResult');r.className='battleResult '+(win?'win':'lose');
   r.innerHTML=`<div class="brBox"><div class="brTitle">${win?'VICTORY':'DEFEATED'}</div>`+
