@@ -563,6 +563,12 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 .skUp:disabled{opacity:.34;cursor:not-allowed;border-color:var(--line);background:rgba(255,255,255,.03);color:var(--dim)}
 .skUp.maxed{border-color:var(--gold);color:var(--gold);background:rgba(255,215,94,.1)}
 
+/* swipe page-slide */
+.view.slideL{animation:slideInL .3s ease}
+.view.slideR{animation:slideInR .3s ease}
+@keyframes slideInL{from{opacity:0;transform:translateX(34px)}to{opacity:1;transform:none}}
+@keyframes slideInR{from{opacity:0;transform:translateX(-34px)}to{opacity:1;transform:none}}
+
 /* ====== RESPONSIVE ====== */
 @media(max-width:820px){
   .homeWrap{grid-template-columns:1fr}
@@ -1563,6 +1569,39 @@ function showView(v){
   if(v==='battle'){if(fight&&!fight.over)showFight();else renderBattleHome();}
 }
 document.querySelectorAll('.navBtn').forEach(b=>b.addEventListener('click',()=>{showView(b.dataset.view);beep(880,.05,'square',.02);}));
+
+/* ================= SWIPE NAVIGATION ================= */
+(function(){
+  let x0=null,y0=null,t0=0,block=false;
+  const navOrder=()=>[...document.querySelectorAll('.navBtn')].map(b=>b.dataset.view);
+  const currentView=()=>{const v=[...document.querySelectorAll('.view')].find(s=>!s.hidden);return v?v.dataset.view:null;};
+  function slideTo(view,dir){
+    showView(view);beep(700,.04,'square',.02);
+    const el=document.querySelector('.view[data-view="'+view+'"]');
+    if(el&&!matchMedia('(prefers-reduced-motion:reduce)').matches){
+      el.classList.remove('slideL','slideR');void el.offsetWidth;
+      el.classList.add(dir>0?'slideL':'slideR');
+      setTimeout(()=>el.classList.remove('slideL','slideR'),320);
+    }
+  }
+  document.addEventListener('touchstart',e=>{
+    if(e.touches.length!==1){x0=null;return;}
+    const t=e.touches[0];x0=t.clientX;y0=t.clientY;t0=Date.now();
+    // don't hijack swipes inside a fight, a horizontal table, or an open overlay
+    block=!!e.target.closest('#battleFight, .tableWrap, .modal, .battleResult, .wkGrid');
+  },{passive:true});
+  document.addEventListener('touchend',e=>{
+    if(x0==null||block){x0=null;return;}
+    const t=e.changedTouches[0],dx=t.clientX-x0,dy=t.clientY-y0;x0=null;
+    if(Date.now()-t0>600)return;
+    if(Math.abs(dx)<60||Math.abs(dx)<Math.abs(dy)*1.5)return;   // must be a clear horizontal flick
+    if(document.querySelector('.battleResult:not([hidden]), .modal:not([hidden])'))return;
+    const ord=navOrder(),i=ord.indexOf(currentView());if(i<0)return;
+    const ni=dx>0?i-1:i+1;                                       // swipe right → previous, left → next
+    if(ni<0||ni>=ord.length)return;
+    slideTo(ord[ni],dx>0?-1:1);
+  },{passive:true});
+})();
 
 /* ================= BATTLE MODE ================= */
 const BM=[1.00,1.15,1.35,1.55,1.80,2.10,2.45,2.85,3.30,3.80,4.35,5.00,5.75];
