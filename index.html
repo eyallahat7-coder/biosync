@@ -320,6 +320,14 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 .resetBtn{align-self:flex-end;background:none;border:1px solid rgba(255,77,94,.3);color:rgba(255,77,94,.7);
   font-family:var(--fj);font-size:10px;letter-spacing:2px;padding:7px 14px;cursor:pointer;transition:.2s}
 .resetBtn:hover{background:rgba(255,77,94,.12);color:var(--red)}
+.historyBtn{display:flex;align-items:center;justify-content:center;gap:9px;background:rgba(53,224,255,.06);
+  border:1px solid var(--line);color:var(--cyan);font-family:var(--fd);font-size:12px;letter-spacing:1.5px;
+  padding:13px;cursor:pointer;transition:.15s;border-radius:3px}
+.historyBtn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round}
+.historyBtn:hover{background:rgba(53,224,255,.14);box-shadow:0 0 20px rgba(53,224,255,.2)}
+.backBtn{align-self:flex-start;background:none;border:1px solid var(--line);color:var(--dim);
+  font-family:var(--fj);font-size:11px;letter-spacing:1px;padding:7px 14px;cursor:pointer;transition:.2s;margin-bottom:2px}
+.backBtn:hover{color:var(--cyan);border-color:var(--cyan)}
 /* ====== HISTORY ====== */
 .histSummary{display:flex;gap:12px;flex-wrap:wrap}
 .hsChip{border:1px solid var(--line);background:rgba(255,255,255,.03);padding:10px 16px;display:flex;flex-direction:column;gap:3px;min-width:110px}
@@ -1023,6 +1031,10 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
     <div class="gradePreview" id="gradePreview"></div>
     <button class="syncBtn" id="syncBtn">SYNC TO CHARACTER</button>
     <div class="syncNote" id="syncNote"></div>
+    <button class="historyBtn" id="historyBtn" data-view="history">
+      <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      VIEW HISTORY
+    </button>
     <button class="resetBtn" id="resetBtn">⟲ Reset all save data</button>
   </div>
 </section>
@@ -1031,6 +1043,7 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 <section class="view" id="viewHistory" data-view="history" hidden>
   <div class="panel">
     <div class="corner-b"></div>
+    <button class="backBtn" id="historyBack">◂ Daily Log</button>
     <div class="pHead"><h2>HISTORY</h2><span>All logged days</span></div>
     <div class="histSummary" id="histSummary"></div>
     <div class="tableWrap">
@@ -1107,10 +1120,6 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
   <button class="navBtn" data-view="battle">
     <svg viewBox="0 0 24 24"><path d="M6 4l4 4M4 6l4 4M3 21l7-7M14 10l7-7M17 4h3v3M13 11l8 8M21 18v3h-3M18 21l-4-4"/></svg>
     BATTLE
-  </button>
-  <button class="navBtn" data-view="history">
-    <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
-    HISTORY
   </button>
 </nav>
 
@@ -1569,6 +1578,8 @@ function showView(v){
   if(v==='battle'){if(fight&&!fight.over)showFight();else renderBattleHome();}
 }
 document.querySelectorAll('.navBtn').forEach(b=>b.addEventListener('click',()=>{showView(b.dataset.view);beep(880,.05,'square',.02);}));
+$('#historyBtn').addEventListener('click',()=>{showView('history');beep(880,.05,'square',.02);});
+$('#historyBack').addEventListener('click',()=>{showView('daily');beep(700,.04,'square',.02);});
 
 /* ================= SWIPE NAVIGATION ================= */
 (function(){
