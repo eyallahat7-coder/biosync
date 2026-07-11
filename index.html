@@ -554,7 +554,42 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
   background:rgba(255,46,136,.12);color:var(--pink2);cursor:pointer;transition:.12s}
 .scPlus:hover:not(:disabled){background:rgba(255,46,136,.25);color:#fff}
 .scPlus:disabled{opacity:.32;cursor:not-allowed;border-color:var(--line);background:rgba(255,255,255,.03);color:var(--dim)}
-.skillGrid{display:flex;flex-direction:column;gap:10px}
+/* ---- technique tree ---- */
+.skTree{position:relative;display:grid;grid-template-columns:repeat(5,1fr);gap:4px;
+  border:1px solid var(--line);border-radius:10px;padding:14px 4px 16px;overflow:hidden;
+  background:
+    radial-gradient(circle at 50% -10%, rgba(53,224,255,.09), transparent 60%),
+    repeating-linear-gradient(0deg, rgba(53,224,255,.02) 0 2px, transparent 2px 5px),
+    linear-gradient(170deg,#0b0f22,#070a18)}
+.skTree::before{content:"";position:absolute;top:-1px;left:-1px;width:14px;height:14px;border-top:2px solid var(--cyan);border-left:2px solid var(--cyan)}
+.skTree::after{content:"";position:absolute;bottom:-1px;right:-1px;width:14px;height:14px;border-bottom:2px solid var(--cyan);border-right:2px solid var(--cyan)}
+.skCol{position:relative;display:flex;flex-direction:column;align-items:center;gap:9px;padding-bottom:4px}
+.skCol::before{content:"";position:absolute;top:48px;bottom:8px;left:50%;width:2px;transform:translateX(-50%);
+  background:linear-gradient(180deg,var(--tc) 0%,rgba(255,255,255,.05) 100%);opacity:.3}
+.skCol.sel::before{opacity:.65;box-shadow:0 0 8px var(--tc)}
+.skColHead{position:relative;z-index:1;width:40px;height:40px;border-radius:50%;border:2px solid var(--tc);
+  background:rgba(6,9,20,.9);display:flex;align-items:center;justify-content:center;font-size:17px;cursor:pointer;
+  transition:.15s;opacity:.75;padding:0}
+.skCol.sel .skColHead{opacity:1;box-shadow:0 0 16px var(--tc);transform:scale(1.1)}
+.hexN{position:relative;z-index:1;border:none;background:none;padding:0;cursor:pointer;
+  display:flex;align-items:center;justify-content:center}
+.hexN.big{width:38px;height:43px}
+.hexN.small{width:19px;height:22px}
+.hexN .hx{position:absolute;inset:0;clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);
+  background:rgba(125,135,173,.22);transition:.2s}
+.hexN .hxi{position:absolute;inset:2.5px;clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);
+  background:#0a0e1e;transition:.2s;display:flex;align-items:center;justify-content:center;
+  font-family:var(--fd);font-size:12px;color:var(--faint)}
+.hexN.small .hxi{inset:2px}
+.hexN.on{filter:drop-shadow(0 0 6px var(--tc))}
+.hexN.on .hx{background:var(--tc)}
+.hexN.on .hxi{background:linear-gradient(160deg,var(--tc),#0a0e1e 130%);color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.7)}
+.hexN.next .hx{background:var(--tc);opacity:.85;animation:hexPulse 1.6s infinite}
+.hexN.next .hxi{color:var(--tc)}
+@keyframes hexPulse{0%,100%{opacity:.45}50%{opacity:1}}
+.hexN.lock{opacity:.5;cursor:pointer}
+@media(prefers-reduced-motion:reduce){.hexN.next .hx{animation:none}}
+.skDetail{margin-top:10px}
 .skillCard{border:1px solid var(--line);border-radius:9px;background:var(--panel);padding:13px 15px;display:flex;flex-direction:column;gap:9px}
 .scHead{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
 .skNm{font-family:var(--fd);font-size:15px;color:var(--text);letter-spacing:.5px}
@@ -1100,7 +1135,10 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
     <div class="skStreak" id="skStreak"></div>
   </div>
   <div class="skSection"><h3 class="skH">STATS — Ascension Points ⬡</h3><div class="statGrid" id="skStats"></div></div>
-  <div class="skSection"><h3 class="skH">TECHNIQUES — Skill Points ✦</h3><div class="skillGrid" id="skSkills"></div></div>
+  <div class="skSection"><h3 class="skH">TECHNIQUE TREE — Skill Points ✦</h3>
+    <div class="skTree" id="skTree"></div>
+    <div class="skDetail" id="skDetail"></div>
+  </div>
 </section>
 
 <!-- ============================= BOTTOM NAV ============================= -->
@@ -1814,6 +1852,7 @@ document.addEventListener('click',e=>{
   const fc=e.target.closest('.pNode,.foeCard');if(fc&&!fc.disabled){const en=ENEMIES.find(x=>x.s===fc.dataset.foe);if(en)startFight(en);return;}
   const sp=e.target.closest('.scPlus');if(sp&&!sp.disabled){spendAsc(sp.dataset.stat);return;}
   const su=e.target.closest('.skUp');if(su&&!su.disabled&&su.dataset.skill){upgradeSkill(su.dataset.skill);return;}
+  const tn=e.target.closest('#skTree [data-skill]');if(tn){selSkill=tn.dataset.skill;renderSkills();beep(760,.04,'square',.02);return;}
 });
 $('#retreatBtn').addEventListener('click',()=>{fight=null;renderBattleHome();beep(300,.1,'sine',.03);});
 
@@ -1839,19 +1878,39 @@ function renderSkills(){
       `<button class="scPlus" data-stat="${k}"${can?'':' disabled'}>+2  ·  spend ⬡</button></div>`;
   }
   $('#skStats').innerHTML=sh;
-  let kh='';
+  const ROMAN=['I','II','III','IV'];
+  let th='';
   for(const id of['strike','ki','ult','guard','charge']){
-    const lv=skillLevel(id),cost=skillUpCost(id),nt=nextTier(id);
-    const pips=Array.from({length:SKILL_MAX},(_,i)=>`<i class="${i<lv?'on':''}"></i>`).join('');
-    const teaser=nt?(nt.lv===lv+1?`<span class="skNext">→ ${nt.n}</span>`:`<span class="skNext dim">next: ${nt.n} (Lv ${nt.lv})</span>`):'';
-    const canUp=cost!==null&&(st.skillPoints||0)>=cost;
-    const btn=cost===null?`<button class="skUp maxed" disabled>MAX</button>`:`<button class="skUp" data-skill="${id}"${canUp?'':' disabled'}>Upgrade ✦${cost}</button>`;
-    kh+=`<div class="skillCard"><div class="scHead"><span class="skNm">${skillName(id)}</span>${teaser}</div>`+
-      `<div class="skPips">${pips}</div>`+
-      `<div class="scFoot"><span class="skEff">Lv ${lv}/${SKILL_MAX} · ${skillEffText(id)}</span>${btn}</div></div>`;
+    const m=SK_META[id],cur=skillLevel(id),tiers=SKILLS[id].tiers;
+    let nodes='';
+    for(let lv=0;lv<=SKILL_MAX;lv++){
+      const ti=tiers.findIndex(t=>t[0]===lv);
+      const big=ti>=0;
+      const stt=lv<=cur?'on':(lv===cur+1?'next':'lock');
+      nodes+=`<button class="hexN ${big?'big':'small'} ${stt}" data-skill="${id}" aria-label="${skillName(id)} level ${lv}">`+
+        `<span class="hx"></span><span class="hxi">${big?ROMAN[ti]:''}</span></button>`;
+    }
+    th+=`<div class="skCol${selSkill===id?' sel':''}" style="--tc:${m.c}">`+
+      `<button class="skColHead" data-skill="${id}">${m.g}</button>${nodes}</div>`;
   }
-  $('#skSkills').innerHTML=kh;
+  $('#skTree').innerHTML=th;
+  const id=selSkill,lv=skillLevel(id),cost=skillUpCost(id),nt=nextTier(id);
+  const teaser=nt?(nt.lv===lv+1?`<span class="skNext">→ ${nt.n}</span>`:`<span class="skNext dim">next: ${nt.n} (Lv ${nt.lv})</span>`):'';
+  const canUp=cost!==null&&(st.skillPoints||0)>=cost;
+  const btn=cost===null?`<button class="skUp maxed" disabled>MAX</button>`:`<button class="skUp" data-skill="${id}"${canUp?'':' disabled'}>Upgrade ✦${cost}</button>`;
+  $('#skDetail').innerHTML=`<div class="skillCard" style="border-color:${SK_META[id].c}44">`+
+    `<div class="scHead"><span class="skNm" style="color:${SK_META[id].c}">${skillName(id)}</span>${teaser}</div>`+
+    `<div class="skPips">${Array.from({length:SKILL_MAX},(_,i)=>`<i class="${i<lv?'on':''}"></i>`).join('')}</div>`+
+    `<div class="scFoot"><span class="skEff">Lv ${lv}/${SKILL_MAX} · ${skillEffText(id)}</span>${btn}</div></div>`;
 }
+let selSkill='strike';
+const SK_META={
+  strike:{g:'👊',c:'#ff4d5e'},
+  ki:{g:'🌀',c:'#35e0ff'},
+  ult:{g:'💥',c:'#ff2e88'},
+  guard:{g:'🛡️',c:'#57ffc2'},
+  charge:{g:'⚡',c:'#ffd75e'}
+};
 function spendAsc(k){
   if((st.ascPoints||0)<=0)return;
   st.ascPoints--;st.trained[k]=((st.trained[k])||0)+2;save();
