@@ -589,7 +589,32 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 @keyframes hexPulse{0%,100%{opacity:.45}50%{opacity:1}}
 .hexN.lock{opacity:.5;cursor:pointer}
 @media(prefers-reduced-motion:reduce){.hexN.next .hx{animation:none}}
-.skDetail{margin-top:10px}
+.skDetail{position:sticky;bottom:8px;z-index:6;margin-top:10px}
+.skDetail .skillCard{background:rgba(10,14,28,.94);backdrop-filter:blur(10px);box-shadow:0 8px 30px rgba(0,0,0,.6)}
+/* ---- skill path nodes ---- */
+.sNode{position:absolute;transform:translate(-50%,-50%);width:58px;height:58px;padding:0;border:none;background:none;cursor:pointer;z-index:1}
+.sNode.apex{width:72px;height:72px}
+.sArt{position:absolute;inset:0;border-radius:50%;border:2px solid var(--tc);
+  background:radial-gradient(circle at 50% 35%, rgba(255,255,255,.08), transparent 60%),linear-gradient(160deg,#131a32,#090d1c);
+  display:flex;align-items:center;justify-content:center;font-size:24px;transition:.2s}
+.sNode.apex .sArt{font-size:30px}
+.tierB{position:absolute;bottom:-4px;right:-4px;width:20px;height:20px;border-radius:50%;
+  background:#0a0e1e;border:1.5px solid var(--tc);color:var(--tc);
+  font-family:var(--fd);font-size:9px;font-style:normal;display:flex;align-items:center;justify-content:center}
+.sNode.un{filter:drop-shadow(0 0 9px var(--tc))}
+.sNode.un .sArt{box-shadow:0 0 16px var(--tc) inset,0 0 12px rgba(0,0,0,.4) inset}
+.sNode.lk .sArt{filter:grayscale(1) brightness(.5);border-color:rgba(125,135,173,.35)}
+.sNode.lk .tierB{border-color:rgba(125,135,173,.35);color:var(--faint)}
+.sNode.nxt .sArt{animation:snPulse 1.6s infinite;filter:grayscale(.55) brightness(.75)}
+@keyframes snPulse{0%,100%{box-shadow:0 0 4px var(--tc)}50%{box-shadow:0 0 20px var(--tc)}}
+.sNode.selS .sArt{border-width:3px}
+.sLabel{position:absolute;top:calc(100% + 5px);left:50%;transform:translateX(-50%);white-space:nowrap;text-align:center;line-height:1.15}
+.sLabel b{display:block;font-family:var(--fd);font-size:9.5px;font-weight:400;color:var(--text);letter-spacing:.4px}
+.sNode.lk .sLabel b{color:var(--dim)}
+.sLabel i{font-family:var(--fj);font-style:normal;font-size:9px;letter-spacing:.6px;color:var(--faint)}
+.sNode.un .sLabel i{color:var(--tc)}
+.sNode.nxt .sLabel i{color:var(--gold)}
+@media(prefers-reduced-motion:reduce){.sNode.nxt .sArt{animation:none}}
 .skillCard{border:1px solid var(--line);border-radius:9px;background:var(--panel);padding:13px 15px;display:flex;flex-direction:column;gap:9px}
 .scHead{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
 .skNm{font-family:var(--fd);font-size:15px;color:var(--text);letter-spacing:.5px}
@@ -1134,10 +1159,40 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
     <div class="skPointsRow" id="skPoints"></div>
     <div class="skStreak" id="skStreak"></div>
   </div>
-  <div class="skSection"><h3 class="skH">STATS — Ascension Points ⬡</h3><div class="statGrid" id="skStats"></div></div>
-  <div class="skSection"><h3 class="skH">TECHNIQUE TREE — Skill Points ✦</h3>
-    <div class="skTree" id="skTree"></div>
-    <div class="skDetail" id="skDetail"></div>
+  <div class="skSection"><h3 class="skH">TECHNIQUE PATH — Skill Points ✦</h3>
+    <div class="pathWrap" id="skPathWrap"></div>
+  </div>
+  <div class="skDetail" id="skDetail"></div>
+</section>
+
+<!-- ============================= STATS ============================= -->
+<section class="view" id="viewStats" data-view="stats" hidden>
+  <div class="panel">
+    <div class="corner-b"></div>
+    <div class="pHead"><h2>STATS</h2><span>Character parameters</span></div>
+    <div class="radarWrap">
+      <svg width="220" height="204" viewBox="0 0 230 212">
+        <g stroke="rgba(53,224,255,.14)" fill="none">
+          <polygon points="115,16 205,106 115,196 25,106"/>
+          <polygon points="115,38.5 182.5,106 115,173.5 47.5,106"/>
+          <polygon points="115,61 160,106 115,151 70,106"/>
+          <polygon points="115,83.5 137.5,106 115,128.5 92.5,106"/>
+          <line x1="115" y1="16" x2="115" y2="196"/><line x1="25" y1="106" x2="205" y2="106"/>
+        </g>
+        <polygon id="radarPoly2" points="115,106 115,106 115,106 115,106"
+          fill="rgba(255,46,136,.18)" stroke="#ff2e88" stroke-width="2"
+          style="filter:drop-shadow(0 0 8px rgba(255,46,136,.6))"/>
+        <g id="radarDots2" fill="#fff"></g>
+        <g font-family="Zen Dots" font-size="10" fill="#7d87ad" text-anchor="middle">
+          <text x="115" y="11" fill="#57ffc2">VIT</text>
+          <text x="218" y="110" fill="#ff7ab8">STR</text>
+          <text x="115" y="209" fill="#35e0ff">AGI</text>
+          <text x="12" y="110" fill="#ffc94d">FOC</text>
+        </g>
+      </svg>
+    </div>
+    <div class="skPointsRow" id="stPoints"></div>
+    <div class="statGrid" id="skStats"></div>
   </div>
 </section>
 
@@ -1154,6 +1209,10 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
   <button class="navBtn" data-view="skills">
     <svg viewBox="0 0 24 24"><path d="M12 2l2.4 6.5L21 9l-5 4.2L17.6 20 12 16.3 6.4 20 8 13.2 3 9l6.6-.5z"/></svg>
     SKILLS
+  </button>
+  <button class="navBtn" data-view="stats">
+    <svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/></svg>
+    STATS
   </button>
   <button class="navBtn" data-view="battle">
     <svg viewBox="0 0 24 24"><path d="M6 4l4 4M4 6l4 4M3 21l7-7M14 10l7-7M17 4h3v3M13 11l8 8M21 18v3h-3M18 21l-4-4"/></svg>
@@ -1609,10 +1668,11 @@ function spawnFloat(txt,cls){
 function showView(v){
   document.querySelectorAll('.view').forEach(s=>{s.hidden=s.dataset.view!==v;});
   document.querySelectorAll('.navBtn').forEach(b=>b.classList.toggle('active',b.dataset.view===v));
-  $('#viewTitle').textContent={home:'HOME',daily:'DAILY LOG',skills:'SKILLS',battle:'BATTLE',history:'HISTORY'}[v]||'';
+  $('#viewTitle').textContent={home:'HOME',daily:'DAILY LOG',skills:'SKILLS',stats:'STATS',battle:'BATTLE',history:'HISTORY'}[v]||'';
   if(v==='daily')renderDaily();
   if(v==='history')renderHistory();
   if(v==='skills')renderSkills();
+  if(v==='stats')renderStatsPage();
   if(v==='battle'){if(fight&&!fight.over)showFight();else renderBattleHome();}
 }
 document.querySelectorAll('.navBtn').forEach(b=>b.addEventListener('click',()=>{showView(b.dataset.view);beep(880,.05,'square',.02);}));
@@ -1852,7 +1912,7 @@ document.addEventListener('click',e=>{
   const fc=e.target.closest('.pNode,.foeCard');if(fc&&!fc.disabled){const en=ENEMIES.find(x=>x.s===fc.dataset.foe);if(en)startFight(en);return;}
   const sp=e.target.closest('.scPlus');if(sp&&!sp.disabled){spendAsc(sp.dataset.stat);return;}
   const su=e.target.closest('.skUp');if(su&&!su.disabled&&su.dataset.skill){upgradeSkill(su.dataset.skill);return;}
-  const tn=e.target.closest('#skTree [data-skill]');if(tn){selSkill=tn.dataset.skill;renderSkills();beep(760,.04,'square',.02);return;}
+  const tn=e.target.closest('#skPathWrap [data-skill]');if(tn){selSkill=tn.dataset.skill;renderSkills();beep(760,.04,'square',.02);return;}
 });
 $('#retreatBtn').addEventListener('click',()=>{fight=null;renderBattleHome();beep(300,.1,'sine',.03);});
 
@@ -1870,30 +1930,32 @@ function renderSkills(){
   const on=st.streak>=3;
   $('#skStreak').className='skStreak'+(on?' on':'');
   $('#skStreak').textContent=on?('🔥 '+st.streak+'-day streak — earning every day'):('Reach a 3-day streak to start earning — '+st.streak+'/3');
-  let sh='';
-  for(const k of['vit','str','agi','foc']){
-    const base=Math.min(100,Math.round(st.stats[k])),tr=(st.trained&&st.trained[k])||0,eff=base+tr;
-    const can=(st.ascPoints||0)>0;
-    sh+=`<div class="statCard s-${k}"><div class="scTop"><span class="scName">${STAT_NAME[k]}</span><span class="scVal">${eff}${tr?` <i>+${tr}</i>`:''}</span></div>`+
-      `<button class="scPlus" data-stat="${k}"${can?'':' disabled'}>+2  ·  spend ⬡</button></div>`;
-  }
-  $('#skStats').innerHTML=sh;
   const ROMAN=['I','II','III','IV'];
-  let th='';
-  for(const id of['strike','ki','ult','guard','charge']){
-    const m=SK_META[id],cur=skillLevel(id),tiers=SKILLS[id].tiers;
-    let nodes='';
-    for(let lv=0;lv<=SKILL_MAX;lv++){
-      const ti=tiers.findIndex(t=>t[0]===lv);
-      const big=ti>=0;
-      const stt=lv<=cur?'on':(lv===cur+1?'next':'lock');
-      nodes+=`<button class="hexN ${big?'big':'small'} ${stt}" data-skill="${id}" aria-label="${skillName(id)} level ${lv}">`+
-        `<span class="hx"></span><span class="hxi">${big?ROMAN[ti]:''}</span></button>`;
-    }
-    th+=`<div class="skCol${selSkill===id?' sel':''}" style="--tc:${m.c}">`+
-      `<button class="skColHead" data-skill="${id}">${m.g}</button>${nodes}</div>`;
-  }
-  $('#skTree').innerHTML=th;
+  const PATH_ORDER=[
+    ['strike',0],['ki',0],['ult',0],['guard',0],['charge',0],
+    ['strike',2],['ki',2],['ult',2],['guard',3],['charge',3],
+    ['strike',4],['ki',4],['ult',4],
+    ['strike',6],['ki',6],['ult',6],['guard',6],['charge',6]
+  ];
+  const SP=104,PAD=56,n=PATH_ORDER.length,H=PAD*2+(n-1)*SP;
+  const wrap=$('#skPathWrap');wrap.style.height=H+'px';
+  const W=wrap.clientWidth||340,pts=[];
+  const nodes=PATH_ORDER.map(([id,lv],i)=>{
+    const m=SK_META[id],cur=skillLevel(id);
+    const ti=SKILLS[id].tiers.findIndex(t=>t[0]===lv);
+    const nm=SKILLS[id].tiers[ti][1];
+    const un=cur>=lv;
+    const nt0=nextTier(id);
+    const nxt=!un&&nt0&&nt0.lv===lv;
+    const apex=lv===SKILL_MAX;
+    const x=50+27*Math.sin(i*0.9),y=PAD+i*SP;pts.push([x/100*W,y]);
+    const sub=un?'UNLOCKED':(nxt?('LV '+lv+' · TRAIN'):'LV '+lv);
+    return `<button class="sNode ${un?'un':'lk'}${nxt?' nxt':''}${apex?' apex':''}${selSkill===id?' selS':''}" data-skill="${id}" style="left:${x.toFixed(2)}%;top:${y}px;--tc:${m.c}">`+
+      `<span class="sArt">${m.g}<i class="tierB">${ROMAN[ti]}</i></span>`+
+      `<span class="sLabel"><b>${nm}</b><i>${sub}</i></span></button>`;
+  }).join('');
+  const path='<svg class="pathSvg" viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="none"><path d="'+pts.map((p,i)=>(i?'L':'M')+p[0].toFixed(1)+' '+p[1]).join(' ')+'"/></svg>';
+  wrap.innerHTML=path+nodes;
   const id=selSkill,lv=skillLevel(id),cost=skillUpCost(id),nt=nextTier(id);
   const teaser=nt?(nt.lv===lv+1?`<span class="skNext">→ ${nt.n}</span>`:`<span class="skNext dim">next: ${nt.n} (Lv ${nt.lv})</span>`):'';
   const canUp=cost!==null&&(st.skillPoints||0)>=cost;
@@ -1911,10 +1973,26 @@ const SK_META={
   guard:{g:'🛡️',c:'#57ffc2'},
   charge:{g:'⚡',c:'#ffd75e'}
 };
+function renderStatsPage(){
+  $('#stPoints').innerHTML=`<div class="skPill asc"><b>${st.ascPoints||0}</b><span>Ascension ⬡ — spend below</span></div>`;
+  let sh='';
+  for(const k of['vit','str','agi','foc']){
+    const base=Math.min(100,Math.round(st.stats[k])),tr=(st.trained&&st.trained[k])||0,eff=base+tr;
+    const can=(st.ascPoints||0)>0;
+    sh+=`<div class="statCard s-${k}"><div class="scTop"><span class="scName">${STAT_NAME[k]}</span><span class="scVal">${eff}${tr?` <i>+${tr}</i>`:''}</span></div>`+
+      `<button class="scPlus" data-stat="${k}"${can?'':' disabled'}>+2  ·  spend ⬡</button></div>`;
+  }
+  $('#skStats').innerHTML=sh;
+  const cx=115,cy=106,R=90,cl=v=>Math.min(100,v);
+  const ev={vit:effOf('vit'),str:effOf('str'),agi:effOf('agi'),foc:effOf('foc')};
+  const pts=[[cx,cy-R*cl(ev.vit)/100],[cx+R*cl(ev.str)/100,cy],[cx,cy+R*cl(ev.agi)/100],[cx-R*cl(ev.foc)/100,cy]];
+  $('#radarPoly2').setAttribute('points',pts.map(p=>p.map(n=>n.toFixed(1)).join(',')).join(' '));
+  $('#radarDots2').innerHTML=pts.map(p=>`<circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="3"/>`).join('');
+}
 function spendAsc(k){
   if((st.ascPoints||0)<=0)return;
   st.ascPoints--;st.trained[k]=((st.trained[k])||0)+2;save();
-  renderSkills();renderAll();beep(660,.08,'triangle',.04);setTimeout(()=>beep(990,.09,'triangle',.04),70);
+  renderStatsPage();renderAll();beep(660,.08,'triangle',.04);setTimeout(()=>beep(990,.09,'triangle',.04),70);
 }
 function upgradeSkill(id){
   const c=skillUpCost(id);if(c===null||(st.skillPoints||0)<c)return;
