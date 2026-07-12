@@ -116,7 +116,25 @@ header{position:relative;z-index:5;display:flex;align-items:center;justify-conte
   background:linear-gradient(120deg,var(--gold),#ff9d3d);border:none;padding:9px 18px;cursor:pointer;z-index:6;
   clip-path:polygon(10px 0,100% 0,calc(100% - 10px) 100%,0 100%);animation:readyPulse 1.4s ease-in-out infinite;box-shadow:0 0 22px rgba(255,215,94,.5)}
 @keyframes readyPulse{50%{box-shadow:0 0 40px rgba(255,215,94,.9);transform:scale(1.04)}}
-.holo{position:relative;width:100%;max-width:520px;min-height:340px;flex:1;display:flex;align-items:center;justify-content:center}
+.holo{position:relative;width:100%;max-width:520px;min-height:340px;flex:1;display:flex;align-items:center;justify-content:center;overflow:hidden;
+  --formC:#35e0ff;isolation:isolate;
+  background:radial-gradient(ellipse at 50% 110%,color-mix(in srgb,var(--formC) 24%,transparent),transparent 54%),linear-gradient(180deg,rgba(20,29,58,.68),rgba(4,7,19,.2) 36%,rgba(4,7,19,.74) 100%)}
+.chamberBackdrop{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.chamberBackdrop::before{content:"";position:absolute;inset:-10% -18% 26%;opacity:.75;background:
+  repeating-linear-gradient(90deg,transparent 0 13%,color-mix(in srgb,var(--formC) 20%,transparent) 13.2% 13.45%,transparent 13.7% 26%),
+  linear-gradient(112deg,transparent 20%,color-mix(in srgb,var(--formC) 12%,transparent) 46%,transparent 67%);transform:perspective(420px) rotateX(12deg)}
+.chamberBackdrop::after{content:"";position:absolute;left:8%;right:8%;top:9%;height:1px;background:linear-gradient(90deg,transparent,var(--formC),transparent);opacity:.48;box-shadow:0 68px 0 rgba(255,255,255,.05),0 136px 0 rgba(255,255,255,.035)}
+.chamberCode{position:absolute;top:11px;left:14px;font-family:var(--fj);font-size:9px;letter-spacing:2px;color:color-mix(in srgb,var(--formC) 72%,white);opacity:.72}
+.chamberCode::after{content:"FIGHTER / SELECT"}
+.chamberRank{position:absolute;top:11px;right:14px;font-family:var(--fd);font-size:10px;letter-spacing:1px;color:var(--gold);opacity:.82}
+.chamberRank::after{content:"SAIYAN DOSSIER"}
+.selectionPlatform{position:absolute;left:50%;bottom:4.5%;width:76%;height:74px;transform:translateX(-50%);z-index:2;pointer-events:none}
+.selectionPlatform::before{content:"";position:absolute;left:7%;right:7%;top:25px;height:35px;border-radius:50%;background:radial-gradient(ellipse,color-mix(in srgb,var(--formC) 38%,transparent),transparent 66%);filter:blur(8px)}
+.selectionPlatform::after{content:"";position:absolute;inset:14px 0 0;border-radius:50%;border:2px solid color-mix(in srgb,var(--formC) 82%,white);box-shadow:0 0 16px color-mix(in srgb,var(--formC) 58%,transparent),inset 0 0 18px color-mix(in srgb,var(--formC) 22%,transparent);opacity:.9}
+.selectionPlatform i{position:absolute;inset:23px 9% 6px;border-radius:50%;border:1px solid color-mix(in srgb,var(--formC) 55%,transparent);box-shadow:inset 0 6px 20px rgba(0,0,0,.82);background:radial-gradient(ellipse at 50% 18%,rgba(255,255,255,.14),rgba(5,8,18,.92) 68%)}
+.selectionPlatform b{position:absolute;left:14%;right:14%;top:22px;height:1px;background:var(--formC);opacity:.62;box-shadow:0 0 12px var(--formC);animation:platformScan 2.8s linear infinite}
+@keyframes platformScan{0%{transform:scaleX(.2);opacity:0}25%,75%{opacity:.75}100%{transform:scaleX(1);opacity:0}}
+.chamberVignette{position:absolute;inset:0;z-index:4;pointer-events:none;background:radial-gradient(ellipse at 50% 45%,transparent 44%,rgba(2,4,13,.18) 70%,rgba(2,4,13,.72) 100%)}
 .holo.shake{animation:shakeX 1s linear}
 @keyframes shakeX{0%,100%{transform:none}10%{transform:translate(-6px,3px)}20%{transform:translate(7px,-2px)}30%{transform:translate(-7px,-4px)}
  40%{transform:translate(6px,3px)}50%{transform:translate(-5px,5px)}60%{transform:translate(5px,-5px)}70%{transform:translate(-4px,2px)}
@@ -144,18 +162,17 @@ header{position:relative;z-index:5;display:flex;align-items:center;justify-conte
 .charStage.f-mui .aura{background:radial-gradient(ellipse at center, rgba(240,246,255,.65), rgba(160,180,230,.3) 52%, transparent 68%);opacity:.72;animation:auraPulse 2.4s infinite}
 .charStage.f-ue .aura{background:radial-gradient(ellipse at center, rgba(180,80,255,.6), transparent 64%);opacity:.64;animation:auraPulse 2s infinite}
 .charStage.f-beast .aura{background:radial-gradient(ellipse at center, rgba(255,60,80,.6), rgba(255,150,160,.25) 50%, transparent 66%);opacity:.66;animation:auraPulse 1.8s infinite}
-#charaBox{position:relative;height:100%;max-height:52vh;max-width:100%;min-width:0;display:flex;align-items:center;justify-content:center;z-index:2;animation:bob 5s ease-in-out infinite}
+#charaBox{position:relative;height:100%;max-height:52vh;max-width:100%;min-width:0;display:flex;align-items:center;justify-content:center;z-index:3;animation:bob 5s ease-in-out infinite}
 #charaSvg{height:100%;width:auto;max-width:100%;overflow:visible}
-#imgWrap{position:relative;height:100%;max-width:100%;min-width:0;display:none}
+#imgWrap{position:relative;height:100%;max-width:100%;min-width:0;display:none;filter:drop-shadow(0 20px 15px rgba(0,0,0,.7))}
 #charaBox.hasImg #charaSvg{display:none}
 #charaBox.hasImg #imgWrap{display:block}
-#charaImg{height:100%;width:auto;max-width:100%;object-fit:contain;display:block;border-radius:16px;
-  border:1px solid rgba(53,224,255,.22);box-shadow:0 10px 44px rgba(0,0,0,.6),0 0 40px rgba(53,224,255,.1)}
-.imgTint{position:absolute;inset:0;border-radius:16px;pointer-events:none;
-  background:repeating-linear-gradient(0deg, rgba(53,224,255,.035) 0 2px, transparent 2px 4px),
-    radial-gradient(ellipse at 50% 42%, transparent 52%, rgba(4,6,16,.38) 100%),
-    linear-gradient(180deg, rgba(4,6,16,.22), transparent 26%, transparent 72%, rgba(4,6,16,.42));
-  box-shadow:inset 0 0 46px rgba(5,8,22,.45)}
+#charaImg{height:100%;width:auto;max-width:100%;object-fit:contain;display:block;border:none;border-radius:0;
+  filter:contrast(1.1) saturate(1.07) brightness(.91)}
+.imgTint{position:absolute;inset:0;pointer-events:none;background:
+  linear-gradient(90deg,rgba(4,7,19,.38),transparent 24%,transparent 76%,rgba(4,7,19,.38)),
+  radial-gradient(ellipse at 50% 43%,transparent 48%,rgba(4,6,16,.30) 100%),
+  linear-gradient(180deg,rgba(4,6,16,.28),transparent 28%,transparent 68%,rgba(4,6,16,.55));mix-blend-mode:multiply}
 #charaBox.charging{animation:chargeUp 1.05s ease-in forwards}
 @keyframes chargeUp{0%{filter:none;transform:none}55%{transform:scale(.97,.93) translateY(6px)}100%{filter:brightness(2.4) saturate(.5);transform:scale(.95,.9) translateY(10px)}}
 #charaBox.popIn{animation:popX .7s cubic-bezier(.2,1.6,.3,1)}
@@ -814,10 +831,12 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
       </div>
       <button class="tfReady" id="tfReady" hidden>⚡ TRANSFORMATION AVAILABLE</button>
       <div class="holo" id="holo">
+        <div class="chamberBackdrop" aria-hidden="true"><i class="chamberCode"></i><i class="chamberRank"></i></div>
         <div class="aura"></div>
         <div class="particles"><i></i><i></i><i></i><i></i><i></i><i></i></div>
         <div id="floatLayer"></div>
         <div id="shock"></div>
+        <div class="selectionPlatform" aria-hidden="true"><i></i><b></b></div>
         <div id="charaBox">
         <svg id="charaSvg" class="mood-tired f-base" viewBox="0 0 320 470" xmlns="http://www.w3.org/2000/svg">
           <defs>
@@ -1046,6 +1065,7 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
         </svg>
         <span id="imgWrap"><img id="charaImg" alt="Character" draggable="false"><i class="imgTint"></i></span>
         </div>
+        <div class="chamberVignette" aria-hidden="true"></div>
         <div id="flash"></div>
       </div>
       <div class="powerRead">
@@ -1347,6 +1367,7 @@ const FORMS=[
 {id:'uis',    nm:'ULTRA INSTINCT SIGN', img:'img/uis.jpg',     pl:17000, mult:500000,  fx:1,   tag:'OMEN',               desc:'The omen. The body begins to move on its own.'},
 {id:'ue',     nm:'ULTRA EGO',           img:'img/ue.jpg',      pl:20500, mult:2000000, fx:1.15,tag:'VEGETA ONLY',        desc:'God of Destruction technique. Power grows with damage taken.'}
 ];
+const FORM_COLORS={base:'#8affc8',kaioken:'#ff4d5e',ssj:'#ffd75e',ussj:'#ffb03a',ssj2:'#ffe986',ssj3:'#ffcc52',goldape:'#ffb84d',ssj4:'#ff4d70',ssg:'#ff5b5b',ssb:'#57b8ff',ssbk:'#a3b8ff',uis:'#e4efff',ue:'#b57aff'};
 
 /* ================= WORKOUTS ================= */
 const WORKOUTS=[
@@ -1691,6 +1712,7 @@ function paintStats(){
 }
 function renderForm(){
   const f=FORMS[st.form];
+  $('#holo').style.setProperty('--formC',FORM_COLORS[f.id]||'#35e0ff');
   $('#formNm').textContent=f.nm;
   $('#formSub').textContent='Form '+(st.form+1)+' / '+FORMS.length+(f.tag?' ─ '+f.tag:'');
   $('#mForm').textContent=f.nm;
