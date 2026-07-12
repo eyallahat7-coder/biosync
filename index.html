@@ -164,7 +164,11 @@ header{position:relative;z-index:5;display:flex;align-items:center;justify-conte
 .charStage.f-beast .aura{background:radial-gradient(ellipse at center, rgba(255,60,80,.6), rgba(255,150,160,.25) 50%, transparent 66%);opacity:.66;animation:auraPulse 1.8s infinite}
 #charaBox{position:relative;height:100%;max-height:52vh;max-width:100%;min-width:0;display:flex;align-items:center;justify-content:center;z-index:3;animation:bob 5s ease-in-out infinite}
 #charaSvg{height:100%;width:auto;max-width:100%;overflow:visible}
-#imgWrap{position:relative;height:100%;max-width:100%;min-width:0;display:none;filter:drop-shadow(0 20px 15px rgba(0,0,0,.7))}
+#imgWrap{position:relative;height:100%;max-width:100%;min-width:0;display:none;filter:drop-shadow(0 20px 15px rgba(0,0,0,.7));
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 17%,#000 83%,transparent),linear-gradient(180deg,transparent,#000 7%,#000 90%,transparent);
+  -webkit-mask-composite:source-in;
+  mask-image:linear-gradient(90deg,transparent,#000 17%,#000 83%,transparent),linear-gradient(180deg,transparent,#000 7%,#000 90%,transparent);
+  mask-composite:intersect}
 #charaBox.hasImg #charaSvg{display:none}
 #charaBox.hasImg #imgWrap{display:block}
 #charaImg{height:100%;width:auto;max-width:100%;object-fit:contain;display:block;border:none;border-radius:0;
@@ -475,7 +479,11 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 .foeArt,.meArt{width:92px;height:116px;border-radius:10px;overflow:hidden;flex:0 0 auto;position:relative;
   background:linear-gradient(160deg,#1c0f1c,#0c0a16);border:1px solid var(--redline);display:flex;align-items:flex-end;justify-content:center}
 .meArt{border-color:var(--line);background:linear-gradient(160deg,#0e1830,#0a0f22)}
-.foeArt img,.meArt img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.foeArt img,.meArt img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:contrast(1.08) saturate(1.06);
+  -webkit-mask-image:radial-gradient(ellipse 82% 92% at 50% 42%,#000 52%,transparent 100%);
+  mask-image:radial-gradient(ellipse 82% 92% at 50% 42%,#000 52%,transparent 100%)}
+.foeArt{background:radial-gradient(ellipse at 50% 34%,rgba(70,20,30,.55),#0c0a16 74%)}
+.meArt{background:radial-gradient(ellipse at 50% 34%,rgba(20,40,70,.55),#0a0f22 74%)}
 .foeArt .phName{position:absolute;bottom:7px;font-family:var(--fd);font-size:10px;color:rgba(255,255,255,.65);text-align:center;padding:0 4px;z-index:1}
 .foeArt.ph::before{content:"";position:absolute;inset:16% 26% 12%;background:rgba(255,59,78,.24);border-radius:50% 50% 40% 40%}
 .combatInfo{flex:1;min-width:0}
@@ -598,8 +606,11 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 .pNode{position:absolute;transform:translate(-50%,-50%);width:62px;height:62px;padding:0;border:none;background:none;cursor:pointer}
 .pNode[disabled]{cursor:not-allowed}
 .pArt{position:absolute;inset:0;border-radius:50%;overflow:hidden;border:2px solid var(--line);
-  background:linear-gradient(160deg,#161a30,#0b0e1c);display:flex;align-items:center;justify-content:center;transition:.2s}
-.pArt img{width:100%;height:100%;object-fit:cover}
+  background:radial-gradient(ellipse at 50% 36%,rgba(40,52,92,.6),#0b0e1c 72%);display:flex;align-items:center;justify-content:center;transition:.2s}
+.pArt img{width:100%;height:100%;object-fit:cover;filter:contrast(1.07) saturate(1.05);
+  -webkit-mask-image:radial-gradient(circle at 50% 44%,#000 60%,transparent 96%);
+  mask-image:radial-gradient(circle at 50% 44%,#000 60%,transparent 96%)}
+.pArt::after{content:"";position:absolute;inset:0;border-radius:50%;pointer-events:none;box-shadow:inset 0 -8px 14px rgba(5,8,18,.7),inset 0 0 10px rgba(5,8,18,.5)}
 .pArt.ph::before{content:"";position:absolute;inset:26% 30% 18%;background:rgba(255,59,78,.28);border-radius:50% 50% 40% 40%}
 .pArt.ph::after{content:"?";position:relative;font-family:var(--fd);font-size:19px;color:rgba(255,90,110,.6)}
 .pLabel{position:absolute;top:66px;left:50%;transform:translateX(-50%);white-space:nowrap;text-align:center;line-height:1.12}
@@ -836,6 +847,7 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
         <div class="particles"><i></i><i></i><i></i><i></i><i></i><i></i></div>
         <div id="floatLayer"></div>
         <div id="shock"></div>
+        <div class="selectionPlatform" aria-hidden="true"><i></i><b></b></div>
         <div id="charaBox">
         <svg id="charaSvg" class="mood-tired f-base" viewBox="0 0 320 470" xmlns="http://www.w3.org/2000/svg">
           <defs>
@@ -1234,6 +1246,7 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
         <div class="combatInfo">
           <div class="cName" id="foeName"></div>
           <div class="cSub" id="foeTier"></div>
+          <div class="bossTell" id="bossTell" hidden></div>
           <div class="barRow"><div class="hpbar foe"><i class="ghost" id="foeHpG"></i><i class="fill" id="foeHp"></i></div><span class="barNum" id="foeHpNum"></span></div>
         </div>
       </div>
@@ -1352,7 +1365,7 @@ function prettyDate(ds){const d=parseDay(ds);return WD[d.getDay()]+', '+MO[d.get
 
 /* ================= FORMS ================= */
 const FORMS=[
-{id:'base',   nm:'BASE FORM',           img:'img/base-form-render.png', pl:0, mult:1, fx:1, tag:'', desc:'Natural state. Build your power through daily discipline.'},
+{id:'base',   nm:'BASE FORM',           img:'img/base.jpg',    pl:0,     mult:1,       fx:1,   tag:'',                   desc:'Natural state. Build your power through daily discipline.'},
 {id:'kaioken',nm:'KAIOKEN',             img:'img/kaioken.jpg', pl:300,   mult:10,      fx:1.05,tag:'KING KAI TECHNIQUE', desc:'A crimson surge that multiplies power at the cost of strain on the body.'},
 {id:'ssj',    nm:'SUPER SAIYAN',        img:'img/ssj.jpg',     pl:800,   mult:50,      fx:1,   tag:'THE LEGENDARY',      desc:'The legendary transformation, triggered by need... or by relentless training.'},
 {id:'ussj',   nm:'ULTRA SUPER SAIYAN',  img:'img/ussj.jpg',    pl:1500,  mult:60,      fx:1.45,tag:'GRADE 3',            desc:'Maximum muscle mass. Raw power over speed.'},
@@ -1400,6 +1413,7 @@ const MISSIONS=[
   {id:'cardio_rush',   nm:'Cardio Rush',     icon:'🏃', goal:'Train Running or Bicycle',                w:8,  reward:{xp:8}, check:()=>['running','cycling'].includes(st.today.workout)},
   {id:'glass_cannon',  nm:'Glass Cannon',    icon:'🥊', goal:'Train Boxing',                            w:6,  reward:{xp:8}, check:()=>st.today.workout==='boxing'},
   {id:'full_rest',     nm:'Full Rest',       icon:'😴', goal:'Sleep 7.5–9 hours',                        w:10, reward:{sp:1}, check:()=>sleepGrade()==='optimal'},
+  {id:'early_riser',   nm:'Early Riser',     icon:'🌅', goal:'Complete your sync before noon',            w:6,  reward:{xp:8}, check:()=>new Date().getHours()<12},
   {id:'supp_stack',    nm:'Supplement Stack',icon:'💊', goal:'Take creatine today',                     w:8,  reward:{xp:8}, check:()=>!!st.today.creatine},
   {id:'streak_keeper', nm:'Streak Keeper',   icon:'🔥', goal:'Extend an existing streak',               w:10, reward:{xp:6}, check:(c)=>c.prevStreak>0},
   {id:'overachiever',  nm:'Overachiever',    icon:'📈', goal:'100–110% calories with a workout done',   w:8,  reward:{xp:8}, check:()=>{const r=(st.today.cal||0)/(st.calTarget||1);return r>=1&&r<=1.1&&workoutDef().id!=='none';}},
