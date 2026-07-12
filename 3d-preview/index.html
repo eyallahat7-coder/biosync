@@ -292,6 +292,12 @@
       initial[name] = { p: bone.position.clone(), q: bone.quaternion.clone(), s: bone.scale.clone() };
     }
 
+    function rememberNode(name, bone) {
+      if (!bone) return;
+      bones[name] = bone;
+      initial[name] = { p: bone.position.clone(), q: bone.quaternion.clone(), s: bone.scale.clone() };
+    }
+
     function fitModel(root) {
       const box = new THREE.Box3().setFromObject(root);
       const size = box.getSize(new THREE.Vector3());
@@ -361,14 +367,26 @@
         }
       });
       scene.add(model);
-      [
-        'DEF_Pelvis_02', 'DEF_Spine_001_03', 'DEF_Spine_002_04',
-        'DEF_Neck_05', 'DEF_Head_06', 'DEF_Eye.L_07', 'DEF_Eye.R_08',
-        'DEF_Shoulder.L_09', 'DEF_Shoulder.R_028',
-        'DEF_Upperarm.L_010', 'DEF_Upperarm.R_029',
-        'DEF_Forearm.L_011', 'DEF_Forearm.R_030',
-        'DEF_Hand.L_012', 'DEF_Hand.R_031'
-      ].forEach(remember);
+      const rigNodes = {
+        DEF_Pelvis_02: 12,
+        DEF_Spine_001_03: 13,
+        DEF_Spine_002_04: 14,
+        DEF_Neck_05: 15,
+        DEF_Head_06: 16,
+        'DEF_Eye.L_07': 17,
+        'DEF_Eye.R_08': 19,
+        'DEF_Shoulder.L_09': 23,
+        'DEF_Upperarm.L_010': 24,
+        'DEF_Forearm.L_011': 25,
+        'DEF_Hand.L_012': 26,
+        'DEF_Shoulder.R_028': 47,
+        'DEF_Upperarm.R_029': 48,
+        'DEF_Forearm.R_030': 49,
+        'DEF_Hand.R_031': 50
+      };
+      await Promise.all(Object.entries(rigNodes).map(async ([name, nodeIndex]) => {
+        rememberNode(name, await gltf.parser.getDependency('node', nodeIndex));
+      }));
       statusText.textContent = `${Object.keys(bones).length} CONTROL BONES ACTIVE`;
       meter.style.width = '100%';
       setTimeout(() => loaderEl.classList.add('done'), 240);
