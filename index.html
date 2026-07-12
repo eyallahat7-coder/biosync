@@ -412,7 +412,25 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 .fcDone{position:absolute;top:5px;right:6px;color:var(--good);font-size:13px;font-weight:700;text-shadow:0 0 8px rgba(87,255,194,.6)}
 .tLock{margin-top:9px;font-family:var(--fj);font-size:11px;color:var(--faint);letter-spacing:1px;text-align:center}
 
-#battleFight .arena{display:flex;flex-direction:column;gap:11px}
+#battleFight{position:relative;border-radius:12px;padding:12px 10px;overflow:hidden;--arenaC:#35e0ff;
+  border:1px solid var(--line);
+  background:
+    radial-gradient(ellipse at 50% 80%, color-mix(in srgb, var(--arenaC) 14%, transparent), transparent 58%),
+    radial-gradient(ellipse at 50% -20%, rgba(255,255,255,.04), transparent 50%),
+    linear-gradient(180deg,#060812 0%,#0b1024 45%,#111a34 78%,#0a0e20 100%);
+  transition:background .6s}
+#battleFight::before{content:"";position:absolute;left:-12%;right:-12%;bottom:0;height:44%;pointer-events:none;
+  background:
+    linear-gradient(transparent, color-mix(in srgb, var(--arenaC) 7%, transparent)),
+    repeating-linear-gradient(90deg, color-mix(in srgb, var(--arenaC) 22%, transparent) 0 1px, transparent 1px 46px),
+    repeating-linear-gradient(0deg, color-mix(in srgb, var(--arenaC) 16%, transparent) 0 1px, transparent 1px 34px);
+  opacity:.34;transform:perspective(340px) rotateX(48deg);transform-origin:bottom;
+  -webkit-mask-image:linear-gradient(transparent, #000 32%);mask-image:linear-gradient(transparent, #000 32%)}
+#battleFight::after{content:"";position:absolute;left:4%;right:4%;bottom:43.4%;height:2px;pointer-events:none;
+  background:linear-gradient(90deg, transparent, color-mix(in srgb, var(--arenaC) 55%, transparent), transparent);
+  filter:blur(1px);opacity:.5}
+#battleFight.enraged{--arenaC:#ff3b4e !important}
+#battleFight .arena{position:relative;z-index:1;display:flex;flex-direction:column;gap:11px}
 .arena.shake{animation:bshake .4s}
 @keyframes bshake{0%,100%{transform:translate(0,0)}20%{transform:translate(-6px,3px)}40%{transform:translate(6px,-3px)}60%{transform:translate(-4px,-2px)}80%{transform:translate(4px,2px)}}
 .foe,.me{display:flex;gap:13px;align-items:center}
@@ -1766,11 +1784,13 @@ function spark(sel,crit){const p=$(sel);if(!p)return;const s=document.createElem
 function punch(){anim('#arena','punch',220);}
 function hitFx(defender,attacker,crit,heavy){anim(attacker,'lunge',420);anim(defender,'hurt',440);spark(defender,crit||heavy);if(crit||heavy)punch();}
 
+const TIER_TINT=['#ffb03a','#39d98a','#39d98a','#35e0ff','#35e0ff','#b06bff','#b06bff','#ff4d5e','#ffd75e','#ffd75e','#ffd75e','#ff2e88','#ff3b4e'];
 function startFight(e){
   const pc=playerCombat(0);
   fight={en:e,es:enemyStats(e),pForm:0,pc,pHpMax:pc.hpMax,pHp:pc.hpMax,ki:Math.min(pc.kiMax,Math.max(30,Math.round(pc.kiMax*0.55))),
     guard:false,over:false,revived:false,eTurn:0,enraged:false};
   fight.eHpMax=fight.es.hpMax;fight.eHp=fight.es.hpMax;fight.eAtk=fight.es.atk;
+  const bf=$('#battleFight');bf.style.setProperty('--arenaC',TIER_TINT[e.t]||'#35e0ff');bf.classList.remove('enraged');
   showFight();blog(e.n+' stands before you.');beep(300,.16,'sawtooth',.05);
 }
 function showFight(){$('#battleLadder').hidden=true;$('#battleFight').hidden=false;$('#battleResult').hidden=true;renderFight();}
@@ -1838,7 +1858,7 @@ function playerMove(m){
 }
 function enemyTurn(){
   const f=fight;f.eTurn++;
-  if(f.en.r==='boss'&&f.eHp<=f.eHpMax*0.3&&!f.enraged){f.enraged=true;blog(f.en.n.toUpperCase()+' POWERS UP!');bfloat('ENRAGED','crit');bigFx();bflash();anim('#foeArt','lunge',420);buzz([50,40,70]);beep(140,.3,'sawtooth',.05);}
+  if(f.en.r==='boss'&&f.eHp<=f.eHpMax*0.3&&!f.enraged){f.enraged=true;$('#battleFight').classList.add('enraged');blog(f.en.n.toUpperCase()+' POWERS UP!');bfloat('ENRAGED','crit');bigFx();bflash();anim('#foeArt','lunge',420);buzz([50,40,70]);beep(140,.3,'sawtooth',.05);}
   if(hasTrait('rampage'))f.eAtk*=1.06;
   const atk=f.eAtk*(f.enraged?1.3:1);
   const attacks=(hasTrait('swift')&&roll(30))?2:1;
