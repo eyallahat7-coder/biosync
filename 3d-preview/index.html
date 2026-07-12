@@ -275,8 +275,18 @@
     let yaw = 0;
     let targetYaw = 0;
 
+    function normalizedName(value) {
+      return String(value || '').replace(/[^a-z0-9]/gi, '').toLowerCase();
+    }
+
     function remember(name) {
-      const bone = model?.getObjectByName(name);
+      let bone = model?.getObjectByName(name);
+      if (!bone) {
+        const wanted = normalizedName(name);
+        model?.traverse((object) => {
+          if (!bone && normalizedName(object.name) === wanted) bone = object;
+        });
+      }
       if (!bone) return;
       bones[name] = bone;
       initial[name] = { p: bone.position.clone(), q: bone.quaternion.clone(), s: bone.scale.clone() };
@@ -296,16 +306,58 @@
       controls.update();
     }
 
+    async function loadLegacyTextures(url) {
+      const buffer = await fetch(url).then((response) => {
+        if (!response.ok) throw new Error(`Model texture request failed: ${response.status}`);
+        return response.arrayBuffer();
+      });
+      const view = new DataView(buffer);
+      const jsonLength = view.getUint32(12, true);
+      const json = JSON.parse(new TextDecoder().decode(new Uint8Array(buffer, 20, jsonLength)));
+      const binStart = 20 + jsonLength + 8;
+      const textureLoader = new THREE.TextureLoader();
+      const loadTexture = (imageIndex) => new Promise((resolve, reject) => {
+        const image = json.images[imageIndex];
+        const bufferView = json.bufferViews[image.bufferView];
+        const start = binStart + (bufferView.byteOffset || 0);
+        const objectUrl = URL.createObjectURL(new Blob([buffer.slice(start, start + bufferView.byteLength)], { type: image.mimeType || 'image/png' }));
+        textureLoader.load(objectUrl, (texture) => {
+          URL.revokeObjectURL(objectUrl);
+          texture.flipY = false;
+          texture.colorSpace = THREE.SRGBColorSpace;
+          texture.anisotropy = Math.min(4, renderer.capabilities.getMaxAnisotropy());
+          resolve(texture);
+        }, undefined, reject);
+      });
+      return Promise.all([loadTexture(0), loadTexture(1)]);
+    }
+
     const gltfLoader = new GLTFLoader();
-    gltfLoader.load('./models/goku-base-1k.glb', (gltf) => {
+    gltfLoader.load('./models/goku-base-1k.glb', async (gltf) => {
       model = gltf.scene;
       fitModel(model);
       modelBaseY = model.position.y;
+      const [clothingTexture, bodyTexture] = await loadLegacyTextures('./models/goku-base-1k.glb');
       model.traverse((object) => {
         if (object.isMesh) {
           object.castShadow = true;
           object.receiveShadow = true;
           object.frustumCulled = true;
+          const materialName = String(object.material?.name || '').toLowerCase();
+          if (materialName.includes('vtement')) {
+            object.material.map = clothingTexture;
+            object.material.color.set(0xffffff);
+          } else if (materialName.includes('corps')) {
+            object.material.map = bodyTexture;
+            object.material.color.set(0xffffff);
+          } else if (materialName.includes('cheuveux')) {
+            object.material.color.set(0x090b10);
+          } else {
+            object.material.color.set(0x11131a);
+          }
+          object.material.roughness = .68;
+          object.material.metalness = 0;
+          object.material.needsUpdate = true;
         }
       });
       scene.add(model);
@@ -313,7 +365,9 @@
         'DEF_Pelvis_02', 'DEF_Spine_001_03', 'DEF_Spine_002_04',
         'DEF_Neck_05', 'DEF_Head_06', 'DEF_Eye.L_07', 'DEF_Eye.R_08',
         'DEF_Shoulder.L_09', 'DEF_Shoulder.R_028',
-        'DEF_Upperarm.L_010', 'DEF_Upperarm.R_029'
+        'DEF_Upperarm.L_010', 'DEF_Upperarm.R_029',
+        'DEF_Forearm.L_011', 'DEF_Forearm.R_030',
+        'DEF_Hand.L_012', 'DEF_Hand.R_031'
       ].forEach(remember);
       statusText.textContent = `${Object.keys(bones).length} CONTROL BONES ACTIVE`;
       meter.style.width = '100%';
@@ -326,13 +380,12 @@
       loaderText.classList.add('error');
     });
 
-    function addRotation(name, axis, value) {
+    function applyRotation(name, rotation = {}) {
       const bone = bones[name];
       const basePose = initial[name];
       if (!bone || !basePose) return;
       bone.quaternion.copy(basePose.q);
-      const euler = new THREE.Euler(0, 0, 0, 'XYZ');
-      euler[axis] = value;
+      const euler = new THREE.Euler(rotation.x || 0, rotation.y || 0, rotation.z || 0, 'XYZ');
       bone.quaternion.multiply(new THREE.Quaternion().setFromEuler(euler));
     }
 
@@ -349,12 +402,18 @@
         yaw += (targetYaw - yaw) * .025;
         model.rotation.y = yaw;
 
-        addRotation('DEF_Spine_001_03', 'x', breath * .012);
-        addRotation('DEF_Spine_002_04', 'x', breath * .018);
-        addRotation('DEF_Neck_05', 'y', weight * .016);
-        addRotation('DEF_Head_06', 'y', weight * .022);
-        addRotation('DEF_Shoulder.L_09', 'z', breath * .012);
-        addRotation('DEF_Shoulder.R_028', 'z', -breath * .012);
+        applyRotation('DEF_Spine_001_03', { x: breath * .012 });
+        applyRotation('DEF_Spine_002_04', { x: breath * .018, z: weight * .008 });
+        applyRotation('DEF_Neck_05', { y: weight * .016 });
+        applyRotation('DEF_Head_06', { y: weight * .022, z: -weight * .008 });
+        applyRotation('DEF_Shoulder.L_09', { z: .08 + breath * .012 });
+        applyRotation('DEF_Shoulder.R_028', { z: -.08 - breath * .012 });
+        applyRotation('DEF_Upperarm.L_010', { z: 1.12 + breath * .018, y: -.08 });
+        applyRotation('DEF_Upperarm.R_029', { z: -1.12 - breath * .018, y: .08 });
+        applyRotation('DEF_Forearm.L_011', { z: .24, y: -.14 + weight * .015 });
+        applyRotation('DEF_Forearm.R_030', { z: -.24, y: .14 - weight * .015 });
+        applyRotation('DEF_Hand.L_012', { y: -.12 });
+        applyRotation('DEF_Hand.R_031', { y: .12 });
 
         const blinkCycle = t % 4.7;
         const blink = blinkCycle > 4.43 ? Math.max(.16, Math.abs(blinkCycle - 4.56) / .13) : 1;
