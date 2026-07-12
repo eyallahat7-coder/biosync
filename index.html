@@ -335,6 +335,9 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 .syncBtn:disabled{background:linear-gradient(120deg,#1d2a3d,#22394a);cursor:default;transform:none;box-shadow:none;color:var(--good);text-shadow:none}
 .syncBtn:disabled::after{display:none}
 .syncNote{font-family:var(--fj);font-size:11px;color:var(--dim);letter-spacing:1px;text-align:center;min-height:14px}
+.editTodayBtn{background:rgba(255,215,94,.08);border:1px solid rgba(255,215,94,.4);color:var(--gold);
+  font-family:var(--fd);font-size:12px;letter-spacing:1px;padding:12px;cursor:pointer;transition:.15s;border-radius:3px}
+.editTodayBtn:hover{background:rgba(255,215,94,.18);box-shadow:0 0 18px rgba(255,215,94,.25)}
 .resetBtn{align-self:flex-end;background:none;border:1px solid rgba(255,77,94,.3);color:rgba(255,77,94,.7);
   font-family:var(--fj);font-size:10px;letter-spacing:2px;padding:7px 14px;cursor:pointer;transition:.2s}
 .resetBtn:hover{background:rgba(255,77,94,.12);color:var(--red)}
@@ -1151,6 +1154,7 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
     </div>
     <div class="gradePreview" id="gradePreview"></div>
     <button class="syncBtn" id="syncBtn">SYNC TO CHARACTER</button>
+    <button class="editTodayBtn" id="editTodayBtn" hidden>✎ UNLOCK &amp; EDIT TODAY</button>
     <div class="syncNote" id="syncNote"></div>
     <button class="historyBtn" id="historyBtn" data-view="history">
       <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
@@ -1389,7 +1393,7 @@ function missionRewardText(r){
   return '+'+r.xp+' XP';
 }
 
-function freshDay(date){return{date,cal:0,protein:0,workout:'none',sleep:0,creatine:false,synced:false,deltas:null,mission:{id:pickMission(),done:false}};}
+function freshDay(date){return{date,cal:0,protein:0,workout:'none',sleep:0,creatine:false,synced:false,deltas:null,preSync:null,mission:{id:pickMission(),done:false}};}
 function defaultState(){return{
   level:1,xp:0,
   stats:{vit:1,str:1,agi:1,foc:1},
@@ -1435,7 +1439,10 @@ function rollover(){
   st.today=freshDay(t);
   save();
 }
-function pushHistory(h){st.history.push(h);if(st.history.length>365)st.history=st.history.slice(-365);}
+function pushHistory(h){
+  if(st.history.length&&st.history[st.history.length-1].date===h.date)st.history.pop();
+  st.history.push(h);if(st.history.length>365)st.history=st.history.slice(-365);
+}
 
 /* ================= GAME RULES ================= */
 function calGrade(){
@@ -1507,6 +1514,10 @@ function syncDay(){
   if(g==='empty'&&!trained&&!st.today.protein&&!st.today.creatine&&!st.today.sleep){
     if(!confirm('Nothing logged today — syncing an empty day will damage your character. Sync anyway?'))return;
   }
+  if(!st.today.preSync){
+    st.today.preSync={stats:{...st.stats},xp:st.xp,level:st.level,streak:st.streak,best:st.best,
+      streakPaid:st.streakPaid,ascPoints:st.ascPoints,skillPoints:st.skillPoints};
+  }
   const prevStreak=st.streak;
   const d=computeDeltas();
   for(const k in d)st.stats[k]=clamp(st.stats[k]+d[k],1,100);
@@ -1545,6 +1556,17 @@ function levelUpFX(){
   const o=$('#lvlup');o.classList.remove('show');void o.offsetWidth;o.classList.add('show');
   [523,659,784,1047].forEach((f,i)=>setTimeout(()=>beep(f,.16,'triangle',.05),i*110));
   setTimeout(()=>o.classList.remove('show'),2300);
+}
+function unlockToday(){
+  if(!st.today.synced||!st.today.preSync)return;
+  if(!confirm('Unlock today\'s log to edit? Your character will roll back to before today\'s sync — add or change anything, then Sync again to reapply it fresh.'))return;
+  const p=st.today.preSync;
+  st.stats={...p.stats};st.xp=p.xp;st.level=p.level;st.streak=p.streak;st.best=p.best;
+  st.streakPaid=p.streakPaid;st.ascPoints=p.ascPoints;st.skillPoints=p.skillPoints;
+  st.today.synced=false;st.today.deltas=null;
+  if(st.today.mission)st.today.mission.done=false;
+  if(st.history.length&&st.history[st.history.length-1].date===st.today.date)st.history.pop();
+  save();renderAll();beep(420,.12,'sine',.03);setTimeout(()=>beep(300,.1,'sine',.03),80);
 }
 
 /* ================= TRANSFORMATIONS ================= */
@@ -1727,9 +1749,10 @@ function renderDaily(){
   const sg0=sleepGrade();
   $('#sleepHint').textContent=st.today.sleep?({optimal:'Perfect rest ✦',good:'Solid rest',much:'A bit much',low:'Under-rested',poor:'Too little sleep',none:''}[sg0]):'Target 8 h';
   setSwitch('#crToggle',st.today.creatine,locked);
-  const sy=$('#syncBtn');sy.disabled=locked;
-  sy.textContent=locked?'SYNCED ✔':'SYNC TO CHARACTER';
-  $('#syncNote').textContent=locked?'Day locked. Come back tomorrow to log again.':'Applies your day to the character. Once per day.';
+  const sy=$('#syncBtn');sy.disabled=locked;sy.hidden=locked;
+  sy.textContent='SYNC TO CHARACTER';
+  const eb=$('#editTodayBtn');eb.hidden=!(locked&&st.today.preSync);
+  $('#syncNote').textContent=locked?'Synced ✔ — tap Unlock to add or fix something.':'Applies your day to the character. You can keep editing until you sync.';
   const gp=$('#gradePreview');
   gp.textContent=locked?'':gradeText();
 }
@@ -2206,6 +2229,7 @@ $('#calTargetInput').addEventListener('change',e=>{st.calTarget=clamp(Math.round
 $('#proteinTargetInput').addEventListener('change',e=>{st.proteinTarget=clamp(Math.round(Number(e.target.value)||150),30,400);save();renderDaily();});
 $('#crToggle').addEventListener('click',()=>{if(st.today.synced)return;st.today.creatine=!st.today.creatine;save();renderDaily();beep(st.today.creatine?1200:440,.08,'triangle',.03);});
 $('#syncBtn').addEventListener('click',syncDay);
+$('#editTodayBtn').addEventListener('click',unlockToday);
 $('#resetBtn').addEventListener('click',()=>{
   if(confirm('Reset all save data? Your character, level, forms and history will be wiped.')){
     localStorage.removeItem(KEY);location.reload();
