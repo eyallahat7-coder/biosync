@@ -1,0 +1,390 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#05070b">
+  <title>BioSync — Base Form 3D Preview</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;1,800&family=Rajdhani:wght@500;600;700&display=swap');
+
+    :root {
+      color-scheme: dark;
+      --void: #05070b;
+      --ink: #0b1018;
+      --steel: #9aa8b7;
+      --paper: #f4f7fb;
+      --power: #f6b73c;
+      --ki: #63f3ff;
+      --danger: #ff4d4d;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body { height: 100%; margin: 0; overflow: hidden; }
+
+    body {
+      background: var(--void);
+      color: var(--paper);
+      font-family: Rajdhani, system-ui, sans-serif;
+      overscroll-behavior: none;
+      touch-action: none;
+    }
+
+    .screen {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      min-height: 520px;
+      isolation: isolate;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 50% 43%, rgba(99,243,255,.13), transparent 36%),
+        linear-gradient(155deg, #101827 0%, var(--void) 42%, #020305 100%);
+    }
+
+    .screen::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      opacity: .2;
+      background-image:
+        linear-gradient(rgba(99,243,255,.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(99,243,255,.08) 1px, transparent 1px);
+      background-size: 42px 42px;
+      mask-image: linear-gradient(to bottom, black, transparent 82%);
+      transform: perspective(500px) rotateX(62deg) scale(1.8) translateY(12%);
+      transform-origin: 50% 100%;
+    }
+
+    #stage { position: absolute; inset: 0; }
+
+    .wash {
+      position: absolute;
+      z-index: 1;
+      inset: 12% 12% 4%;
+      pointer-events: none;
+      background: radial-gradient(ellipse at 50% 78%, rgba(246,183,60,.13), transparent 43%);
+      filter: blur(12px);
+    }
+
+    header {
+      position: absolute;
+      z-index: 3;
+      top: max(18px, env(safe-area-inset-top));
+      left: 18px;
+      right: 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      pointer-events: none;
+    }
+
+    .form-label { border-left: 3px solid var(--power); padding-left: 11px; }
+    .eyebrow { color: var(--steel); font-size: 11px; letter-spacing: .22em; font-weight: 700; }
+    h1 { margin: 1px 0 0; font: italic 800 clamp(32px, 8vw, 58px)/.88 "Barlow Condensed", sans-serif; letter-spacing: -.025em; }
+    .power { text-align: right; }
+    .power strong { display: block; color: var(--power); font: 800 25px/1 "Barlow Condensed", sans-serif; }
+
+    .rail {
+      position: absolute;
+      z-index: 3;
+      top: 26%;
+      right: 15px;
+      width: 3px;
+      height: 36%;
+      background: rgba(154,168,183,.18);
+      pointer-events: none;
+    }
+    .rail::before { content: ""; display: block; width: 100%; height: 24%; background: var(--ki); box-shadow: 0 0 14px var(--ki); }
+    .rail span { position: absolute; right: 10px; top: -5px; color: var(--steel); font-size: 9px; letter-spacing: .18em; writing-mode: vertical-rl; }
+
+    .lower-third {
+      position: absolute;
+      z-index: 3;
+      left: 16px;
+      right: 16px;
+      bottom: max(18px, env(safe-area-inset-bottom));
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: end;
+      gap: 16px;
+      pointer-events: none;
+    }
+
+    .status { max-width: 270px; }
+    .status-row { display: flex; align-items: center; gap: 8px; color: var(--ki); font-size: 12px; font-weight: 700; letter-spacing: .15em; }
+    .pulse { width: 7px; height: 7px; border-radius: 50%; background: var(--ki); box-shadow: 0 0 12px var(--ki); animation: pulse 1.6s ease-in-out infinite; }
+    .status p { margin: 6px 0 0; color: var(--steel); font-size: 12px; line-height: 1.25; }
+
+    .drag-hint { color: var(--paper); font: 700 11px/1 Rajdhani, sans-serif; letter-spacing: .16em; text-align: right; }
+    .drag-hint::after { content: "  ↔"; color: var(--power); }
+
+    .loader {
+      position: absolute;
+      z-index: 5;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      background: var(--void);
+      transition: opacity .45s ease, visibility .45s ease;
+    }
+    .loader.done { opacity: 0; visibility: hidden; }
+    .loader-inner { width: min(250px, 70vw); text-align: center; }
+    .loader-mark { margin: auto; width: 48px; aspect-ratio: 1; border: 2px solid rgba(99,243,255,.2); border-top-color: var(--ki); border-radius: 50%; animation: spin .8s linear infinite; }
+    .loader p { margin: 14px 0 7px; color: var(--steel); font-size: 11px; font-weight: 700; letter-spacing: .18em; }
+    .meter { height: 2px; background: rgba(255,255,255,.1); overflow: hidden; }
+    .meter i { display: block; width: 0; height: 100%; background: var(--power); transition: width .2s; }
+
+    .error { color: #ff9393 !important; letter-spacing: .03em !important; }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes pulse { 50% { opacity: .35; transform: scale(.75); } }
+
+    @media (min-width: 800px) {
+      header { top: 34px; left: 40px; right: 40px; }
+      .lower-third { left: 40px; right: 40px; bottom: 32px; }
+      .rail { right: 35px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .pulse, .loader-mark { animation: none; }
+    }
+  </style>
+</head>
+<body>
+  <main class="screen" aria-label="Animated Base Form character preview">
+    <div id="stage" aria-hidden="true"></div>
+    <div class="wash"></div>
+
+    <header>
+      <div class="form-label">
+        <div class="eyebrow">CURRENT FORM</div>
+        <h1>BASE FORM</h1>
+      </div>
+      <div class="power">
+        <div class="eyebrow">POWER LEVEL</div>
+        <strong>SCANNING</strong>
+      </div>
+    </header>
+
+    <div class="rail"><span>BIOSYNC // LIVE MODEL</span></div>
+
+    <div class="lower-third">
+      <div class="status">
+        <div class="status-row"><i class="pulse"></i><span id="statusText">RIG ONLINE</span></div>
+        <p>Bone-driven breathing, stance and head movement. Preview only—your live app is unchanged.</p>
+      </div>
+      <div class="drag-hint">DRAG TO INSPECT</div>
+    </div>
+
+    <div class="loader" id="loader">
+      <div class="loader-inner">
+        <div class="loader-mark"></div>
+        <p id="loaderText">LOADING CHARACTER RIG</p>
+        <div class="meter"><i id="meter"></i></div>
+      </div>
+    </div>
+  </main>
+
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.165.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.165.0/examples/jsm/"
+      }
+    }
+  </script>
+  <script type="module">
+    import * as THREE from 'three';
+    import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+    const host = document.querySelector('#stage');
+    const loaderEl = document.querySelector('#loader');
+    const loaderText = document.querySelector('#loaderText');
+    const meter = document.querySelector('#meter');
+    const statusText = document.querySelector('#statusText');
+    const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const scene = new THREE.Scene();
+    scene.fog = new THREE.FogExp2(0x05070b, 0.08);
+
+    const camera = new THREE.PerspectiveCamera(28, 1, 0.05, 100);
+    camera.position.set(0, 1.35, 5.4);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
+    renderer.setPixelRatio(Math.min(devicePixelRatio, 1.5));
+    renderer.setSize(innerWidth, innerHeight);
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.05;
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    host.append(renderer.domElement);
+
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.enablePan = false;
+    controls.minDistance = 3.8;
+    controls.maxDistance = 7.5;
+    controls.minPolarAngle = Math.PI * .25;
+    controls.maxPolarAngle = Math.PI * .57;
+    controls.target.set(0, 1.24, 0);
+
+    scene.add(new THREE.HemisphereLight(0x9edcff, 0x120906, 1.7));
+    const key = new THREE.DirectionalLight(0xffe2b0, 5.2);
+    key.position.set(3.2, 5.6, 4.4);
+    key.castShadow = true;
+    key.shadow.mapSize.set(1024, 1024);
+    scene.add(key);
+    const rim = new THREE.SpotLight(0x63f3ff, 16, 12, .55, .8, 1.6);
+    rim.position.set(-3.2, 4, -2.4);
+    rim.target.position.set(0, 1.4, 0);
+    scene.add(rim, rim.target);
+    const warm = new THREE.PointLight(0xf6b73c, 7, 4, 1.7);
+    warm.position.set(0, .4, 1.4);
+    scene.add(warm);
+
+    const pedestal = new THREE.Group();
+    const base = new THREE.Mesh(
+      new THREE.CylinderGeometry(1.12, 1.25, .14, 64),
+      new THREE.MeshStandardMaterial({ color: 0x111a24, metalness: .82, roughness: .26 })
+    );
+    base.position.y = -.11;
+    base.receiveShadow = true;
+    const ring = new THREE.Mesh(
+      new THREE.TorusGeometry(.98, .018, 8, 96),
+      new THREE.MeshBasicMaterial({ color: 0x63f3ff, transparent: true, opacity: .72 })
+    );
+    ring.rotation.x = Math.PI / 2;
+    ring.position.y = -.025;
+    pedestal.add(base, ring);
+    scene.add(pedestal);
+
+    const auraMaterial = new THREE.MeshBasicMaterial({ color: 0x63f3ff, transparent: true, opacity: .045, depthWrite: false, side: THREE.BackSide });
+    const aura = new THREE.Mesh(new THREE.CapsuleGeometry(.78, 2.55, 8, 28), auraMaterial);
+    aura.position.y = 1.22;
+    scene.add(aura);
+
+    let model;
+    let modelBaseY = 0;
+    let bones = {};
+    const initial = {};
+    let yaw = 0;
+    let targetYaw = 0;
+
+    function remember(name) {
+      const bone = model?.getObjectByName(name);
+      if (!bone) return;
+      bones[name] = bone;
+      initial[name] = { p: bone.position.clone(), q: bone.quaternion.clone(), s: bone.scale.clone() };
+    }
+
+    function fitModel(root) {
+      const box = new THREE.Box3().setFromObject(root);
+      const size = box.getSize(new THREE.Vector3());
+      const center = box.getCenter(new THREE.Vector3());
+      const scale = 2.95 / Math.max(size.y, .001);
+      root.scale.setScalar(scale);
+      root.position.set(-center.x * scale, -box.min.y * scale, -center.z * scale);
+      const fitted = new THREE.Box3().setFromObject(root);
+      const fittedSize = fitted.getSize(new THREE.Vector3());
+      controls.target.set(0, fittedSize.y * .47, 0);
+      camera.position.set(0, fittedSize.y * .47, Math.max(4.6, fittedSize.y * 1.55));
+      controls.update();
+    }
+
+    const gltfLoader = new GLTFLoader();
+    gltfLoader.load('./models/goku-base-1k.glb', (gltf) => {
+      model = gltf.scene;
+      fitModel(model);
+      modelBaseY = model.position.y;
+      model.traverse((object) => {
+        if (object.isMesh) {
+          object.castShadow = true;
+          object.receiveShadow = true;
+          object.frustumCulled = true;
+        }
+      });
+      scene.add(model);
+      [
+        'DEF_Pelvis_02', 'DEF_Spine_001_03', 'DEF_Spine_002_04',
+        'DEF_Neck_05', 'DEF_Head_06', 'DEF_Eye.L_07', 'DEF_Eye.R_08',
+        'DEF_Shoulder.L_09', 'DEF_Shoulder.R_028',
+        'DEF_Upperarm.L_010', 'DEF_Upperarm.R_029'
+      ].forEach(remember);
+      statusText.textContent = `${Object.keys(bones).length} CONTROL BONES ACTIVE`;
+      meter.style.width = '100%';
+      setTimeout(() => loaderEl.classList.add('done'), 240);
+    }, (event) => {
+      if (event.total) meter.style.width = `${Math.min(100, event.loaded / event.total * 100)}%`;
+    }, (error) => {
+      console.error(error);
+      loaderText.textContent = 'MODEL COULD NOT LOAD — RUN THROUGH A LOCAL SERVER';
+      loaderText.classList.add('error');
+    });
+
+    function addRotation(name, axis, value) {
+      const bone = bones[name];
+      const basePose = initial[name];
+      if (!bone || !basePose) return;
+      bone.quaternion.copy(basePose.q);
+      const euler = new THREE.Euler(0, 0, 0, 'XYZ');
+      euler[axis] = value;
+      bone.quaternion.multiply(new THREE.Quaternion().setFromEuler(euler));
+    }
+
+    const clock = new THREE.Clock();
+    function animate() {
+      const t = clock.getElapsedTime();
+      controls.update();
+
+      if (model && !reduceMotion) {
+        const breath = Math.sin(t * 1.72);
+        const weight = Math.sin(t * .58);
+        model.position.y = modelBaseY + Math.sin(t * 1.72) * .006;
+        targetYaw = Math.sin(t * .31) * .035;
+        yaw += (targetYaw - yaw) * .025;
+        model.rotation.y = yaw;
+
+        addRotation('DEF_Spine_001_03', 'x', breath * .012);
+        addRotation('DEF_Spine_002_04', 'x', breath * .018);
+        addRotation('DEF_Neck_05', 'y', weight * .016);
+        addRotation('DEF_Head_06', 'y', weight * .022);
+        addRotation('DEF_Shoulder.L_09', 'z', breath * .012);
+        addRotation('DEF_Shoulder.R_028', 'z', -breath * .012);
+
+        const blinkCycle = t % 4.7;
+        const blink = blinkCycle > 4.43 ? Math.max(.16, Math.abs(blinkCycle - 4.56) / .13) : 1;
+        for (const eyeName of ['DEF_Eye.L_07', 'DEF_Eye.R_08']) {
+          const eye = bones[eyeName];
+          const eyeInitial = initial[eyeName];
+          if (eye && eyeInitial) eye.scale.set(eyeInitial.s.x, eyeInitial.s.y * blink, eyeInitial.s.z);
+        }
+
+        aura.scale.setScalar(1 + breath * .018);
+        auraMaterial.opacity = .04 + (breath + 1) * .008;
+        ring.material.opacity = .62 + Math.sin(t * 2.4) * .12;
+      }
+
+      renderer.render(scene, camera);
+      requestAnimationFrame(animate);
+    }
+    animate();
+
+    function resize() {
+      const width = innerWidth;
+      const height = innerHeight;
+      camera.aspect = width / height;
+      camera.fov = width < 600 ? 31 : 27;
+      camera.updateProjectionMatrix();
+      renderer.setSize(width, height);
+      renderer.setPixelRatio(Math.min(devicePixelRatio, width < 600 ? 1.35 : 1.5));
+    }
+    addEventListener('resize', resize, { passive: true });
+    resize();
+  </script>
+</body>
+</html>
