@@ -164,19 +164,13 @@ header{position:relative;z-index:5;display:flex;align-items:center;justify-conte
 .charStage.f-beast .aura{background:radial-gradient(ellipse at center, rgba(255,60,80,.6), rgba(255,150,160,.25) 50%, transparent 66%);opacity:.66;animation:auraPulse 1.8s infinite}
 #charaBox{position:relative;height:100%;max-height:52vh;max-width:100%;min-width:0;display:flex;align-items:center;justify-content:center;z-index:3;animation:bob 5s ease-in-out infinite}
 #charaSvg{height:100%;width:auto;max-width:100%;overflow:visible}
-#imgWrap{position:relative;height:100%;max-width:100%;min-width:0;display:none;filter:drop-shadow(0 20px 15px rgba(0,0,0,.7));
-  -webkit-mask-image:linear-gradient(90deg,transparent,#000 17%,#000 83%,transparent),linear-gradient(180deg,transparent,#000 7%,#000 90%,transparent);
-  -webkit-mask-composite:source-in;
-  mask-image:linear-gradient(90deg,transparent,#000 17%,#000 83%,transparent),linear-gradient(180deg,transparent,#000 7%,#000 90%,transparent);
-  mask-composite:intersect}
+#imgWrap{position:relative;height:100%;max-width:100%;min-width:0;display:none;
+  filter:drop-shadow(0 20px 15px rgba(0,0,0,.72)) drop-shadow(0 0 11px rgba(112,205,255,.16))}
 #charaBox.hasImg #charaSvg{display:none}
 #charaBox.hasImg #imgWrap{display:block}
 #charaImg{height:100%;width:auto;max-width:100%;object-fit:contain;display:block;border:none;border-radius:0;
-  filter:contrast(1.1) saturate(1.07) brightness(.91)}
-.imgTint{position:absolute;inset:0;pointer-events:none;background:
-  linear-gradient(90deg,rgba(4,7,19,.38),transparent 24%,transparent 76%,rgba(4,7,19,.38)),
-  radial-gradient(ellipse at 50% 43%,transparent 48%,rgba(4,6,16,.30) 100%),
-  linear-gradient(180deg,rgba(4,6,16,.28),transparent 28%,transparent 68%,rgba(4,6,16,.55));mix-blend-mode:multiply}
+  filter:contrast(1.08) saturate(1.08) brightness(.96)}
+.imgTint{display:none}
 #charaBox.charging{animation:chargeUp 1.05s ease-in forwards}
 @keyframes chargeUp{0%{filter:none;transform:none}55%{transform:scale(.97,.93) translateY(6px)}100%{filter:brightness(2.4) saturate(.5);transform:scale(.95,.9) translateY(10px)}}
 #charaBox.popIn{animation:popX .7s cubic-bezier(.2,1.6,.3,1)}
@@ -1365,19 +1359,19 @@ function prettyDate(ds){const d=parseDay(ds);return WD[d.getDay()]+', '+MO[d.get
 
 /* ================= FORMS ================= */
 const FORMS=[
-{id:'base',   nm:'BASE FORM',           img:'img/base.jpg',    pl:0,     mult:1,       fx:1,   tag:'',                   desc:'Natural state. Build your power through daily discipline.'},
-{id:'kaioken',nm:'KAIOKEN',             img:'img/kaioken.jpg', pl:300,   mult:10,      fx:1.05,tag:'KING KAI TECHNIQUE', desc:'A crimson surge that multiplies power at the cost of strain on the body.'},
-{id:'ssj',    nm:'SUPER SAIYAN',        img:'img/ssj.jpg',     pl:800,   mult:50,      fx:1,   tag:'THE LEGENDARY',      desc:'The legendary transformation, triggered by need... or by relentless training.'},
-{id:'ussj',   nm:'ULTRA SUPER SAIYAN',  img:'img/ussj.jpg',    pl:1500,  mult:60,      fx:1.45,tag:'GRADE 3',            desc:'Maximum muscle mass. Raw power over speed.'},
-{id:'ssj2',   nm:'SUPER SAIYAN 2',      img:'img/ssj2.jpg',    pl:2600,  mult:100,     fx:1,   tag:'ASCENDED',           desc:'Ascended Saiyan. Lightning wreathes the body.'},
-{id:'ssj3',   nm:'SUPER SAIYAN 3',      img:'img/ssj3.jpg',    pl:4200,  mult:400,     fx:1,   tag:'FULL POWER',         desc:'Hair grows to the waist, eyebrows vanish. Enormous ki drain.'},
-{id:'goldape',nm:'GOLDEN GREAT APE',    img:'img/goldape.jpg', pl:6000,  mult:500,     fx:1,   tag:'GT',                 desc:'Primal Oozaru power fused with Super Saiyan energy.'},
-{id:'ssj4',   nm:'SUPER SAIYAN 4',      img:'img/ssj4.jpg',    pl:8000,  mult:4000,    fx:1.1, tag:'GT',                 desc:'Crimson fur, black mane. Primal power under full control.'},
-{id:'ssg',    nm:'SUPER SAIYAN GOD',    img:'img/ssg.jpg',     pl:9800,  mult:10000,   fx:.9,  tag:'DIVINE',             desc:'Divine ki. A lean crimson god-form of pure efficiency.'},
-{id:'ssb',    nm:'SUPER SAIYAN BLUE',   img:'img/ssb.jpg',     pl:11800, mult:50000,   fx:1,   tag:'SSGSS',              desc:'Super Saiyan God Super Saiyan. God ki, mastered.'},
-{id:'ssbk',   nm:'SSB KAIOKEN',         img:'img/ssbk.jpg',    pl:14000, mult:200000,  fx:1,   tag:'GOKU ONLY',          desc:'Blue times Kaioken. A gamble of body and soul.'},
-{id:'uis',    nm:'ULTRA INSTINCT SIGN', img:'img/uis.jpg',     pl:17000, mult:500000,  fx:1,   tag:'OMEN',               desc:'The omen. The body begins to move on its own.'},
-{id:'ue',     nm:'ULTRA EGO',           img:'img/ue.jpg',      pl:20500, mult:2000000, fx:1.15,tag:'VEGETA ONLY',        desc:'God of Destruction technique. Power grows with damage taken.'}
+{id:'base',   nm:'BASE FORM',           img:'img/forms-clean/base.png',    pl:0,     mult:1,       fx:1,   tag:'',                   desc:'Natural state. Build your power through daily discipline.'},
+{id:'kaioken',nm:'KAIOKEN',             img:'img/forms-clean/kaioken.png', pl:300,   mult:10,      fx:1.05,tag:'KING KAI TECHNIQUE', desc:'A crimson surge that multiplies power at the cost of strain on the body.'},
+{id:'ssj',    nm:'SUPER SAIYAN',        img:'img/forms-clean/ssj.png',     pl:800,   mult:50,      fx:1,   tag:'THE LEGENDARY',      desc:'The legendary transformation, triggered by need... or by relentless training.'},
+{id:'ussj',   nm:'ULTRA SUPER SAIYAN',  img:'img/forms-clean/ussj.png',    pl:1500,  mult:60,      fx:1.45,tag:'GRADE 3',            desc:'Maximum muscle mass. Raw power over speed.'},
+{id:'ssj2',   nm:'SUPER SAIYAN 2',      img:'img/forms-clean/ssj2.png',    pl:2600,  mult:100,     fx:1,   tag:'ASCENDED',           desc:'Ascended Saiyan. Lightning wreathes the body.'},
+{id:'ssj3',   nm:'SUPER SAIYAN 3',      img:'img/forms-clean/ssj3.png',    pl:4200,  mult:400,     fx:1,   tag:'FULL POWER',         desc:'Hair grows to the waist, eyebrows vanish. Enormous ki drain.'},
+{id:'goldape',nm:'GOLDEN GREAT APE',    img:'img/forms-clean/goldape.png', pl:6000,  mult:500,     fx:1,   tag:'GT',                 desc:'Primal Oozaru power fused with Super Saiyan energy.'},
+{id:'ssj4',   nm:'SUPER SAIYAN 4',      img:'img/forms-clean/ssj4.png',    pl:8000,  mult:4000,    fx:1.1, tag:'GT',                 desc:'Crimson fur, black mane. Primal power under full control.'},
+{id:'ssg',    nm:'SUPER SAIYAN GOD',    img:'img/forms-clean/ssg.png',     pl:9800,  mult:10000,   fx:.9,  tag:'DIVINE',             desc:'Divine ki. A lean crimson god-form of pure efficiency.'},
+{id:'ssb',    nm:'SUPER SAIYAN BLUE',   img:'img/forms-clean/ssb.png',     pl:11800, mult:50000,   fx:1,   tag:'SSGSS',              desc:'Super Saiyan God Super Saiyan. God ki, mastered.'},
+{id:'ssbk',   nm:'SSB KAIOKEN',         img:'img/forms-clean/ssbk.png',    pl:14000, mult:200000,  fx:1,   tag:'GOKU ONLY',          desc:'Blue times Kaioken. A gamble of body and soul.'},
+{id:'uis',    nm:'ULTRA INSTINCT SIGN', img:'img/forms-clean/uis.png',     pl:17000, mult:500000,  fx:1,   tag:'OMEN',               desc:'The omen. The body begins to move on its own.'},
+{id:'ue',     nm:'ULTRA EGO',           img:'img/forms-clean/ue.png',      pl:20500, mult:2000000, fx:1.15,tag:'VEGETA ONLY',        desc:'God of Destruction technique. Power grows with damage taken.'}
 ];
 const FORM_COLORS={base:'#8affc8',kaioken:'#ff4d5e',ssj:'#ffd75e',ussj:'#ffb03a',ssj2:'#ffe986',ssj3:'#ffcc52',goldape:'#ffb84d',ssj4:'#ff4d70',ssg:'#ff5b5b',ssb:'#57b8ff',ssbk:'#a3b8ff',uis:'#e4efff',ue:'#b57aff'};
 
