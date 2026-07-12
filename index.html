@@ -415,16 +415,16 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 #battleFight{position:relative;border-radius:12px;padding:12px 10px;overflow:hidden;--arenaC:#35e0ff;
   border:1px solid var(--line);
   background:
-    radial-gradient(ellipse at 50% 80%, color-mix(in srgb, var(--arenaC) 14%, transparent), transparent 58%),
-    radial-gradient(ellipse at 50% -20%, rgba(255,255,255,.04), transparent 50%),
-    linear-gradient(180deg,#060812 0%,#0b1024 45%,#111a34 78%,#0a0e20 100%);
+    radial-gradient(ellipse at 50% 82%, color-mix(in srgb, var(--arenaC) 26%, transparent), transparent 55%),
+    radial-gradient(ellipse at 50% -10%, rgba(255,255,255,.06), transparent 48%),
+    linear-gradient(180deg,#05070f 0%,#0b1026 42%,#14204a 78%,#0a0e22 100%);
   transition:background .6s}
 #battleFight::before{content:"";position:absolute;left:-12%;right:-12%;bottom:0;height:44%;pointer-events:none;
   background:
     linear-gradient(transparent, color-mix(in srgb, var(--arenaC) 7%, transparent)),
     repeating-linear-gradient(90deg, color-mix(in srgb, var(--arenaC) 22%, transparent) 0 1px, transparent 1px 46px),
     repeating-linear-gradient(0deg, color-mix(in srgb, var(--arenaC) 16%, transparent) 0 1px, transparent 1px 34px);
-  opacity:.34;transform:perspective(340px) rotateX(48deg);transform-origin:bottom;
+  opacity:.5;transform:perspective(340px) rotateX(48deg);transform-origin:bottom;
   -webkit-mask-image:linear-gradient(transparent, #000 32%);mask-image:linear-gradient(transparent, #000 32%)}
 #battleFight::after{content:"";position:absolute;left:4%;right:4%;bottom:43.4%;height:2px;pointer-events:none;
   background:linear-gradient(90deg, transparent, color-mix(in srgb, var(--arenaC) 55%, transparent), transparent);
@@ -519,7 +519,14 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 .rbName{font-family:var(--fd);font-size:14px;color:var(--pink2);letter-spacing:1px}
 .rbSaga{font-family:var(--fj);font-size:10px;color:var(--dim);letter-spacing:1px;text-transform:uppercase;margin-top:3px}
 .rbProg{font-family:var(--fd);font-size:13px;color:var(--cyan);white-space:nowrap}
-.pathWrap{position:relative;width:100%;margin:6px auto 12px}
+#battleLadder{--arenaC:#35e0ff}
+.pathWrap{position:relative;width:100%;margin:6px auto 12px;border-radius:10px;overflow:hidden;transition:background .6s;
+  background:
+    radial-gradient(ellipse at 50% 0%, color-mix(in srgb, var(--arenaC) 16%, transparent), transparent 42%),
+    radial-gradient(ellipse at 50% 100%, color-mix(in srgb, var(--arenaC) 10%, transparent), transparent 45%),
+    repeating-linear-gradient(0deg, color-mix(in srgb, var(--arenaC) 6%, transparent) 0 1px, transparent 1px 44px),
+    repeating-linear-gradient(90deg, color-mix(in srgb, var(--arenaC) 5%, transparent) 0 1px, transparent 1px 44px),
+    linear-gradient(180deg,#080b1a 0%,#0a0f22 50%,#070a16 100%)}
 .pathSvg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
 .pathSvg path{fill:none;stroke:#4fc9ff;stroke-width:3;stroke-linecap:round;stroke-dasharray:0.5 12;
   filter:drop-shadow(0 0 5px rgba(53,224,255,.7));opacity:.8}
@@ -1911,6 +1918,7 @@ function nodeState(e){
 function renderBattleHome(){
   $('#battleFight').hidden=true;$('#battleResult').hidden=true;$('#battleLadder').hidden=false;
   const b=st.battle;
+  $('#battleLadder').style.setProperty('--arenaC',TIER_TINT[b.tierUnlocked]||'#35e0ff');
   $('#regionName').textContent='TIER '+(b.tierUnlocked+1)+' — '+FORMS[b.tierUnlocked].nm;
   $('#regionSaga').textContent=SAGA[b.tierUnlocked];
   $('#battleSub').textContent=b.cleared.length+'/39 · '+b.wins+'W';
