@@ -514,6 +514,22 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 @keyframes sparkPop{0%{opacity:0;transform:translate(-50%,-50%) scale(.2)}28%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-50%) scale(1.6)}}
 .arena.punch{animation:apunch .2s ease-out}
 @keyframes apunch{50%{transform:scale(1.03)}}
+/* traveling energy projectiles */
+#projLayer{position:absolute;inset:0;pointer-events:none;z-index:6;overflow:visible}
+.proj{position:absolute;width:24px;height:24px;border-radius:50%;will-change:transform;
+  background:radial-gradient(circle,#fff 20%,var(--pc,#35e0ff) 58%,transparent 74%);
+  box-shadow:0 0 16px 5px var(--pc,#35e0ff),0 0 30px 10px color-mix(in srgb,var(--pc,#35e0ff) 50%,transparent)}
+.proj::after{content:"";position:absolute;right:50%;top:50%;width:52px;height:7px;transform:translateY(-50%);
+  background:linear-gradient(270deg,var(--pc,#35e0ff),transparent);border-radius:7px;filter:blur(2px);opacity:.85}
+.proj.big{width:34px;height:34px}
+.proj.big::after{width:74px;height:10px}
+.proj.ult{width:52px;height:52px}
+.proj.ult::after{width:120px;height:16px}
+.meArt.dash{animation:dashUp .34s cubic-bezier(.3,0,.4,1)}
+@keyframes dashUp{0%,100%{transform:translateY(0)}40%{transform:translateY(-46px) scale(1.12)}55%{transform:translateY(-40px) scale(1.1)}}
+#charaImg{animation:breathe 3.8s ease-in-out infinite}
+@keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.018)}}
+@media(prefers-reduced-motion:reduce){.meArt.dash{animation:none}#charaImg{animation:none}}
 @media(prefers-reduced-motion:reduce){.foeArt.hurt,.meArt.hurt,.meArt.lunge,.foeArt.lunge,.arena.punch,.arena.shake{animation:none}}
 .log{font-family:var(--fj);font-size:12px;color:var(--dim);letter-spacing:.5px;text-align:center;min-height:34px;
   display:flex;align-items:center;justify-content:center;border:1px solid var(--line);border-radius:6px;padding:8px 12px;background:rgba(0,0,0,.25)}
@@ -1193,6 +1209,7 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
   </div>
   <div id="battleFight" hidden>
     <div class="arena" id="arena">
+      <div id="projLayer"></div>
       <div class="foe">
         <div class="foeArt" id="foeArt"></div>
         <div class="combatInfo">
@@ -1935,6 +1952,21 @@ function anim(sel,cls,ms){const el=$(sel);if(!el)return;el.classList.remove(cls)
 function spark(sel,crit){const p=$(sel);if(!p)return;const s=document.createElement('span');s.className='spark'+(crit?' crit':'');p.appendChild(s);setTimeout(()=>s.remove(),400);}
 function punch(){anim('#arena','punch',220);}
 function hitFx(defender,attacker,crit,heavy){anim(attacker,'lunge',420);anim(defender,'hurt',440);spark(defender,crit||heavy);if(crit||heavy)punch();}
+function fireProjectile(fromSel,toSel,opts){
+  opts=opts||{};const arena=$('#arena'),layer=$('#projLayer'),fromEl=$(fromSel),toEl=$(toSel);
+  if(!arena||!layer||!fromEl||!toEl)return Promise.resolve();
+  const a=arena.getBoundingClientRect(),ff=fromEl.getBoundingClientRect(),tt=toEl.getBoundingClientRect();
+  const sx=ff.left+ff.width/2-a.left,sy=ff.top+ff.height/2-a.top;
+  const tx=tt.left+tt.width/2-a.left,ty=tt.top+tt.height/2-a.top;
+  const dx=tx-sx,dy=ty-sy,ang=Math.atan2(dy,dx)*180/Math.PI,dur=opts.dur||340;
+  const p=document.createElement('div');p.className='proj '+(opts.size||'');
+  p.style.cssText=`left:${sx}px;top:${sy}px;--pc:${opts.color||'#35e0ff'};transform:translate(-50%,-50%) rotate(${ang}deg)`;
+  layer.appendChild(p);
+  if(matchMedia('(prefers-reduced-motion:reduce)').matches){p.remove();return Promise.resolve();}
+  requestAnimationFrame(()=>{p.style.transition=`transform ${dur}ms cubic-bezier(.45,0,.75,1)`;
+    p.style.transform=`translate(calc(-50% + ${dx}px),calc(-50% + ${dy}px)) rotate(${ang}deg)`;});
+  return new Promise(res=>setTimeout(()=>{p.remove();res();},dur));
+}
 
 const TIER_TINT=['#ffb03a','#39d98a','#39d98a','#35e0ff','#35e0ff','#b06bff','#b06bff','#ff4d5e','#ffd75e','#ffd75e','#ffd75e','#ff2e88','#ff3b4e'];
 function startFight(e){
@@ -1977,20 +2009,30 @@ function renderFight(){
     mvBtn('charge',skillName('charge'),'+'+(35+skillLevel('charge')*3),busy,false)
   ].join('');
 }
-function pAttack(power,ign,label){
+function pAttack(power,ign,label,kind){
   const f=fight,dodge=Math.max(0,Math.min(25,(f.es.spd-f.pc.spd)*0.4));
   if(roll(dodge)){f.combo=0;bfloat('MISS','miss');blog(f.en.n+' evaded your '+label+'!');anim('#meArt','lunge',420);beep(300,.06,'sine',.02);return;}
   const comboMult=1+Math.min(f.combo,5)*0.1;
   const forced=f.lastStandActive;
+  const heavy=power>1.5;
   const r=calcHit(f.pc.atk,power*comboMult,forced?100:f.pc.crit,f.es.def,ign);
-  f.eHp-=r.d;bflash();bfloat('-'+r.d+(r.c?'!':''),r.c?'crit':'dmg');
-  hitFx('#foeArt','#meArt',r.c,power>1.5);buzz(r.c?[22,28,55]:power>1.5?26:16);
-  const comboTag=f.combo>=2?(' COMBO x'+(f.combo+1)+'!'):'';
-  f.combo++;
+  f.eHp-=r.d;f.combo++;
   if(forced){f.lastStandActive=false;f.lastStandUsed=true;$('#arena').classList.remove('clutch');
-    blog('LAST STAND! Your '+label+' connects with devastating force for '+r.d+'!');beep(950,.14,'square',.05);}
-  else{blog('Your '+label+' hits for '+r.d+(r.c?' — critical!':'.')+comboTag);beep(r.c?900:620,.07,'square',.03);}
-  if(f.combo>=3)bfloat('COMBO x'+f.combo,'clutch');
+    blog('LAST STAND! Your '+label+' connects with devastating force for '+r.d+'!');}
+  else{blog('Your '+label+' hits for '+r.d+(r.c?' — critical!':'.')+(f.combo>=3?(' COMBO x'+f.combo+'!'):''));}
+  const impact=()=>{
+    bflash();bfloat('-'+r.d+(r.c?'!':''),r.c?'crit':'dmg');
+    anim('#foeArt','hurt',440);spark('#foeArt',r.c||heavy);if(r.c||heavy||forced)punch();
+    buzz(r.c?[22,28,55]:heavy?26:16);beep(forced?960:(r.c?900:620),.08,'square',.03);
+    if(f.combo>=3)bfloat('COMBO x'+f.combo,'clutch');
+  };
+  if(kind==='beam'||kind==='ult'){
+    const col=kind==='ult'?'#ff2e88':(skillLevel('ki')>=2?'#4fa8ff':'#35e0ff');
+    beep(kind==='ult'?200:480,.12,'sawtooth',.035);
+    fireProjectile('#meArt','#foeArt',{color:col,size:kind==='ult'?'ult':(heavy?'big':''),dur:kind==='ult'?430:340}).then(impact);
+  }else{
+    anim('#meArt','dash',340);setTimeout(impact,180);
+  }
 }
 function transformFight(){
   const f=fight;f.pForm=st.formMax;const pc=playerCombat(f.pForm);
@@ -2000,9 +2042,9 @@ function transformFight(){
 }
 function playerMove(m){
   if(!fight||fight.over||fight.busy)return;const f=fight;
-  if(m==='strike'){pAttack(1*skillMult('strike'),0,skillName('strike'));f.ki=Math.min(f.pc.kiMax,f.ki+8);}
-  else if(m==='ki'){if(f.ki<25)return;f.ki-=25;pAttack(1.9*skillMult('ki'),.3,skillName('ki'));}
-  else if(m==='ult'){if(f.pForm<5||f.ki<60)return;f.ki-=60;pAttack(3.2*skillMult('ult'),0,skillName('ult'));bigFx();}
+  if(m==='strike'){pAttack(1*skillMult('strike'),0,skillName('strike'),'melee');f.ki=Math.min(f.pc.kiMax,f.ki+8);}
+  else if(m==='ki'){if(f.ki<25)return;f.ki-=25;pAttack(1.9*skillMult('ki'),.3,skillName('ki'),'beam');}
+  else if(m==='ult'){if(f.pForm<5||f.ki<60)return;f.ki-=60;pAttack(3.2*skillMult('ult'),0,skillName('ult'),'ult');bigFx();}
   else if(m==='xform'){if(st.formMax<=f.pForm||f.ki<30)return;f.ki-=30;transformFight();}
   else if(m==='guard'){f.guard=true;f.ki=Math.min(f.pc.kiMax,f.ki+18+skillLevel('guard')*2);blog('You raise your '+skillName('guard')+'.');}
   else if(m==='charge'){f.ki=Math.min(f.pc.kiMax,f.ki+35+skillLevel('charge')*3);const h=Math.round(f.pHpMax*(0.06+skillLevel('charge')*0.01));f.pHp=Math.min(f.pHpMax,f.pHp+h);blog(skillName('charge')+' — Ki and vitality restored.');bfloat('+'+h,'heal');spark('#meArt',false);buzz(12);beep(400,.2,'sine',.04);}
@@ -2037,6 +2079,7 @@ function enemyTurn(){
         if(skillLevel('guard')>=6){d=0;bfloat('COUNTER','crit');const cd=Math.round(f.pc.atk*0.8);f.eHp-=cd;anim('#foeArt','hurt',440);blog('Instant Transmission negates the '+moveName+' — counter for '+cd+'!');}
         else{d=Math.round(d*guardMitig()*0.5);bfloat('PERFECT BLOCK','crit');blog('PERFECT BLOCK! You shatter the '+moveName+' for minimal damage.');beep(1100,.1,'square',.04);}
       }else{blog(f.en.n+' unleashes '+moveName+' for '+d+'!'+maybeFlavor('boss'));}
+      fireProjectile('#foeArt','#meArt',{color:'#ff5a3c',size:'big',dur:340});
       if(d>0){f.pHp-=d;f.combo=0;bfloat('-'+d,'foe');hitFx('#meArt','#foeArt',r.c,true);buzz([30,20,60]);beep(240,.14,'square',.04);checkLastStand();}
       else{buzz([15,10,15]);beep(500,.08,'triangle',.03);}
       if(hasTrait('lifesteal')&&d>0)f.eHp=Math.min(f.eHpMax,f.eHp+d*0.3);
