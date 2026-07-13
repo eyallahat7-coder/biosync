@@ -1948,7 +1948,7 @@ const TIERS=[
   {s:'Cosmic Convicts',f:11,c:'#ff2e88',a:140,l:68},
   {s:'The Absolute',f:12,c:'#ff3b4e',a:150,l:74}
 ];
-/* im:1 = art already exists in img/enemies/ (17 of them); others show a placeholder until you add art */
+/* Every current ladder enemy has matching art in img/enemies/. */
 const ENEMIES=[
   {s:'raditz',n:'Raditz',r:'grunt',t:0,pl:1200,im:1},{s:'saibaman',n:'Saibaman',r:'elite',t:0,pl:1500,im:1},{s:'nappa',n:'Nappa',r:'boss',t:0,pl:4000,im:1},
   {s:'vegeta-scouter',n:'Vegeta',r:'grunt',t:1,pl:18000,im:1},{s:'great-ape-vegeta',n:'Great Ape Vegeta',r:'boss',t:1,pl:180000,tr:['rampage']},
@@ -1969,6 +1969,7 @@ const ENEMIES=[
   {s:'moro',n:'Moro',r:'grunt',t:16,pl:4e15,tr:['lifesteal'],im:1},{s:'moro-merged',n:'Moro · Planet-Eater',r:'boss',t:16,pl:7e15,tr:['lifesteal','rampage']},{s:'granolah',n:'Granolah',r:'elite',t:16,pl:8.5e15,im:1},{s:'gas',n:'Gas',r:'elite',t:16,pl:1e16,im:1},{s:'gas-ultimate',n:'Gas · Ultimate',r:'boss',t:16,pl:1.8e16,tr:['rampage'],im:1},
   {s:'cell-max',n:'Cell Max',r:'grunt',t:17,pl:3e16,tr:['rampage'],im:1},{s:'black-frieza',n:'Black Frieza',r:'boss',t:17,pl:1e17,tr:['rampage'],im:1}
 ];
+ENEMIES.forEach(e=>e.im=1);
 let fight=null;
 function hasTrait(t){return fight&&fight.en.tr&&fight.en.tr.includes(t);}
 
