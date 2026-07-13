@@ -485,6 +485,10 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 .comboBadge{font-family:var(--fj);font-size:10px;letter-spacing:.5px;color:var(--gold);background:rgba(255,215,94,.12);
   border:1px solid rgba(255,215,94,.4);border-radius:999px;padding:2px 8px;margin-left:6px;vertical-align:middle}
 .combatInfo .cSub{font-family:var(--fj);font-size:10px;color:var(--dim);letter-spacing:1px;text-transform:uppercase;margin-top:2px}
+.bossTell{margin-top:6px;padding:5px 8px;font-family:var(--fd);font-size:8px;line-height:1.25;letter-spacing:.8px;color:var(--gold);
+  border-left:2px solid var(--gold);background:linear-gradient(90deg,rgba(255,215,94,.15),transparent);text-shadow:0 0 10px rgba(255,215,94,.65);animation:tellPulse .7s ease-in-out infinite alternate}
+@keyframes tellPulse{to{filter:brightness(1.35)}}
+@media(prefers-reduced-motion:reduce){.bossTell{animation:none}}
 .hpbar{height:14px;border-radius:7px;background:rgba(255,255,255,.08);overflow:hidden;border:1px solid var(--line);margin-top:6px}
 .hpbar{position:relative}
 .hpbar i{position:absolute;left:0;top:0;height:100%;border-radius:inherit}
@@ -609,7 +613,13 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 .pArt.ph::after{content:"?";position:relative;font-family:var(--fd);font-size:19px;color:rgba(255,90,110,.6)}
 .pLabel{position:absolute;top:66px;left:50%;transform:translateX(-50%);white-space:nowrap;text-align:center;line-height:1.12}
 .pLabel b{display:block;font-family:var(--fd);font-size:10px;font-weight:400;color:var(--text);letter-spacing:.4px}
-.pLabel i{font-family:var(--fj);font-style:normal;font-size:9.5px;color:var(--gold);letter-spacing:.4px}
+.pLabel i{display:flex;align-items:center;justify-content:center;gap:5px;font-family:var(--fj);font-style:normal;font-size:9.5px;color:var(--gold);letter-spacing:.4px}
+.threat{--tc:var(--cyan);display:inline-flex;align-items:center;gap:4px;padding:2px 6px;font-family:var(--fd);font-size:7px;font-style:normal;line-height:1;letter-spacing:.7px;color:var(--tc);
+  border:1px solid color-mix(in srgb,var(--tc) 48%,transparent);background:color-mix(in srgb,var(--tc) 10%,rgba(5,8,18,.82));
+  clip-path:polygon(4px 0,100% 0,calc(100% - 4px) 100%,0 100%);text-shadow:0 0 8px color-mix(in srgb,var(--tc) 70%,transparent)}
+.threat::before{content:"";width:4px;height:4px;transform:rotate(45deg);background:var(--tc);box-shadow:0 0 6px var(--tc)}
+.threat.easy{--tc:var(--good)}.threat.even{--tc:var(--cyan)}.threat.hard{--tc:var(--amber)}.threat.deadly{--tc:var(--red)}
+.combatInfo .cSub .threat{margin-left:5px;vertical-align:1px}
 .pNode.boss{width:80px;height:80px}
 .pNode.boss .pLabel{top:84px}
 .pNode.boss .pArt{border-color:var(--redline);box-shadow:0 0 16px rgba(255,59,78,.35)}
@@ -1361,17 +1371,17 @@ function prettyDate(ds){const d=parseDay(ds);return WD[d.getDay()]+', '+MO[d.get
 const FORMS=[
 {id:'base',   nm:'BASE FORM',           img:'img/forms-clean/base.png',    pl:0,     mult:1,       fx:1,   tag:'',                   desc:'Natural state. Build your power through daily discipline.'},
 {id:'kaioken',nm:'KAIOKEN',             img:'img/forms-clean/kaioken.png', pl:300,   mult:10,      fx:1.05,tag:'KING KAI TECHNIQUE', desc:'A crimson surge that multiplies power at the cost of strain on the body.'},
-{id:'ssj',    nm:'SUPER SAIYAN',        img:'img/forms-clean/ssj.png',     pl:800,   mult:50,      fx:1,   tag:'THE LEGENDARY',      desc:'The legendary transformation, triggered by need... or by relentless training.'},
-{id:'ussj',   nm:'ULTRA SUPER SAIYAN',  img:'img/forms-clean/ussj.png',    pl:1500,  mult:60,      fx:1.45,tag:'GRADE 3',            desc:'Maximum muscle mass. Raw power over speed.'},
-{id:'ssj2',   nm:'SUPER SAIYAN 2',      img:'img/forms-clean/ssj2.png',    pl:2600,  mult:100,     fx:1,   tag:'ASCENDED',           desc:'Ascended Saiyan. Lightning wreathes the body.'},
-{id:'ssj3',   nm:'SUPER SAIYAN 3',      img:'img/forms-clean/ssj3.png',    pl:4200,  mult:400,     fx:1,   tag:'FULL POWER',         desc:'Hair grows to the waist, eyebrows vanish. Enormous ki drain.'},
-{id:'goldape',nm:'GOLDEN GREAT APE',    img:'img/forms-clean/goldape.png', pl:6000,  mult:500,     fx:1,   tag:'GT',                 desc:'Primal Oozaru power fused with Super Saiyan energy.'},
-{id:'ssj4',   nm:'SUPER SAIYAN 4',      img:'img/forms-clean/ssj4.png',    pl:8000,  mult:4000,    fx:1.1, tag:'GT',                 desc:'Crimson fur, black mane. Primal power under full control.'},
-{id:'ssg',    nm:'SUPER SAIYAN GOD',    img:'img/forms-clean/ssg.png',     pl:9800,  mult:10000,   fx:.9,  tag:'DIVINE',             desc:'Divine ki. A lean crimson god-form of pure efficiency.'},
-{id:'ssb',    nm:'SUPER SAIYAN BLUE',   img:'img/forms-clean/ssb.png',     pl:11800, mult:50000,   fx:1,   tag:'SSGSS',              desc:'Super Saiyan God Super Saiyan. God ki, mastered.'},
-{id:'ssbk',   nm:'SSB KAIOKEN',         img:'img/forms-clean/ssbk.png',    pl:14000, mult:200000,  fx:1,   tag:'GOKU ONLY',          desc:'Blue times Kaioken. A gamble of body and soul.'},
-{id:'uis',    nm:'ULTRA INSTINCT SIGN', img:'img/forms-clean/uis.png',     pl:17000, mult:500000,  fx:1,   tag:'OMEN',               desc:'The omen. The body begins to move on its own.'},
-{id:'ue',     nm:'ULTRA EGO',           img:'img/forms-clean/ue.png',      pl:20500, mult:2000000, fx:1.15,tag:'VEGETA ONLY',        desc:'God of Destruction technique. Power grows with damage taken.'}
+{id:'ssj',    nm:'SUPER SAIYAN',        img:'img/forms-clean/ssj.png',     pl:2500,  mult:50,      fx:1,   tag:'THE LEGENDARY',      desc:'The legendary transformation, triggered by need... or by relentless training.'},
+{id:'ussj',   nm:'ULTRA SUPER SAIYAN',  img:'img/forms-clean/ussj.png',    pl:4200,  mult:60,      fx:1.45,tag:'GRADE 3',            desc:'Maximum muscle mass. Raw power over speed.'},
+{id:'ssj2',   nm:'SUPER SAIYAN 2',      img:'img/forms-clean/ssj2.png',    pl:6000,  mult:100,     fx:1,   tag:'ASCENDED',           desc:'Ascended Saiyan. Lightning wreathes the body.'},
+{id:'ssj3',   nm:'SUPER SAIYAN 3',      img:'img/forms-clean/ssj3.png',    pl:8000,  mult:400,     fx:1,   tag:'FULL POWER',         desc:'Hair grows to the waist, eyebrows vanish. Enormous ki drain.'},
+{id:'goldape',nm:'GOLDEN GREAT APE',    img:'img/forms-clean/goldape.png', pl:10000, mult:500,     fx:1,   tag:'GT',                 desc:'Primal Oozaru power fused with Super Saiyan energy.'},
+{id:'ssj4',   nm:'SUPER SAIYAN 4',      img:'img/forms-clean/ssj4.png',    pl:12000, mult:4000,    fx:1.1, tag:'GT',                 desc:'Crimson fur, black mane. Primal power under full control.'},
+{id:'ssg',    nm:'SUPER SAIYAN GOD',    img:'img/forms-clean/ssg.png',     pl:14500, mult:10000,   fx:.9,  tag:'DIVINE',             desc:'Divine ki. A lean crimson god-form of pure efficiency.'},
+{id:'ssb',    nm:'SUPER SAIYAN BLUE',   img:'img/forms-clean/ssb.png',     pl:17000, mult:50000,   fx:1,   tag:'SSGSS',              desc:'Super Saiyan God Super Saiyan. God ki, mastered.'},
+{id:'ssbk',   nm:'SSB KAIOKEN',         img:'img/forms-clean/ssbk.png',    pl:20000, mult:200000,  fx:1,   tag:'GOKU ONLY',          desc:'Blue times Kaioken. A gamble of body and soul.'},
+{id:'uis',    nm:'ULTRA INSTINCT SIGN', img:'img/forms-clean/uis.png',     pl:24000, mult:500000,  fx:1,   tag:'OMEN',               desc:'The omen. The body begins to move on its own.'},
+{id:'ue',     nm:'ULTRA EGO',           img:'img/forms-clean/ue.png',      pl:29000, mult:2000000, fx:1.15,tag:'VEGETA ONLY',        desc:'God of Destruction technique. Power grows with damage taken.'}
 ];
 const FORM_COLORS={base:'#8affc8',kaioken:'#ff4d5e',ssj:'#ffd75e',ussj:'#ffb03a',ssj2:'#ffe986',ssj3:'#ffcc52',goldape:'#ffb84d',ssj4:'#ff4d70',ssg:'#ff5b5b',ssb:'#57b8ff',ssbk:'#a3b8ff',uis:'#e4efff',ue:'#b57aff'};
 
@@ -1909,7 +1919,7 @@ const E_REFL=[3,6,9,13,17,21,25,30,34,38,42,46,50];
 const ROLE={grunt:{hp:1.4,atk:0.9,def:1.0,spd:0.95},elite:{hp:1.7,atk:1.05,def:1.1,spd:1.05},boss:{hp:2.2,atk:1.25,def:1.2,spd:1.0}};
 function defaultBattle(){return{cleared:[],tierUnlocked:0,wins:0,losses:0,trophies:{}};}
 const ENEMIES=[
-  {s:'raditz',n:'Raditz',r:'grunt',t:0,pl:1200},{s:'saibaman',n:'Saibaman Swarm',r:'elite',t:0,pl:1800},{s:'nappa',n:'Nappa',r:'boss',t:0,pl:4000},
+  {s:'raditz',n:'Raditz',r:'grunt',t:0,pl:1200},{s:'saibaman',n:'Saibaman Swarm',r:'elite',t:0,pl:1800},{s:'nappa',n:'Nappa',r:'boss',t:0,pl:4000,hpM:1.15,atkM:1.10},
   {s:'vegeta-scouter',n:'Vegeta',r:'grunt',t:1,pl:12000},{s:'dodoria',n:'Dodoria',r:'elite',t:1,pl:18000},{s:'zarbon',n:'Zarbon',r:'boss',t:1,pl:30000},
   {s:'recoome',n:'Recoome',r:'grunt',t:2,pl:90000},{s:'ginyu',n:'Captain Ginyu',r:'elite',t:2,pl:180000},{s:'frieza-final',n:'Frieza',r:'boss',t:2,pl:530000},
   {s:'android-19',n:'Android 19',r:'grunt',t:3,pl:1200000,tr:['kidrain']},{s:'android-20',n:'Dr. Gero',r:'elite',t:3,pl:1800000,tr:['lifesteal']},{s:'android-17',n:'Android 17',r:'boss',t:3,pl:3000000},
@@ -1965,9 +1975,20 @@ function playerCombat(f){
 }
 function enemyStats(e){
   const t=e.t,M=BM[t],a=E_REFA[t],l=E_REFL[t],b=ROLE[e.r];
-  return {hpMax:Math.round((a*6+l*8+40)*Math.sqrt(M)*b.hp),atk:(a*1.4+l+8)*M*b.atk,
-    def:(a*0.5+l*0.7+5)*b.def,spd:(a+l*0.3)*b.spd,crit:10};
+  return {hpMax:Math.round((a*6+l*8+40)*Math.sqrt(M)*b.hp*(e.hpM||1)),atk:(a*1.4+l+8)*M*b.atk*(e.atkM||1),
+    def:(a*0.5+l*0.7+5)*b.def*(e.defM||1),spd:(a+l*0.3)*b.spd*(e.spdM||1),crit:10};
 }
+function threatFor(e){
+  const pc=playerCombat(st.formMax),es=enemyStats(e);
+  const pD=pc.atk*(1+pc.crit*.008)*(100/(100+es.def));
+  const eD=es.atk*(1+es.crit*.008)*(100/(100+pc.def));
+  const edge=(pc.hpMax/Math.max(1,eD))/(es.hpMax/Math.max(1,pD));
+  if(edge>=1.6)return{id:'easy',label:'EASY',edge};
+  if(edge>=1.0)return{id:'even',label:'EVEN',edge};
+  if(edge>=.65)return{id:'hard',label:'HARD',edge};
+  return{id:'deadly',label:'DEADLY',edge};
+}
+function threatBadge(t){return`<em class="threat ${t.id}" title="Estimated from your current combat stats">${t.label}</em>`;}
 function roll(p){return Math.random()*100<p;}
 function calcHit(atk,power,crit,def,ign){const eff=def*(1-(ign||0));const c=roll(crit);
   return {d:Math.max(1,Math.round(atk*power*(c?1.8:1)*(0.9+Math.random()*0.2)*(100/(100+eff)))),c};}
@@ -2002,7 +2023,7 @@ function startFight(e){
   const pc=playerCombat(0);
   fight={en:e,es:enemyStats(e),pForm:0,pc,pHpMax:pc.hpMax,pHp:pc.hpMax,ki:Math.min(pc.kiMax,Math.max(30,Math.round(pc.kiMax*0.55))),
     guard:false,over:false,revived:false,eTurn:0,enraged:false,
-    combo:0,charging:false,lastStandActive:false,lastStandUsed:false};
+    combo:0,charging:false,lastStandActive:false,lastStandUsed:false,cd:{guard:0,charge:0}};
   fight.eHpMax=fight.es.hpMax;fight.eHp=fight.es.hpMax;fight.eAtk=fight.es.atk;
   const bf=$('#battleFight');bf.style.setProperty('--arenaC',TIER_TINT[e.t]||'#35e0ff');bf.classList.remove('enraged');
   const ar=$('#arena');if(ar)ar.classList.remove('clutch');
@@ -2011,11 +2032,14 @@ function startFight(e){
 function showFight(){$('#battleLadder').hidden=true;$('#battleFight').hidden=false;$('#battleResult').hidden=true;renderFight();}
 function setFoeArt(e){$('#foeArt').innerHTML=`<span class="phName">${e.n}</span><img src="img/enemies/${e.s}.jpg" alt="" onerror="this.parentNode.classList.add('ph');this.remove();">`;$('#foeArt').className='foeArt';}
 function setMeArt(f){$('#meArt').innerHTML=`<img src="${FORMS[f].img}" alt="" style="filter:${FORMS[f].imgF||'none'}">`;}
-function mvBtn(id,label,ki,disabled,hidden){return hidden?'':`<button class="mvBtn" data-mv="${id}"${disabled?' disabled':''}><b>${label}</b><span>${ki} Ki</span></button>`;}
+function mvBtn(id,label,sub,disabled,hidden){return hidden?'':`<button class="mvBtn" data-mv="${id}"${disabled?' disabled':''}><b>${label}</b><span>${sub}</span></button>`;}
+function cdText(n){return n+' TURN'+(n===1?'':'S');}
 function renderFight(){
   const f=fight;if(!f)return;
   $('#foeName').textContent=f.en.n;
-  $('#foeTier').textContent='T'+(f.en.t+1)+' · '+f.en.r.toUpperCase()+' · PL '+fmtPL(f.en.pl)+(f.enraged?' · ENRAGED':'');
+  $('#foeTier').innerHTML='T'+(f.en.t+1)+' · '+f.en.r.toUpperCase()+' · PL '+fmtPL(f.en.pl)+(f.enraged?' · ENRAGED':'')+threatBadge(threatFor(f.en));
+  const tell=$('#bossTell'),bm=BOSS_MOVES[f.en.s];
+  if(f.charging){tell.hidden=false;tell.textContent='GUARD NOW · '+(bm?bm.name:'HEAVY ATTACK');}else tell.hidden=true;
   const eHpW=clamp(f.eHp/f.eHpMax*100,0,100)+'%',pHpW=clamp(f.pHp/f.pHpMax*100,0,100)+'%';
   $('#foeHp').style.width=eHpW;$('#foeHpG').style.width=eHpW;
   $('#foeHpNum').textContent=Math.max(0,Math.round(f.eHp))+' / '+Math.round(f.eHpMax);
@@ -2028,14 +2052,14 @@ function renderFight(){
   if(f.combo>=2){cb.hidden=false;cb.textContent='🔥 x'+f.combo;}else{cb.hidden=true;}
   if(f._af!==f.en.s){setFoeArt(f.en);f._af=f.en.s;}
   if(f._mf!==f.pForm){setMeArt(f.pForm);f._mf=f.pForm;}
-  const busy=!!f.busy;
+  const busy=!!f.busy,gcd=(f.cd&&f.cd.guard)||0,ccd=(f.cd&&f.cd.charge)||0;
   $('#moveBar').innerHTML=[
-    mvBtn('strike',skillName('strike'),'+8',busy,false),
-    mvBtn('ki',skillName('ki'),'-25',busy||f.ki<25,false),
-    mvBtn('ult',skillName('ult'),'-60',busy||!(f.pForm>=5&&f.ki>=60),st.formMax<5),
-    mvBtn('xform','Transform','-30',busy||f.ki<30,st.formMax<=f.pForm),
-    mvBtn('guard',skillName('guard'),'+'+(18+skillLevel('guard')*2),busy,false),
-    mvBtn('charge',skillName('charge'),'+'+(35+skillLevel('charge')*3),busy,false)
+    mvBtn('strike',skillName('strike'),'+8 KI',busy,false),
+    mvBtn('ki',skillName('ki'),'-25 KI',busy||f.ki<25,false),
+    mvBtn('ult',skillName('ult'),'-60 KI',busy||!(f.pForm>=5&&f.ki>=60),st.formMax<5),
+    mvBtn('xform','Transform','-30 KI',busy||f.ki<30,st.formMax<=f.pForm),
+    mvBtn('guard',skillName('guard'),gcd?cdText(gcd):'+'+(18+skillLevel('guard')*2)+' KI',busy||gcd>0,false),
+    mvBtn('charge',skillName('charge'),ccd?cdText(ccd):'+'+(35+skillLevel('charge')*3)+' KI',busy||ccd>0,false)
   ].join('');
 }
 function pAttack(power,ign,label,kind){
@@ -2075,8 +2099,8 @@ function playerMove(m){
   else if(m==='ki'){if(f.ki<25)return;f.ki-=25;pAttack(1.9*skillMult('ki'),.3,skillName('ki'),'beam');}
   else if(m==='ult'){if(f.pForm<5||f.ki<60)return;f.ki-=60;pAttack(3.2*skillMult('ult'),0,skillName('ult'),'ult');bigFx();}
   else if(m==='xform'){if(st.formMax<=f.pForm||f.ki<30)return;f.ki-=30;transformFight();}
-  else if(m==='guard'){f.guard=true;f.ki=Math.min(f.pc.kiMax,f.ki+18+skillLevel('guard')*2);blog('You raise your '+skillName('guard')+'.');}
-  else if(m==='charge'){f.ki=Math.min(f.pc.kiMax,f.ki+35+skillLevel('charge')*3);const h=Math.round(f.pHpMax*(0.06+skillLevel('charge')*0.01));f.pHp=Math.min(f.pHpMax,f.pHp+h);blog(skillName('charge')+' — Ki and vitality restored.');bfloat('+'+h,'heal');spark('#meArt',false);buzz(12);beep(400,.2,'sine',.04);}
+  else if(m==='guard'){if(f.cd.guard>0)return;f.guard=true;f.cd.guard=1;f.ki=Math.min(f.pc.kiMax,f.ki+18+skillLevel('guard')*2);blog('You raise your '+skillName('guard')+'.');}
+  else if(m==='charge'){if(f.cd.charge>0)return;f.cd.charge=2;f.ki=Math.min(f.pc.kiMax,f.ki+35+skillLevel('charge')*3);const h=Math.round(f.pHpMax*(0.06+skillLevel('charge')*0.01));f.pHp=Math.min(f.pHpMax,f.pHp+h);blog(skillName('charge')+' — Ki and vitality restored.');bfloat('+'+h,'heal');spark('#meArt',false);buzz(12);beep(400,.2,'sine',.04);}
   if(f.eHp<=0){
     if(hasTrait('revive')&&!f.revived){f.revived=true;f.eHp=Math.round(f.eHpMax*0.4);blog(f.en.n+' refuses to fall — revived!');bfloat('REVIVE','crit');}
     else{f.busy=true;renderFight();setTimeout(winFight,650);return;}
@@ -2087,6 +2111,7 @@ function playerMove(m){
     enemyTurn();
     if(fight.pHp<=0){renderFight();setTimeout(loseFight,480);return;}
     fight.ki=Math.min(fight.pc.kiMax,fight.ki+fight.pc.kiRegen);
+    for(const id of['guard','charge'])if(id!==m&&fight.cd[id]>0)fight.cd[id]--;
     fight.busy=false;renderFight();
   },720);
 }
@@ -2147,7 +2172,7 @@ function gainXpSilent(a){st.xp+=a;while(st.xp>=xpNeed(st.level)){st.xp-=xpNeed(s
 function winFight(){
   const f=fight,e=f.en;f.over=true;
   const first=!st.battle.cleared.includes(e.s);
-  const xp=first?(40+e.t*25):Math.round((40+e.t*25)*0.2);
+  const xp=40+e.t*25;
   gainXpSilent(xp);
   if(first){st.battle.cleared.push(e.s);st.battle.trophies[e.s]={date:todayStr(),form:FORMS[f.pForm].id};}
   const tier=ENEMIES.filter(x=>x.t===e.t);
@@ -2186,12 +2211,12 @@ function renderBattleHome(){
   const W=wrap.clientWidth||340,pts=[];
   const nodes=ENEMIES.map((e,i)=>{
     const x=50+27*Math.sin(i*0.9),y=PAD+i*SP;pts.push([x/100*W,y]);
-    const stt=nodeState(e),cur=e.s===current,boss=e.r==='boss';
+    const stt=nodeState(e),cur=e.s===current,boss=e.r==='boss',th=threatFor(e);
     return `<button class="pNode ${stt}${boss?' boss':''}${cur?' current':''}" data-foe="${e.s}" style="left:${x.toFixed(2)}%;top:${y}px"${stt==='locked'?' disabled':''}>`+
       `<span class="pArt"><img src="img/enemies/${e.s}.jpg" alt="" onerror="this.parentNode.classList.add('ph');this.remove();"></span>`+
       (stt==='done'?'<span class="pBadge done">✓</span>':stt==='locked'?'<span class="pBadge lock">🔒</span>':'')+
       (cur?'<span class="pTag">FIGHT</span>':'')+
-      `<span class="pLabel"><b>${e.n}</b><i>PL ${fmtPL(e.pl)}</i></span></button>`;
+      `<span class="pLabel"><b>${e.n}</b><i>PL ${fmtPL(e.pl)} ${threatBadge(th)}</i></span></button>`;
   }).join('');
   const path='<svg class="pathSvg" viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="none"><path d="'+pts.map((p,i)=>(i?'L':'M')+p[0].toFixed(1)+' '+p[1]).join(' ')+'"/></svg>';
   wrap.innerHTML=path+nodes;
