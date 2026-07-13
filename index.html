@@ -586,14 +586,21 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 .barNum.ki{color:var(--gold);min-width:52px}
 
 /* ---- battle: climbing path ---- */
-.regionBar{display:flex;align-items:center;justify-content:space-between;gap:12px;position:relative;
-  border:1px solid var(--line);background:rgba(13,17,38,.7);border-radius:6px;padding:12px 16px;margin-bottom:8px}
+.regionBar{display:grid;grid-template-columns:42px minmax(0,1fr) auto 42px;align-items:center;gap:10px;position:relative;
+  border:1px solid var(--line);background:rgba(13,17,38,.88);border-radius:10px;padding:10px;margin-bottom:8px;
+  box-shadow:0 10px 32px rgba(2,4,14,.35);backdrop-filter:blur(12px)}
 .regionBar::before{content:"";position:absolute;top:-1px;left:-1px;width:12px;height:12px;border-top:2px solid var(--pink);border-left:2px solid var(--pink)}
+.rbCore{min-width:0}
 .rbName{font-family:var(--fd);font-size:14px;color:var(--pink2);letter-spacing:1px}
-.rbSaga{font-family:var(--fj);font-size:10px;color:var(--dim);letter-spacing:1px;text-transform:uppercase;margin-top:3px}
+.rbSaga{font-family:var(--fj);font-size:10px;color:var(--dim);letter-spacing:1px;text-transform:uppercase;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .rbProg{font-family:var(--fd);font-size:13px;color:var(--cyan);white-space:nowrap}
+.tierNav{width:42px;height:42px;border-radius:9px;border:1px solid color-mix(in srgb,var(--arenaC) 52%,var(--line));
+  background:color-mix(in srgb,var(--arenaC) 10%,rgba(7,10,24,.92));color:var(--text);font-family:var(--fd);font-size:18px;
+  cursor:pointer;box-shadow:inset 0 0 18px color-mix(in srgb,var(--arenaC) 8%,transparent);transition:.15s}
+.tierNav:hover:not(:disabled){border-color:var(--arenaC);color:#fff;background:color-mix(in srgb,var(--arenaC) 20%,rgba(7,10,24,.92))}
+.tierNav:disabled{opacity:.25;cursor:default}
 #battleLadder{--arenaC:#35e0ff}
-.pathWrap{position:relative;width:100%;margin:6px auto 12px;border-radius:10px;overflow:hidden;transition:background .6s;
+.pathWrap{position:relative;width:100%;margin:6px auto 12px;border:1px solid color-mix(in srgb,var(--arenaC) 18%,var(--line));border-radius:12px;overflow:hidden;transition:height .25s,background .6s;
   background:
     radial-gradient(ellipse at 50% 0%, color-mix(in srgb, var(--arenaC) 16%, transparent), transparent 42%),
     radial-gradient(ellipse at 50% 100%, color-mix(in srgb, var(--arenaC) 10%, transparent), transparent 45%),
@@ -630,6 +637,53 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 .pTag{position:absolute;top:-15px;left:50%;transform:translateX(-50%);font-family:var(--fd);font-size:8px;letter-spacing:1px;
   background:var(--gold);color:#1a1400;padding:2px 8px;border-radius:6px;z-index:4;box-shadow:0 0 12px rgba(255,215,94,.6)}
 @media(prefers-reduced-motion:reduce){.pNode.current .pArt{animation:none}}
+
+/* phone-first battle layout: one saga deck at a time, never a 7,000px campaign rail */
+@media(max-width:640px){
+  body.v-battle{scroll-padding-bottom:calc(92px + env(safe-area-inset-bottom))}
+  #viewBattle{padding:8px 10px calc(92px + env(safe-area-inset-bottom));min-height:0}
+  .regionBar{position:sticky;top:0;z-index:12;grid-template-columns:38px minmax(0,1fr) auto 38px;gap:7px;padding:8px;border-radius:9px}
+  .tierNav{width:38px;height:42px;font-size:16px}
+  .rbName{font-size:10.5px;letter-spacing:.45px;line-height:1.25}
+  .rbSaga{font-size:8.5px;letter-spacing:.65px;margin-top:2px}
+  .rbProg{font-size:10px;letter-spacing:.3px}
+  .pathWrap{margin:7px auto 0;border-radius:10px}
+  .pNode{width:66px;height:66px}
+  .pNode.boss{width:74px;height:74px}
+  .pLabel{top:70px}
+  .pNode.boss .pLabel{top:78px}
+  .pLabel b{font-size:9px;max-width:132px;overflow:hidden;text-overflow:ellipsis}
+  .pLabel i{font-size:8.5px}
+  .pTag{top:-13px;font-size:7px;padding:2px 7px}
+  #battleFight{padding:9px 8px;margin-bottom:calc(16px + env(safe-area-inset-bottom));border-radius:10px;overflow:clip}
+  #battleFight .arena{gap:7px}
+  .foe,.me{gap:9px}
+  .foeArt,.meArt{width:74px;height:92px;border-radius:8px}
+  .combatInfo .cName{font-size:12px;line-height:1.2}
+  .combatInfo .cSub{font-size:8.5px;letter-spacing:.55px;line-height:1.25}
+  .meForm{font-size:9px;margin-top:2px}
+  .comboBadge{font-size:8px;padding:1px 6px}
+  .barRow{gap:5px;margin-top:4px}
+  .hpbar{height:11px;margin-top:4px}
+  .kibar{height:7px;margin-top:4px}
+  .barNum{font-size:9px;min-width:62px}
+  .barNum.ki{min-width:45px}
+  .clash{height:17px}
+  .log{font-size:10.5px;line-height:1.25;min-height:30px;padding:6px 8px}
+  .moves{gap:6px}
+  .mvBtn{min-height:48px;padding:8px 2px;border-radius:8px}
+  .mvBtn b{font-size:10px;letter-spacing:.15px}
+  .mvBtn span{font-size:8px;letter-spacing:.5px}
+  .retreatBtn{min-height:34px;padding:6px 18px;margin-top:0;font-size:10px}
+}
+
+@media(max-width:360px), (max-height:680px) and (max-width:640px){
+  #battleFight .arena{gap:5px}
+  .foeArt,.meArt{width:66px;height:80px}
+  .clash{height:10px}
+  .log{min-height:26px;padding:4px 7px}
+  .mvBtn{min-height:43px;padding:6px 2px}
+}
 
 /* ====== SKILLS / PATH ====== */
 #viewSkills{display:flex;flex-direction:column;gap:16px}
@@ -1238,8 +1292,10 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 <section class="view" id="viewBattle" data-view="battle" hidden>
   <div id="battleLadder">
     <div class="regionBar">
-      <div><div class="rbName" id="regionName"></div><div class="rbSaga" id="regionSaga"></div></div>
+      <button class="tierNav" id="tierPrev" type="button" aria-label="Previous battle tier">‹</button>
+      <div class="rbCore"><div class="rbName" id="regionName"></div><div class="rbSaga" id="regionSaga"></div></div>
       <div class="rbProg" id="battleSub"></div>
+      <button class="tierNav" id="tierNext" type="button" aria-label="Next battle tier">›</button>
     </div>
     <div class="pathWrap" id="pathWrap"></div>
   </div>
@@ -1878,13 +1934,14 @@ function spawnFloat(txt,cls){
 function showView(v){
   document.querySelectorAll('.view').forEach(s=>{s.hidden=s.dataset.view!==v;});
   document.body.classList.toggle('v-home',v==='home');
+  document.body.classList.toggle('v-battle',v==='battle');
   document.querySelectorAll('.navBtn').forEach(b=>b.classList.toggle('active',b.dataset.view===v));
   $('#viewTitle').textContent={home:'HOME',daily:'DAILY LOG',skills:'SKILLS',stats:'STATS',battle:'BATTLE',history:'HISTORY'}[v]||'';
   if(v==='daily')renderDaily();
   if(v==='history')renderHistory();
   if(v==='skills')renderSkills();
   if(v==='stats')renderStatsPage();
-  if(v==='battle'){if(fight&&!fight.over)showFight();else renderBattleHome();}
+  if(v==='battle'){if(fight&&!fight.over)showFight();else{battleBrowseTier=st.battle.tierUnlocked;renderBattleHome();}}
 }
 document.querySelectorAll('.navBtn').forEach(b=>b.addEventListener('click',()=>{showView(b.dataset.view);beep(880,.05,'square',.02);}));
 $('#historyBtn').addEventListener('click',()=>{showView('history');beep(880,.05,'square',.02);});
@@ -1908,7 +1965,7 @@ $('#historyBack').addEventListener('click',()=>{showView('daily');beep(700,.04,'
     if(e.touches.length!==1){x0=null;return;}
     const t=e.touches[0];x0=t.clientX;y0=t.clientY;t0=Date.now();
     // don't hijack swipes inside a fight, a horizontal table, or an open overlay
-    block=!!e.target.closest('#battleFight, .tableWrap, .modal, .battleResult, .wkGrid');
+    block=!!e.target.closest('#battleFight, #battleLadder, .tableWrap, .modal, .battleResult, .wkGrid');
   },{passive:true});
   document.addEventListener('touchend',e=>{
     if(x0==null||block){x0=null;return;}
@@ -2206,7 +2263,9 @@ function winFight(){
   const first=!st.battle.cleared.includes(e.s);
   if(first){st.battle.cleared.push(e.s);st.battle.trophies[e.s]={date:todayStr(),form:FORMS[f.pForm].id};}
   const tier=ENEMIES.filter(x=>x.t===e.t);
-  if(tier.every(x=>st.battle.cleared.includes(x.s))&&e.t+1>st.battle.tierUnlocked)st.battle.tierUnlocked=Math.min(TIERS.length-1,e.t+1);
+  if(tier.every(x=>st.battle.cleared.includes(x.s))&&e.t+1>st.battle.tierUnlocked){
+    st.battle.tierUnlocked=Math.min(TIERS.length-1,e.t+1);battleBrowseTier=st.battle.tierUnlocked;
+  }
   st.battle.wins++;save();renderAll();
   showResult(true,e,first);
   buzz([40,50,40,90]);beep(660,.12,'triangle',.05);setTimeout(()=>beep(990,.16,'triangle',.05),130);
@@ -2227,21 +2286,28 @@ function nodeState(e){
   if(e.t>st.battle.tierUnlocked)return'locked';
   return'open';
 }
+let battleBrowseTier=null;
 function renderBattleHome(){
   $('#battleFight').hidden=true;$('#battleResult').hidden=true;$('#battleLadder').hidden=false;
   const b=st.battle;
-  const T=TIERS[b.tierUnlocked]||TIERS[0];
+  if(battleBrowseTier==null)battleBrowseTier=b.tierUnlocked;
+  battleBrowseTier=clamp(battleBrowseTier,0,TIERS.length-1);
+  const viewedTier=battleBrowseTier,T=TIERS[viewedTier]||TIERS[0];
   $('#battleLadder').style.setProperty('--arenaC',T.c||'#35e0ff');
-  $('#regionName').textContent='TIER '+(b.tierUnlocked+1)+'/'+TIERS.length+' — '+FORMS[T.f].nm;
-  $('#regionSaga').textContent=T.s;
-  $('#battleSub').textContent=b.cleared.length+'/'+ENEMIES.length+' · '+b.wins+'W';
+  $('#regionName').textContent='TIER '+(viewedTier+1)+'/'+TIERS.length+' · '+FORMS[T.f].nm;
+  $('#regionSaga').textContent=T.s+(viewedTier>b.tierUnlocked?' · LOCKED':'');
+  const tierEnemies=ENEMIES.filter(e=>e.t===viewedTier),tierDone=tierEnemies.filter(e=>b.cleared.includes(e.s)).length;
+  $('#battleSub').textContent=tierDone+'/'+tierEnemies.length;
+  $('#tierPrev').disabled=viewedTier===0;
+  $('#tierNext').disabled=viewedTier===TIERS.length-1;
   let current=null;
-  for(const e of ENEMIES){if(e.t<=b.tierUnlocked&&!b.cleared.includes(e.s)){current=e.s;break;}}
-  const SP=112,PAD=56,n=ENEMIES.length,H=PAD*2+(n-1)*SP;
+  for(const e of tierEnemies){if(e.t<=b.tierUnlocked&&!b.cleared.includes(e.s)){current=e.s;break;}}
+  const phone=matchMedia('(max-width:640px)').matches,SP=phone?101:112,PAD=phone?64:66,n=tierEnemies.length;
+  const H=PAD*2+Math.max(0,n-1)*SP+(phone?34:46);
   const wrap=$('#pathWrap');wrap.style.height=H+'px';
   const W=wrap.clientWidth||340,pts=[];
-  const nodes=ENEMIES.map((e,i)=>{
-    const x=50+27*Math.sin(i*0.9),y=PAD+i*SP;pts.push([x/100*W,y]);
+  const nodes=tierEnemies.map((e,i)=>{
+    const x=50+(phone?22:27)*Math.sin((i+viewedTier*.7)*1.12),y=PAD+i*SP;pts.push([x/100*W,y]);
     const stt=nodeState(e),cur=e.s===current,boss=e.r==='boss';
     return `<button class="pNode ${stt}${boss?' boss':''}${cur?' current':''}" data-foe="${e.s}" style="left:${x.toFixed(2)}%;top:${y}px"${stt==='locked'?' disabled':''}>`+
       `<span class="pArt${e.im?'':' ph'}">${e.im?`<img src="img/enemies/${e.s}.jpg" alt="">`:''}</span>`+
@@ -2251,8 +2317,16 @@ function renderBattleHome(){
   }).join('');
   const path='<svg class="pathSvg" viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="none"><path d="'+pts.map((p,i)=>(i?'L':'M')+p[0].toFixed(1)+' '+p[1]).join(' ')+'"/></svg>';
   wrap.innerHTML=path+nodes;
-  const cn=wrap.querySelector('.pNode.current');if(cn)cn.scrollIntoView({block:'center'});
+  const cn=wrap.querySelector('.pNode.current');if(cn)cn.scrollIntoView({block:phone?'nearest':'center'});
 }
+function browseBattleTier(dir){
+  const next=clamp((battleBrowseTier==null?st.battle.tierUnlocked:battleBrowseTier)+dir,0,TIERS.length-1);
+  if(next===battleBrowseTier)return;
+  battleBrowseTier=next;renderBattleHome();beep(dir>0?820:620,.04,'square',.02);
+  $('#viewBattle').scrollIntoView({block:'start',behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth'});
+}
+$('#tierPrev').addEventListener('click',()=>browseBattleTier(-1));
+$('#tierNext').addEventListener('click',()=>browseBattleTier(1));
 document.addEventListener('click',e=>{
   const mb=e.target.closest('.mvBtn');if(mb&&!mb.disabled){playerMove(mb.dataset.mv);return;}
   const fc=e.target.closest('.pNode,.foeCard');if(fc&&!fc.disabled){const en=ENEMIES.find(x=>x.s===fc.dataset.foe);if(en)startFight(en);return;}
