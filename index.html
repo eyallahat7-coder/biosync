@@ -1457,7 +1457,7 @@ function defaultState(){return{
   history:[],lastSync:null,form:0,formMax:0,battle:defaultBattle(),
   ascPoints:0,skillPoints:0,streakPaid:0,
   trained:{vit:0,str:0,agi:0,foc:0},
-  skills:{strike:0,ki:0,ult:0,guard:0,charge:0}};}
+  skills:{strike:0,ki:0,ult:0,guard:0,charge:0},battleXpRemovedSaveFixV1:true};}
 
 let st=load();
 function load(){
@@ -1471,6 +1471,10 @@ function load(){
       if(s.streakPaid===undefined)s.streakPaid=s.streak||0;
       if(!s.trained)s.trained={vit:0,str:0,agi:0,foc:0};
       if(!s.skills)s.skills={strike:0,ki:0,ult:0,guard:0,charge:0};
+      if(!s.battleXpRemovedSaveFixV1){
+        s.level=2;s.xp=0;s.battleXpRemovedSaveFixV1=true;
+        localStorage.setItem(KEY,JSON.stringify(s));
+      }
       return s;}}}catch(e){}
   return defaultState();
 }
@@ -2168,25 +2172,22 @@ function enemyTurn(){
   }
   if(hasTrait('regen'))f.eHp=Math.min(f.eHpMax,f.eHp+f.eHpMax*0.04);
 }
-function gainXpSilent(a){st.xp+=a;while(st.xp>=xpNeed(st.level)){st.xp-=xpNeed(st.level);st.level++;for(const k in st.stats)st.stats[k]=clamp(st.stats[k]+2,1,100);}}
 function winFight(){
   const f=fight,e=f.en;f.over=true;
   const first=!st.battle.cleared.includes(e.s);
-  const xp=40+e.t*25;
-  gainXpSilent(xp);
   if(first){st.battle.cleared.push(e.s);st.battle.trophies[e.s]={date:todayStr(),form:FORMS[f.pForm].id};}
   const tier=ENEMIES.filter(x=>x.t===e.t);
   if(tier.every(x=>st.battle.cleared.includes(x.s))&&e.t+1>st.battle.tierUnlocked)st.battle.tierUnlocked=Math.min(12,e.t+1);
   st.battle.wins++;save();renderAll();
-  showResult(true,e,xp,first);
+  showResult(true,e,first);
   buzz([40,50,40,90]);beep(660,.12,'triangle',.05);setTimeout(()=>beep(990,.16,'triangle',.05),130);
 }
-function loseFight(){fight.over=true;st.battle.losses++;save();showResult(false,fight.en,0,false);buzz(160);beep(150,.4,'sawtooth',.06);}
-function showResult(win,e,xp,first){
+function loseFight(){fight.over=true;st.battle.losses++;save();showResult(false,fight.en,false);buzz(160);beep(150,.4,'sawtooth',.06);}
+function showResult(win,e,first){
   const r=$('#battleResult');r.className='battleResult '+(win?'win':'lose');
   r.innerHTML=`<div class="brBox"><div class="brTitle">${win?'VICTORY':'DEFEATED'}</div>`+
     `<div class="brName">${win?e.n+' has fallen':'You fell to '+e.n}</div>`+
-    `<div class="brXp">${win?('+'+xp+' XP'+(first?' · FIRST CLEAR':'')):'No penalty — grow stronger and return.'}</div>`+
+    `<div class="brXp">${win?(first?'FIRST CLEAR · TROPHY RECORDED':'VICTORY RECORDED'):'No penalty — grow stronger and return.'}</div>`+
     `<div class="brBtns">${win?'':'<button class="mYes" id="brRetry">RETRY</button>'}<button class="mNo" id="brBack">${win?'CONTINUE':'RETREAT'}</button></div></div>`;
   r.hidden=false;
   $('#brBack').onclick=()=>{r.hidden=true;fight=null;renderBattleHome();};
