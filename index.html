@@ -849,14 +849,18 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 .arcHorizon{position:absolute;left:4%;right:4%;bottom:44%;height:2px;background:linear-gradient(90deg,transparent,rgba(62,224,255,.5),rgba(255,59,78,.5),transparent);filter:blur(1px)}
 .arcFighter{position:absolute;bottom:17%;width:150px;height:210px;display:flex;align-items:flex-end;justify-content:center;transform-origin:bottom}
 .arcFighter.you{left:11%}.arcFighter.foe{right:11%}
-.arcRing{position:absolute;bottom:-8px;left:50%;width:150px;height:40px;transform:translateX(-50%);border-radius:50%;border:2px solid var(--fa);opacity:.8;box-shadow:0 0 18px var(--fa),inset 0 0 18px color-mix(in srgb,var(--fa) 40%,transparent)}
+.arcRing{position:absolute;z-index:0;bottom:-8px;left:50%;width:150px;height:40px;transform:translateX(-50%);border-radius:50%;border:2px solid var(--fa);opacity:.8;box-shadow:0 0 18px var(--fa),inset 0 0 18px color-mix(in srgb,var(--fa) 40%,transparent)}
 .arcFlame{position:absolute;bottom:6px;left:50%;transform:translateX(-50%);width:104px;height:172px;border-radius:50% 50% 42% 42%/62% 62% 34% 34%;filter:blur(2px);
-  background:radial-gradient(ellipse at 50% 78%,#fff 0%,color-mix(in srgb,var(--fa) 80%,#fff) 22%,var(--fa) 48%,transparent 74%);animation:arcFlick .34s ease-in-out infinite alternate;transform-origin:50% 100%}
-.arcFlame.inner{width:70px;height:126px;filter:blur(1px);opacity:.92;animation-duration:.27s;background:radial-gradient(ellipse at 50% 80%,#fff 0%,#fff 26%,color-mix(in srgb,var(--fa) 60%,#fff) 52%,transparent 76%)}
+  z-index:1;background:radial-gradient(ellipse at 50% 78%,#fff 0%,color-mix(in srgb,var(--fa) 80%,#fff) 22%,var(--fa) 48%,transparent 74%);animation:arcFlick .34s ease-in-out infinite alternate;transform-origin:50% 100%}
+.arcPortrait{position:absolute;z-index:2;bottom:0;left:50%;width:118px;height:188px;transform:translateX(-50%);object-fit:cover;object-position:center 18%;user-select:none;pointer-events:none;
+  filter:contrast(1.13) saturate(1.16) brightness(1.04) drop-shadow(0 0 12px var(--fa));
+  -webkit-mask-image:radial-gradient(ellipse 68% 88% at 50% 46%,#000 56%,rgba(0,0,0,.92) 72%,transparent 100%);
+  mask-image:radial-gradient(ellipse 68% 88% at 50% 46%,#000 56%,rgba(0,0,0,.92) 72%,transparent 100%)}
+.arcFlame.inner{z-index:3;width:70px;height:126px;filter:blur(1px);opacity:.34;mix-blend-mode:screen;animation-duration:.27s;background:radial-gradient(ellipse at 50% 80%,#fff 0%,#fff 26%,color-mix(in srgb,var(--fa) 60%,#fff) 52%,transparent 76%)}
 @keyframes arcFlick{to{transform:translateX(-50%) scaleY(1.06) skewX(2deg)}}
-.arcCore{position:absolute;bottom:74px;left:50%;transform:translateX(-50%);width:34px;height:34px;border-radius:50%;background:radial-gradient(circle,#fff 30%,color-mix(in srgb,var(--fa) 70%,#fff) 70%,transparent);box-shadow:0 0 26px #fff,0 0 60px var(--fa);animation:arcCore 1.6s ease-in-out infinite}
+.arcCore{position:absolute;z-index:1;bottom:74px;left:50%;transform:translateX(-50%);width:34px;height:34px;border-radius:50%;opacity:.7;background:radial-gradient(circle,#fff 30%,color-mix(in srgb,var(--fa) 70%,#fff) 70%,transparent);box-shadow:0 0 26px #fff,0 0 60px var(--fa);animation:arcCore 1.6s ease-in-out infinite}
 @keyframes arcCore{50%{transform:translateX(-50%) scale(1.14)}}
-.arcFighterTag{position:absolute;bottom:-34px;left:50%;transform:translateX(-50%);text-align:center;white-space:nowrap}
+.arcFighterTag{position:absolute;z-index:5;bottom:-34px;left:50%;transform:translateX(-50%);text-align:center;white-space:nowrap}
 .arcFighterTag b{display:block;font-family:'Haettenschweiler','Impact','Arial Narrow',var(--fd);font-size:14px;letter-spacing:.1em;color:var(--text);font-weight:400}
 .arcFighterTag span{font-family:Consolas,'Cascadia Mono',monospace;font-size:7px;letter-spacing:.28em;color:#648196;text-transform:uppercase}
 .arcFighter.hurt{animation:arcHurt .42s}.arcFighter.you.lunge{animation:arcLungeR .4s ease-out}.arcFighter.foe.lunge{animation:arcLungeL .4s ease-out}.arcFighter.you.dash{animation:arcLungeR .34s ease-out}
@@ -910,7 +914,7 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
   .arcTurn{width:50px;height:58px}.arcTurn b{font-size:22px}.arcTurn span,.arcTurn small{font-size:5.5px;letter-spacing:.16em}
   .arcName{font-size:17px}.arcSub{font-size:6px;letter-spacing:.11em}.arcHp{height:12px}.arcVitals{font-size:7px}.arcKi{width:82%;gap:2px;height:6px}
   .arcStage{height:255px}.arcFighter{width:110px;height:165px;bottom:19%}.arcFighter.you{left:3%}.arcFighter.foe{right:3%}
-  .arcRing{width:120px;height:32px}.arcFlame{width:84px;height:140px}.arcFlame.inner{width:58px;height:104px}.arcCore{bottom:61px;width:28px;height:28px}
+  .arcRing{width:120px;height:32px}.arcFlame{width:84px;height:140px}.arcPortrait{width:94px;height:154px}.arcFlame.inner{width:58px;height:104px}.arcCore{bottom:61px;width:28px;height:28px}
   .arcFighterTag{bottom:-29px}.arcFighterTag b{font-size:11px}.arcFighterTag span{font-size:6px}
   .arcCombo{top:79px;font-size:18px}.arcTell{inset:30% 0 auto}.arcTell>div{font-size:14px;padding:7px 18px}.arcTell small{font-size:6px}
   .arcUltName{font-size:24px;top:19%}.arcCommands{padding:5px 7px 12px}.arcTicker{font-size:8.5px;line-height:1.35;min-height:34px;padding:6px 8px}
@@ -918,7 +922,7 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
   .battleResult .brTitle{font-size:58px}
 }
 @media(max-width:370px), (max-height:700px) and (max-width:700px){
-  .arcStage{height:220px}.arcFighter{width:96px;height:145px;bottom:18%}.arcFlame{width:72px;height:122px}.arcFlame.inner{width:50px;height:92px}.arcCore{bottom:52px}.arcRing{width:104px}.arcCommands{padding-bottom:8px}.arcDeck .mvBtn{min-height:58px}.arcTicker{margin-bottom:7px}
+  .arcStage{height:220px}.arcFighter{width:96px;height:145px;bottom:18%}.arcFlame{width:72px;height:122px}.arcPortrait{width:82px;height:134px}.arcFlame.inner{width:50px;height:92px}.arcCore{bottom:52px}.arcRing{width:104px}.arcCommands{padding-bottom:8px}.arcDeck .mvBtn{min-height:58px}.arcTicker{margin-bottom:7px}
 }
 @media(prefers-reduced-motion:reduce){.arcFlame,.arcCore,.arcTell>div,.arcCine .lines,.arcCombo,.arcDeck .guardRec::after{animation:none!important}}
 
@@ -2499,9 +2503,9 @@ function startFight(e){
   showFight();blog(e.n+' stands before you.');beep(300,.16,'sawtooth',.05);
 }
 function showFight(){$('#battleStage').hidden=true;$('#battleFight').hidden=false;$('#battleResult').hidden=true;renderFight();}
-function arcFighterHtml(name,sub){return `<span class="arcRing"></span><span class="arcFlame"></span><span class="arcFlame inner"></span><span class="arcCore"></span><span class="arcFighterTag"><b>${name}</b><span>${sub}</span></span>`;}
-function setFoeArt(e){const el=$('#foeArt');el.className='arcFighter foe';el.style.setProperty('--fa',e.r==='boss'?'var(--enemyAura)':'#ff7a2f');el.innerHTML=arcFighterHtml(e.n.toUpperCase(),e.r.toUpperCase());}
-function setMeArt(f){const el=$('#meArt'),form=FORMS[f];el.className='arcFighter you';el.style.setProperty('--fa',FORM_COLORS[form.id]||'#35e0ff');el.innerHTML=arcFighterHtml(form.nm,'SYNC '+Math.round((effOf('vit')+effOf('str')+effOf('agi')+effOf('foc'))/4)+'%');$('#battleFight').style.setProperty('--playerAura',FORM_COLORS[form.id]||'#35e0ff');}
+function arcFighterHtml(name,sub,img){return `<span class="arcRing"></span><span class="arcFlame"></span><img class="arcPortrait" src="${img}" alt="${name}" draggable="false"><span class="arcFlame inner"></span><span class="arcCore"></span><span class="arcFighterTag"><b>${name}</b><span>${sub}</span></span>`;}
+function setFoeArt(e){const el=$('#foeArt');el.className='arcFighter foe';el.style.setProperty('--fa',e.r==='boss'?'var(--enemyAura)':'#ff7a2f');el.innerHTML=arcFighterHtml(e.n.toUpperCase(),e.r.toUpperCase(),'img/enemies/'+e.s+'.jpg');}
+function setMeArt(f){const el=$('#meArt'),form=FORMS[f];el.className='arcFighter you';el.style.setProperty('--fa',FORM_COLORS[form.id]||'#35e0ff');el.innerHTML=arcFighterHtml(form.nm,'SYNC '+Math.round((effOf('vit')+effOf('str')+effOf('agi')+effOf('foc'))/4)+'%',form.img);$('#battleFight').style.setProperty('--playerAura',FORM_COLORS[form.id]||'#35e0ff');}
 const ARC_MOVE_ICON={strike:'👊',ki:'🌀',ult:'💥',xform:'⚡',guard:'🛡',charge:'☀'};
 function mvBtn(id,label,ki,disabled,hidden,guardRec){
   if(hidden)return'';const cls='mvBtn '+((id==='strike'||id==='ki')?'atk ':id==='ult'?'atk ult ':id==='xform'?'xform ':'')+(guardRec?'guardRec':'');
