@@ -803,6 +803,125 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 .stgEngage:disabled::after{display:none}
 @media(prefers-reduced-motion:reduce){.stgBolt,.stgGlow,.stgOrbit,.stgScan,.stgEngage::after{animation:none}}
 
+/* ====== BATTLE FIGHT: ARCADE CLASH ====== */
+#battleFight{--playerAura:#8affc8;--enemyAura:#ff7a2f;position:relative;padding:0;border:1px solid rgba(62,224,255,.2);
+  border-radius:0;overflow:hidden;background:linear-gradient(180deg,#081226 0%,#050a16 62%,#03060e 100%);
+  clip-path:polygon(0 0,100% 0,100% calc(100% - 20px),calc(100% - 20px) 100%,0 100%)}
+#battleFight::before,#battleFight::after{display:none}
+#battleFight.enraged{--enemyAura:#ff3148}
+#battleFight .arcFrame{position:relative;z-index:1;display:block;min-height:0;gap:0;filter:none}
+.arcFrame.shake{animation:arcShake .48s linear}
+.arcFrame.punch{animation:arcPunch .22s ease-out}
+@keyframes arcShake{0%,100%{transform:none}20%{transform:translate(-7px,4px)}40%{transform:translate(6px,-5px)}60%{transform:translate(-5px,-3px)}80%{transform:translate(5px,4px)}}
+@keyframes arcPunch{50%{transform:scale(1.015)}}
+.arcHud{position:relative;z-index:8;display:grid;grid-template-columns:minmax(0,1fr) 88px minmax(0,1fr);gap:10px;align-items:start;padding:15px 16px 6px}
+.arcPlate{display:flex;flex-direction:column;gap:5px;min-width:0}
+.arcPlate.foe{align-items:flex-end;text-align:right}
+.arcName{font-family:'Haettenschweiler','Impact','Arial Narrow',var(--fd);font-size:25px;line-height:1;letter-spacing:.055em;font-style:italic;transform:skewX(-4deg);color:#9df2ff}
+.arcPlate.foe .arcName{color:#ffc9a8}
+.arcSub{font-family:Consolas,'Cascadia Mono',monospace;font-size:8px;letter-spacing:.23em;color:#648196;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.arcHp{width:100%;height:16px;position:relative;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);overflow:hidden}
+.arcPlate.you .arcHp{clip-path:polygon(0 0,100% 0,calc(100% - 14px) 100%,0 100%)}
+.arcPlate.foe .arcHp{clip-path:polygon(14px 0,100% 0,100% 100%,0 100%)}
+.arcHp i{position:absolute;top:0;bottom:0}
+.arcHp .ghost{background:rgba(255,255,255,.38);transition:width .72s cubic-bezier(.4,0,.2,1) .18s}
+.arcHp .fill{transition:width .16s ease}
+.arcPlate.you .arcHp i{left:0}.arcPlate.foe .arcHp i{right:0}
+.arcPlate.you .arcHp .fill{background:linear-gradient(90deg,#12a8c9,#3ee0ff 60%,#bff6ff);box-shadow:0 0 14px rgba(62,224,255,.5)}
+.arcPlate.foe .arcHp .fill{background:linear-gradient(270deg,#c9184a,#ff3b4e 60%,#ffb3a0);box-shadow:0 0 14px rgba(255,59,78,.5)}
+.arcVitals{display:flex;justify-content:space-between;gap:8px;font-family:Consolas,'Cascadia Mono',monospace;font-size:9px;color:#648196;letter-spacing:.08em;font-variant-numeric:tabular-nums}
+.arcPlate.foe .arcVitals{justify-content:flex-end}.arcKiNum{color:#ffc94d}
+.arcKi{display:flex;gap:3px;width:64%;height:7px}
+.arcKi i{flex:1;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.07);transform:skewX(-18deg);transition:.18s}
+.arcKi i.on{background:linear-gradient(180deg,#fff3c0,#ffc233);border-color:rgba(255,194,51,.6);box-shadow:0 0 8px rgba(255,194,51,.7)}
+.arcTurn{justify-self:center;width:72px;height:80px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+  clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);background:linear-gradient(180deg,rgba(20,32,58,.96),rgba(8,14,28,.96));
+  box-shadow:inset 0 0 0 1px rgba(62,224,255,.42)}
+.arcTurn span,.arcTurn small{font-family:Consolas,'Cascadia Mono',monospace;font-size:7px;letter-spacing:.25em;color:#648196;white-space:nowrap}
+.arcTurn b{font-family:'Haettenschweiler','Impact','Arial Narrow',var(--fd);font-size:30px;line-height:1;color:#fff;text-shadow:0 0 14px rgba(62,224,255,.65)}
+.arcCombo{position:absolute;z-index:9;left:50%;top:102px;transform:translateX(-50%) skewX(-8deg);font-family:'Haettenschweiler','Impact','Arial Narrow',var(--fd);
+  font-size:23px;letter-spacing:.08em;color:#ffc233;text-shadow:0 0 16px rgba(255,194,51,.7);animation:arcComboPop .3s cubic-bezier(.2,1.6,.4,1)}
+@keyframes arcComboPop{from{transform:translateX(-50%) skewX(-8deg) scale(1.6)}}
+
+.arcStage{position:relative;height:340px;z-index:2;overflow:hidden}
+.arcFloor{position:absolute;left:-18%;right:-18%;bottom:-4px;height:46%;background:repeating-linear-gradient(90deg,rgba(62,224,255,.12) 0 1px,transparent 1px 52px),repeating-linear-gradient(0deg,rgba(62,224,255,.10) 0 1px,transparent 1px 26px);
+  transform:perspective(430px) rotateX(59deg);transform-origin:top;-webkit-mask-image:linear-gradient(transparent,#000 30%);mask-image:linear-gradient(transparent,#000 30%)}
+.arcHorizon{position:absolute;left:4%;right:4%;bottom:44%;height:2px;background:linear-gradient(90deg,transparent,rgba(62,224,255,.5),rgba(255,59,78,.5),transparent);filter:blur(1px)}
+.arcFighter{position:absolute;bottom:17%;width:150px;height:210px;display:flex;align-items:flex-end;justify-content:center;transform-origin:bottom}
+.arcFighter.you{left:11%}.arcFighter.foe{right:11%}
+.arcRing{position:absolute;bottom:-8px;left:50%;width:150px;height:40px;transform:translateX(-50%);border-radius:50%;border:2px solid var(--fa);opacity:.8;box-shadow:0 0 18px var(--fa),inset 0 0 18px color-mix(in srgb,var(--fa) 40%,transparent)}
+.arcFlame{position:absolute;bottom:6px;left:50%;transform:translateX(-50%);width:104px;height:172px;border-radius:50% 50% 42% 42%/62% 62% 34% 34%;filter:blur(2px);
+  background:radial-gradient(ellipse at 50% 78%,#fff 0%,color-mix(in srgb,var(--fa) 80%,#fff) 22%,var(--fa) 48%,transparent 74%);animation:arcFlick .34s ease-in-out infinite alternate;transform-origin:50% 100%}
+.arcFlame.inner{width:70px;height:126px;filter:blur(1px);opacity:.92;animation-duration:.27s;background:radial-gradient(ellipse at 50% 80%,#fff 0%,#fff 26%,color-mix(in srgb,var(--fa) 60%,#fff) 52%,transparent 76%)}
+@keyframes arcFlick{to{transform:translateX(-50%) scaleY(1.06) skewX(2deg)}}
+.arcCore{position:absolute;bottom:74px;left:50%;transform:translateX(-50%);width:34px;height:34px;border-radius:50%;background:radial-gradient(circle,#fff 30%,color-mix(in srgb,var(--fa) 70%,#fff) 70%,transparent);box-shadow:0 0 26px #fff,0 0 60px var(--fa);animation:arcCore 1.6s ease-in-out infinite}
+@keyframes arcCore{50%{transform:translateX(-50%) scale(1.14)}}
+.arcFighterTag{position:absolute;bottom:-34px;left:50%;transform:translateX(-50%);text-align:center;white-space:nowrap}
+.arcFighterTag b{display:block;font-family:'Haettenschweiler','Impact','Arial Narrow',var(--fd);font-size:14px;letter-spacing:.1em;color:var(--text);font-weight:400}
+.arcFighterTag span{font-family:Consolas,'Cascadia Mono',monospace;font-size:7px;letter-spacing:.28em;color:#648196;text-transform:uppercase}
+.arcFighter.hurt{animation:arcHurt .42s}.arcFighter.you.lunge{animation:arcLungeR .4s ease-out}.arcFighter.foe.lunge{animation:arcLungeL .4s ease-out}.arcFighter.you.dash{animation:arcLungeR .34s ease-out}
+@keyframes arcHurt{0%,100%{transform:none}20%{transform:translate(-8px,2px)}45%{transform:translate(7px,-2px)}70%{transform:translate(-5px,1px)}}
+@keyframes arcLungeR{35%{transform:translateX(54px) scale(1.07)}}@keyframes arcLungeL{35%{transform:translateX(-54px) scale(1.07)}}
+.arcFrame.clutch .arcFighter{filter:saturate(.4) contrast(1.2)}
+.arcFrame.clutch::after{content:"";position:absolute;inset:0;z-index:10;pointer-events:none;box-shadow:inset 0 0 70px 12px rgba(255,59,78,.38);animation:clutchVignette 1.1s infinite}
+#projLayer,#battleFloat{position:absolute;inset:0;pointer-events:none;z-index:7;overflow:visible}
+#battleFlash{position:absolute;inset:0;z-index:10;pointer-events:none;background:radial-gradient(circle at 50% 48%,rgba(255,255,255,.9),rgba(255,255,255,.3) 36%,transparent 70%);opacity:0}
+#battleFlash.go{animation:arcFlash .35s ease-out}@keyframes arcFlash{from{opacity:.9}to{opacity:0}}
+.bnum{top:38%;font-family:'Haettenschweiler','Impact','Arial Narrow',var(--fd);font-size:27px;letter-spacing:.04em;transform:skewX(-6deg)}
+.bnum.crit{font-size:38px}.bnum.tell{font-size:32px}.bnum.clutch{font-size:27px}
+.spark{top:48%}
+.arcTell{position:absolute;inset:32% 0 auto;z-index:12;display:flex;justify-content:center;pointer-events:none}
+.arcTell>div{font-family:'Haettenschweiler','Impact','Arial Narrow',var(--fd);font-size:20px;letter-spacing:.14em;color:#120b06;padding:8px 26px;transform:skewX(-10deg);background:linear-gradient(120deg,#ffd75e,var(--enemyAura));box-shadow:0 0 34px rgba(255,178,58,.68);animation:arcTellPulse .55s ease-in-out infinite alternate;text-align:center}
+.arcTell small{display:block;font-family:Consolas,'Cascadia Mono',monospace;font-size:8px;letter-spacing:.28em;margin-top:2px}
+@keyframes arcTellPulse{to{transform:skewX(-10deg) scale(1.05)}}
+.arcCine{position:absolute;inset:0;z-index:13;pointer-events:none}
+.arcCine .bar{position:absolute;left:0;right:0;height:0;background:#000;transition:height .35s ease}.arcCine .top{top:0}.arcCine .bottom{bottom:0}
+.arcCine .dim{position:absolute;inset:0;background:rgba(2,4,10,0);transition:background .3s}.arcCine .lines{position:absolute;inset:0;opacity:0;transition:opacity .3s;background:repeating-linear-gradient(90deg,transparent 0 46px,rgba(255,255,255,.05) 46px 48px)}
+.arcCine.on .bar{height:15%}.arcCine.on .dim{background:rgba(2,4,10,.5)}.arcCine.on .lines{opacity:1;animation:arcLines .4s linear infinite}
+@keyframes arcLines{to{background-position:96px 0}}
+.arcUltName{position:absolute;left:50%;top:17%;z-index:14;transform:translateX(-50%) skewX(-8deg);font-family:'Haettenschweiler','Impact','Arial Narrow',var(--fd);font-size:35px;letter-spacing:.12em;white-space:nowrap;opacity:0;background:linear-gradient(180deg,#fff,var(--cyan));-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 22px rgba(62,224,255,.75));pointer-events:none}
+.arcUltName.go{animation:arcUlt 1.5s ease-out forwards}@keyframes arcUlt{0%{opacity:0;transform:translateX(-50%) skewX(-8deg) scale(1.6)}15%{opacity:1;transform:translateX(-50%) skewX(-8deg) scale(1)}80%{opacity:1}100%{opacity:0}}
+
+.arcCommands{position:relative;z-index:16;padding:6px 13px 15px;background:linear-gradient(180deg,rgba(4,7,15,.25),rgba(4,7,15,.86))}
+.arcTicker{display:flex;align-items:center;justify-content:flex-start;text-align:left;gap:10px;min-height:33px;margin:0 0 10px;padding:7px 12px;border:1px solid rgba(62,224,255,.18);border-radius:0;background:rgba(0,0,0,.35);font-family:Consolas,'Cascadia Mono',monospace;font-size:10px;letter-spacing:.07em;color:#9df2ff}
+.arcTicker::before{content:'▶';font-size:8px;color:#ff7a2f}
+.arcDeck{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px}
+.arcDeck .mvBtn{position:relative;min-height:84px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:10px 5px 8px;border:1px solid rgba(62,224,255,.18);border-radius:0;background:linear-gradient(180deg,rgba(16,26,48,.96),rgba(8,13,26,.96));color:var(--text);clip-path:polygon(0 8px,8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%);transition:.14s}
+.arcDeck .mvBtn::before{content:attr(data-icon);display:block;font-size:19px;line-height:1;margin-bottom:2px}
+.arcDeck .mvBtn b{font-family:'Haettenschweiler','Impact','Arial Narrow',var(--fd);font-size:12px;font-weight:400;letter-spacing:.08em}
+.arcDeck .mvBtn span{font-family:Consolas,'Cascadia Mono',monospace;font-size:8px;letter-spacing:.1em;color:#ffc233}
+.arcDeck .mvBtn:hover:not(:disabled),.arcDeck .mvBtn:focus-visible{transform:translateY(-4px);border-color:#3ee0ff;box-shadow:0 6px 22px rgba(62,224,255,.25);outline:none}
+.arcDeck .mvBtn.atk:hover:not(:disabled){border-color:#ff2e88;box-shadow:0 6px 22px rgba(255,46,136,.28)}
+.arcDeck .mvBtn.ult{border-color:rgba(255,46,136,.5)}.arcDeck .mvBtn.ult b{color:#ffb3d1}
+.arcDeck .mvBtn.xform{border-color:rgba(255,194,51,.5)}.arcDeck .mvBtn.xform b{color:#ffc233}
+.arcDeck .mvBtn.guardRec{overflow:visible;border-color:#ffc233;box-shadow:0 0 18px rgba(255,194,51,.3)}
+.arcDeck .mvBtn.guardRec::after{content:'GUARD!';position:absolute;top:-9px;left:50%;transform:translateX(-50%) skewX(-8deg);font-family:'Haettenschweiler','Impact','Arial Narrow',var(--fd);font-size:9px;letter-spacing:.14em;color:#120b06;background:#ffc233;padding:2px 8px;animation:arcTellPulse .5s ease-in-out infinite alternate}
+.arcDeck .mvBtn:disabled{opacity:.28;filter:saturate(.3)}
+.arcCommands .retreatBtn{display:block;margin:10px auto 0;border-radius:0;padding:7px 18px;font-family:Consolas,'Cascadia Mono',monospace;font-size:9px;letter-spacing:.12em}
+
+.battleResult{background:radial-gradient(circle at 50% 44%,rgba(4,7,15,.3),rgba(3,6,14,.94) 72%);backdrop-filter:blur(3px)}
+.battleResult .brBox{max-width:520px}.battleResult .brTitle{font-family:'Haettenschweiler','Impact','Arial Narrow',var(--fd);font-size:76px;line-height:.9;letter-spacing:.05em;font-style:italic;transform:skewX(-7deg)}
+.battleResult .brName{font-family:Consolas,'Cascadia Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase}.battleResult .brXp{font-family:Consolas,'Cascadia Mono',monospace;font-size:10px;letter-spacing:.16em}
+.battleResult .brBtns button{border-radius:0;clip-path:polygon(9px 0,100% 0,calc(100% - 9px) 100%,0 100%);font-family:'Haettenschweiler','Impact','Arial Narrow',var(--fd);letter-spacing:.1em}
+
+@media(max-width:700px){
+  #battleFight{margin-bottom:calc(12px + env(safe-area-inset-bottom));overflow:hidden}
+  .arcHud{grid-template-columns:minmax(0,1fr) 54px minmax(0,1fr);gap:5px;padding:10px 8px 4px}
+  .arcTurn{width:50px;height:58px}.arcTurn b{font-size:22px}.arcTurn span,.arcTurn small{font-size:5.5px;letter-spacing:.16em}
+  .arcName{font-size:17px}.arcSub{font-size:6px;letter-spacing:.11em}.arcHp{height:12px}.arcVitals{font-size:7px}.arcKi{width:82%;gap:2px;height:6px}
+  .arcStage{height:255px}.arcFighter{width:110px;height:165px;bottom:19%}.arcFighter.you{left:3%}.arcFighter.foe{right:3%}
+  .arcRing{width:120px;height:32px}.arcFlame{width:84px;height:140px}.arcFlame.inner{width:58px;height:104px}.arcCore{bottom:61px;width:28px;height:28px}
+  .arcFighterTag{bottom:-29px}.arcFighterTag b{font-size:11px}.arcFighterTag span{font-size:6px}
+  .arcCombo{top:79px;font-size:18px}.arcTell{inset:30% 0 auto}.arcTell>div{font-size:14px;padding:7px 18px}.arcTell small{font-size:6px}
+  .arcUltName{font-size:24px;top:19%}.arcCommands{padding:5px 7px 12px}.arcTicker{font-size:8.5px;line-height:1.35;min-height:34px;padding:6px 8px}
+  .arcDeck{grid-template-columns:repeat(3,1fr);gap:6px}.arcDeck .mvBtn{min-height:65px;padding:7px 3px 6px}.arcDeck .mvBtn::before{font-size:16px}.arcDeck .mvBtn b{font-size:10px}.arcDeck .mvBtn span{font-size:7px;letter-spacing:.05em}
+  .battleResult .brTitle{font-size:58px}
+}
+@media(max-width:370px), (max-height:700px) and (max-width:700px){
+  .arcStage{height:220px}.arcFighter{width:96px;height:145px;bottom:18%}.arcFlame{width:72px;height:122px}.arcFlame.inner{width:50px;height:92px}.arcCore{bottom:52px}.arcRing{width:104px}.arcCommands{padding-bottom:8px}.arcDeck .mvBtn{min-height:58px}.arcTicker{margin-bottom:7px}
+}
+@media(prefers-reduced-motion:reduce){.arcFlame,.arcCore,.arcTell>div,.arcCine .lines,.arcCombo,.arcDeck .guardRec::after{animation:none!important}}
+
 /* ====== SKILLS / PATH ====== */
 #viewSkills{display:flex;flex-direction:column;gap:16px}
 .skHeader{border:1px solid var(--line);background:var(--panel);border-radius:6px;padding:14px 16px;position:relative}
@@ -1472,30 +1591,40 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
     </div>
   </div>
   <div id="battleFight" hidden>
-    <div class="arena" id="arena">
-      <div id="projLayer"></div>
-      <div class="foe">
-        <div class="foeArt" id="foeArt"></div>
-        <div class="combatInfo">
-          <div class="cName" id="foeName"></div>
-          <div class="cSub" id="foeTier"></div>
-          <div class="bossTell" id="bossTell" hidden></div>
-          <div class="barRow"><div class="hpbar foe"><i class="ghost" id="foeHpG"></i><i class="fill" id="foeHp"></i></div><span class="barNum" id="foeHpNum"></span></div>
+    <div class="arena arcFrame" id="arena">
+      <div class="arcHud">
+        <div class="arcPlate you">
+          <div class="arcName">EYAL</div>
+          <div class="arcSub" id="meForm"></div>
+          <div class="arcHp"><i class="ghost" id="meHpG"></i><i class="fill" id="meHp"></i></div>
+          <div class="arcVitals"><span id="meHpNum"></span><span class="arcKiNum" id="meKiNum"></span></div>
+          <div class="arcKi" id="meKi" aria-label="Ki gauge"></div>
+        </div>
+        <div class="arcTurn"><span>TURN</span><b id="turnN">1</b><small id="arcPhase">YOUR MOVE</small></div>
+        <div class="arcPlate foe">
+          <div class="arcName" id="foeName"></div>
+          <div class="arcSub" id="foeTier"></div>
+          <div class="arcHp"><i class="ghost" id="foeHpG"></i><i class="fill" id="foeHp"></i></div>
+          <div class="arcVitals"><span id="foeHpNum"></span></div>
         </div>
       </div>
-      <div class="clash"><div id="battleFlash"></div><div id="battleFloat"></div></div>
-      <div class="me">
-        <div class="meArt" id="meArt"></div>
-        <div class="combatInfo">
-          <div class="cName">YOU <span class="comboBadge" id="comboBadge" hidden></span></div>
-          <div class="meForm" id="meForm"></div>
-          <div class="barRow"><div class="hpbar me"><i class="ghost" id="meHpG"></i><i class="fill" id="meHp"></i></div><span class="barNum" id="meHpNum"></span></div>
-          <div class="barRow"><div class="kibar"><i id="meKi"></i></div><span class="barNum ki" id="meKiNum"></span></div>
-        </div>
+      <div class="arcCombo" id="comboBadge" hidden></div>
+
+      <div class="arcStage">
+        <div class="arcFloor"></div><div class="arcHorizon"></div>
+        <div class="arcFighter you" id="meArt"></div>
+        <div class="arcFighter foe" id="foeArt"></div>
+        <div id="projLayer"></div><div id="battleFloat"></div><div id="battleFlash"></div>
+        <div class="arcTell" id="bossTell" hidden><div><b id="bossTellName"></b><small>GUARD TO SHATTER IT</small></div></div>
+        <div class="arcCine" id="arcCine"><i class="dim"></i><i class="lines"></i><i class="bar top"></i><i class="bar bottom"></i></div>
+        <div class="arcUltName" id="arcUltName"></div>
       </div>
-      <div class="log" id="battleLog"></div>
-      <div class="moves" id="moveBar"></div>
-      <button class="retreatBtn" id="retreatBtn">◂ Retreat</button>
+
+      <div class="arcCommands">
+        <div class="arcTicker" id="battleLog"></div>
+        <div class="moves arcDeck" id="moveBar"></div>
+        <button class="retreatBtn" id="retreatBtn">◂ RETREAT TO SCOUTER</button>
+      </div>
     </div>
   </div>
 </section>
@@ -2366,12 +2495,23 @@ function startFight(e){
   fight.eHpMax=fight.es.hpMax;fight.eHp=fight.es.hpMax;fight.eAtk=fight.es.atk;
   const bf=$('#battleFight');bf.style.setProperty('--arenaC',(TIERS[e.t]&&TIERS[e.t].c)||'#35e0ff');bf.classList.remove('enraged');
   const ar=$('#arena');if(ar)ar.classList.remove('clutch');
+  const cine=$('#arcCine'),ult=$('#arcUltName');if(cine)cine.classList.remove('on');if(ult){ult.classList.remove('go');ult.textContent='';}
   showFight();blog(e.n+' stands before you.');beep(300,.16,'sawtooth',.05);
 }
 function showFight(){$('#battleStage').hidden=true;$('#battleFight').hidden=false;$('#battleResult').hidden=true;renderFight();}
-function setFoeArt(e){$('#foeArt').className='foeArt'+(e.im?'':' ph');$('#foeArt').innerHTML=`<span class="phName">${e.n}</span>${e.im?`<img src="img/enemies/${e.s}.jpg" alt="">`:''}`;}
-function setMeArt(f){$('#meArt').innerHTML=`<img src="${FORMS[f].img}" alt="" style="filter:${FORMS[f].imgF||'none'}">`;}
-function mvBtn(id,label,ki,disabled,hidden){return hidden?'':`<button class="mvBtn" data-mv="${id}"${disabled?' disabled':''}><b>${label}</b><span>${ki} Ki</span></button>`;}
+function arcFighterHtml(name,sub){return `<span class="arcRing"></span><span class="arcFlame"></span><span class="arcFlame inner"></span><span class="arcCore"></span><span class="arcFighterTag"><b>${name}</b><span>${sub}</span></span>`;}
+function setFoeArt(e){const el=$('#foeArt');el.className='arcFighter foe';el.style.setProperty('--fa',e.r==='boss'?'var(--enemyAura)':'#ff7a2f');el.innerHTML=arcFighterHtml(e.n.toUpperCase(),e.r.toUpperCase());}
+function setMeArt(f){const el=$('#meArt'),form=FORMS[f];el.className='arcFighter you';el.style.setProperty('--fa',FORM_COLORS[form.id]||'#35e0ff');el.innerHTML=arcFighterHtml(form.nm,'SYNC '+Math.round((effOf('vit')+effOf('str')+effOf('agi')+effOf('foc'))/4)+'%');$('#battleFight').style.setProperty('--playerAura',FORM_COLORS[form.id]||'#35e0ff');}
+const ARC_MOVE_ICON={strike:'👊',ki:'🌀',ult:'💥',xform:'⚡',guard:'🛡',charge:'☀'};
+function mvBtn(id,label,ki,disabled,hidden,guardRec){
+  if(hidden)return'';const cls='mvBtn '+((id==='strike'||id==='ki')?'atk ':id==='ult'?'atk ult ':id==='xform'?'xform ':'')+(guardRec?'guardRec':'');
+  return `<button class="${cls.trim()}" data-mv="${id}" data-icon="${ARC_MOVE_ICON[id]||'✦'}"${disabled?' disabled':''}><b>${label}</b><span>${ki} KI</span></button>`;
+}
+function arcCinematic(label){
+  const cine=$('#arcCine'),name=$('#arcUltName');if(!cine||!name)return;
+  name.textContent=label.toUpperCase();cine.classList.remove('on');name.classList.remove('go');void cine.offsetWidth;cine.classList.add('on');name.classList.add('go');
+  setTimeout(()=>{cine.classList.remove('on');name.classList.remove('go');},1600);
+}
 function renderFight(){
   const f=fight;if(!f)return;
   $('#foeName').textContent=f.en.n;
@@ -2381,20 +2521,25 @@ function renderFight(){
   $('#foeHpNum').textContent=Math.max(0,Math.round(f.eHp))+' / '+Math.round(f.eHpMax);
   $('#meHp').style.width=pHpW;$('#meHpG').style.width=pHpW;
   $('#meHpNum').textContent=Math.max(0,Math.round(f.pHp))+' / '+Math.round(f.pHpMax);
-  $('#meKi').style.width=clamp(f.ki/f.pc.kiMax*100,0,100)+'%';
   $('#meKiNum').textContent=Math.round(f.ki)+' / '+Math.round(f.pc.kiMax);
-  $('#meForm').textContent=FORMS[f.pForm].nm;
+  const kiPct=clamp(f.ki/f.pc.kiMax*100,0,100),kiOn=Math.ceil(kiPct/10);
+  $('#meKi').innerHTML=Array.from({length:10},(_,i)=>`<i class="${i<kiOn?'on':''}"></i>`).join('');
+  $('#meForm').textContent=FORMS[f.pForm].nm+' · PL '+fmtPL(basePL()*FORMS[f.pForm].mult);
+  $('#turnN').textContent=(f.eTurn||0)+1;$('#arcPhase').textContent=f.busy?'RESOLVING':(f.charging?'DANGER':'YOUR MOVE');
   const cb=$('#comboBadge');
-  if(f.combo>=2){cb.hidden=false;cb.textContent='🔥 x'+f.combo;}else{cb.hidden=true;}
+  if(f.combo>=2){cb.hidden=false;cb.textContent='COMBO ×'+f.combo;}else{cb.hidden=true;}
   if(f._af!==f.en.s){setFoeArt(f.en);f._af=f.en.s;}
   if(f._mf!==f.pForm){setMeArt(f.pForm);f._mf=f.pForm;}
+  const tell=$('#bossTell');
+  if(f.charging){const bm=BOSS_MOVES[f.en.s];tell.hidden=false;$('#bossTellName').textContent='⚠ '+(bm?bm.name:'HEAVY ATTACK').toUpperCase()+' CHARGING';}
+  else tell.hidden=true;
   const busy=!!f.busy;
   $('#moveBar').innerHTML=[
     mvBtn('strike',skillName('strike'),'+8',busy,false),
     mvBtn('ki',skillName('ki'),'-25',busy||f.ki<25,false),
     mvBtn('ult',skillName('ult'),'-60',busy||!(f.pForm>=5&&f.ki>=60),st.formMax<5),
     mvBtn('xform','Transform','-30',busy||f.ki<30,st.formMax<=f.pForm),
-    mvBtn('guard',skillName('guard'),'+'+(18+skillLevel('guard')*2),busy,false),
+    mvBtn('guard',skillName('guard'),'+'+(18+skillLevel('guard')*2),busy,false,f.charging),
     mvBtn('charge',skillName('charge'),'+'+(35+skillLevel('charge')*3),busy,false)
   ].join('');
 }
@@ -2417,16 +2562,20 @@ function pAttack(power,ign,label,kind){
   };
   if(kind==='beam'||kind==='ult'){
     const col=kind==='ult'?'#ff2e88':(skillLevel('ki')>=2?'#4fa8ff':'#35e0ff');
+    f._replyDelay=kind==='ult'?1600:760;
     beep(kind==='ult'?200:480,.12,'sawtooth',.035);
-    fireProjectile('#meArt','#foeArt',{color:col,size:kind==='ult'?'ult':(heavy?'big':''),dur:kind==='ult'?430:340}).then(impact);
+    if(kind==='ult'){arcCinematic(label);setTimeout(()=>fireProjectile('#meArt','#foeArt',{color:col,size:'ult',dur:620}).then(impact),430);}
+    else fireProjectile('#meArt','#foeArt',{color:col,size:heavy?'big':'',dur:340}).then(impact);
   }else{
+    f._replyDelay=720;
     anim('#meArt','dash',340);setTimeout(impact,180);
   }
 }
 function transformFight(){
   const f=fight;f.pForm=st.formMax;const pc=playerCombat(f.pForm);
   f.pc=pc;f.pHpMax=pc.hpMax;f.pHp=Math.min(pc.hpMax,f.pHp+pc.hpMax*0.10);
-  blog('You transform — '+FORMS[f.pForm].nm+'!');bigFx();bflash();spark('#meArt',true);buzz([20,25,20,25,80]);
+  f._replyDelay=1050;
+  blog('You transform — '+FORMS[f.pForm].nm+'!');bigFx();bflash();setTimeout(()=>spark('#meArt',true),40);buzz([20,25,20,25,80]);
   beep(180,.18,'sawtooth',.04);setTimeout(()=>beep(1240,.16,'triangle',.05),160);
 }
 function playerMove(m){
@@ -2439,16 +2588,17 @@ function playerMove(m){
   else if(m==='charge'){f.ki=Math.min(f.pc.kiMax,f.ki+35+skillLevel('charge')*3);const h=Math.round(f.pHpMax*(0.06+skillLevel('charge')*0.01));f.pHp=Math.min(f.pHpMax,f.pHp+h);blog(skillName('charge')+' — Ki and vitality restored.');bfloat('+'+h,'heal');spark('#meArt',false);buzz(12);beep(400,.2,'sine',.04);}
   if(f.eHp<=0){
     if(hasTrait('revive')&&!f.revived){f.revived=true;f.eHp=Math.round(f.eHpMax*0.4);blog(f.en.n+' refuses to fall — revived!');bfloat('REVIVE','crit');}
-    else{f.busy=true;renderFight();setTimeout(winFight,650);return;}
+    else{f.busy=true;renderFight();setTimeout(winFight,f._replyDelay||650);return;}
   }
   f.busy=true;renderFight();                       // lock input, show your hit land
+  const replyDelay=f._replyDelay||720;f._replyDelay=0;
   setTimeout(()=>{                                  // then the enemy responds
     if(!fight||fight.over)return;
     enemyTurn();
     if(fight.pHp<=0){renderFight();setTimeout(loseFight,480);return;}
     fight.ki=Math.min(fight.pc.kiMax,fight.ki+fight.pc.kiRegen);
     fight.busy=false;renderFight();
-  },720);
+  },replyDelay);
 }
 function enemyTurn(){
   const f=fight;f.eTurn++;
@@ -2521,10 +2671,10 @@ function showResult(win,e,first){
   r.innerHTML=`<div class="brBox"><div class="brTitle">${win?'VICTORY':'DEFEATED'}</div>`+
     `<div class="brName">${win?e.n+' has fallen':'You fell to '+e.n}</div>`+
     `<div class="brXp">${win?(first?'FIRST CLEAR · TROPHY RECORDED':'VICTORY RECORDED'):'No penalty — grow stronger and return.'}</div>`+
-    `<div class="brBtns">${win?'':'<button class="mYes" id="brRetry">RETRY</button>'}<button class="mNo" id="brBack">${win?'CONTINUE':'RETREAT'}</button></div></div>`;
+    `<div class="brBtns"><button class="mYes" id="brRetry">${win?'RUN IT BACK':'RETRY'}</button><button class="mNo" id="brBack">${win?'CONTINUE':'RETREAT'}</button></div></div>`;
   r.hidden=false;
   $('#brBack').onclick=()=>{r.hidden=true;fight=null;renderBattleHome();};
-  if(!win)$('#brRetry').onclick=()=>{r.hidden=true;startFight(e);};
+  $('#brRetry').onclick=()=>{r.hidden=true;startFight(e);};
 }
 function nodeState(e){
   if(st.battle.cleared.includes(e.s))return'done';
