@@ -586,7 +586,7 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 .barNum.ki{color:var(--gold);min-width:52px}
 
 /* ---- battle: climbing path ---- */
-.regionBar{display:grid;grid-template-columns:42px minmax(0,1fr) auto 42px;align-items:center;gap:10px;position:relative;
+.regionBar{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:10px;position:relative;
   border:1px solid var(--line);background:rgba(13,17,38,.88);border-radius:10px;padding:10px;margin-bottom:8px;
   box-shadow:0 10px 32px rgba(2,4,14,.35);backdrop-filter:blur(12px)}
 .regionBar::before{content:"";position:absolute;top:-1px;left:-1px;width:12px;height:12px;border-top:2px solid var(--pink);border-left:2px solid var(--pink)}
@@ -642,7 +642,7 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 @media(max-width:640px){
   body.v-battle{scroll-padding-bottom:calc(92px + env(safe-area-inset-bottom))}
   #viewBattle{padding:8px 10px calc(92px + env(safe-area-inset-bottom));min-height:0}
-  .regionBar{position:sticky;top:0;z-index:12;grid-template-columns:38px minmax(0,1fr) auto 38px;gap:7px;padding:8px;border-radius:9px}
+  .regionBar{position:sticky;top:0;z-index:12;grid-template-columns:minmax(0,1fr) auto;gap:7px;padding:8px;border-radius:9px}
   .tierNav{width:38px;height:42px;font-size:16px}
   .rbName{font-size:10.5px;letter-spacing:.45px;line-height:1.25}
   .rbSaga{font-size:8.5px;letter-spacing:.65px;margin-top:2px}
@@ -741,8 +741,7 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 .stgVS{font-family:var(--fd);font-size:30px;color:#fff;text-shadow:0 0 18px rgba(255,255,255,.5),0 0 40px rgba(53,224,255,.5)}
 .stgVS i{display:block;font-family:var(--fj);font-style:normal;font-size:8px;letter-spacing:3px;color:var(--dim);margin-top:2px}
 /* --- dossier + forecast --- */
-.stgGrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-@media(max-width:640px){.stgGrid{grid-template-columns:1fr}}
+.stgGrid{display:block}
 .stgCard{border:1px solid var(--line);border-radius:8px;background:rgba(13,17,38,.6);padding:14px 15px;position:relative}
 .stgCard::before{content:"";position:absolute;top:-1px;left:-1px;width:11px;height:11px;border-top:2px solid var(--cyan);border-left:2px solid var(--cyan)}
 .stgCH{display:flex;justify-content:space-between;align-items:center;font-family:var(--fj);font-size:9px;letter-spacing:2px;color:var(--dim);text-transform:uppercase;margin-bottom:11px}
@@ -758,14 +757,6 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 .stgThreat.c{color:var(--good)}.stgThreat.b{color:var(--cyan)}.stgThreat.a{color:var(--amber)}.stgThreat.s{color:var(--red)}
 .stgQuote{margin-top:11px;font-family:var(--fj);font-size:12px;font-style:italic;color:#a8c4d4;line-height:1.5;
   border-left:2px solid rgba(255,59,78,.5);padding-left:10px}
-.stgFore .stgBig{display:flex;align-items:baseline;gap:9px}
-.stgPct{font-family:var(--fd);font-size:40px;line-height:.85;color:var(--cyan);text-shadow:0 0 18px rgba(53,224,255,.4);font-variant-numeric:tabular-nums}
-.stgPctL{font-family:var(--fj);font-size:9px;letter-spacing:2px;color:var(--dim);text-transform:uppercase;line-height:1.3}
-.stgBar{margin-top:12px;height:9px;border-radius:5px;background:rgba(255,59,78,.28);overflow:hidden;position:relative}
-.stgBar i{position:absolute;left:0;top:0;bottom:0;width:0;border-radius:5px;background:linear-gradient(90deg,rgba(53,224,255,.5),var(--cyan));
-  box-shadow:0 0 12px rgba(53,224,255,.55);transition:width .8s cubic-bezier(.2,.8,.3,1)}
-.stgNote{margin-top:11px;font-family:var(--fj);font-size:11px;line-height:1.6;color:var(--dim)}
-.stgNote b{color:var(--cyan);font-weight:600}
 .stgActions{display:flex;gap:10px}
 .stgEngage{flex:1;font-family:var(--fd);font-size:19px;letter-spacing:2px;color:#04121a;border:none;cursor:pointer;padding:15px 10px;
   position:relative;overflow:hidden;background:linear-gradient(120deg,#7fe9ff,var(--cyan) 55%,#12a8c9);
@@ -779,11 +770,13 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 .stgRailHead{display:flex;align-items:baseline;justify-content:space-between;font-family:var(--fj);font-size:9px;letter-spacing:2px;
   color:var(--dim);text-transform:uppercase;margin-top:2px}
 .stgRailHead .stgRailHint{color:var(--cyan);opacity:.7}
-.stgRail{display:flex;gap:8px;overflow-x:auto;padding:2px 1px 7px;scrollbar-width:thin;scrollbar-color:rgba(53,224,255,.3) transparent;-webkit-overflow-scrolling:touch}
+.stgRail{display:flex;gap:8px;overflow-x:auto;overflow-y:hidden;padding:2px 1px 9px;scroll-snap-type:x proximity;overscroll-behavior-x:contain;
+  scrollbar-width:thin;scrollbar-color:rgba(53,224,255,.3) transparent;-webkit-overflow-scrolling:touch;cursor:grab}
+.stgRail:active{cursor:grabbing}
 .stgRail::-webkit-scrollbar{height:5px}
 .stgRail::-webkit-scrollbar-thumb{background:rgba(53,224,255,.3);border-radius:3px}
 .stgFoeCard{flex:0 0 auto;width:88px;position:relative;display:flex;flex-direction:column;align-items:center;gap:4px;
-  padding:8px 6px;border:1px solid var(--line);border-radius:9px;background:rgba(255,255,255,.03);color:var(--dim);cursor:pointer;transition:.15s}
+  padding:8px 6px;border:1px solid var(--line);border-radius:9px;background:rgba(255,255,255,.03);color:var(--dim);cursor:pointer;transition:.15s;scroll-snap-align:center}
 .stgFoeCard:hover{border-color:var(--cyan);color:var(--text);transform:translateY(-2px)}
 .stgFoeCard.sel{border-color:var(--gold);box-shadow:0 0 16px rgba(255,215,94,.28);color:var(--text)}
 .stgFoeCard.sel::after{content:"";position:absolute;left:9px;right:9px;bottom:-1px;height:2px;background:var(--gold);box-shadow:0 0 8px var(--gold)}
@@ -1533,10 +1526,8 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 <section class="view" id="viewBattle" data-view="battle" hidden>
   <div id="battleStage" hidden>
     <div class="regionBar">
-      <button class="tierNav" id="tierPrev" type="button" aria-label="Previous battle tier">‹</button>
       <div class="rbCore"><div class="rbName" id="regionName"></div><div class="rbSaga" id="regionSaga"></div></div>
       <div class="rbProg" id="battleSub"></div>
-      <button class="tierNav" id="tierNext" type="button" aria-label="Next battle tier">›</button>
     </div>
     <div class="stgArena" id="stgArena">
       <div class="stgFloor"></div>
@@ -1578,17 +1569,8 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
         </div>
         <div class="stgQuote" id="stgDQuote"></div>
       </div>
-      <div class="stgCard stgFore">
-        <div class="stgCH"><span>Combat Forecast</span><span>LIVE</span></div>
-        <div class="stgBig">
-          <div class="stgPct" id="stgPct">0%</div>
-          <div class="stgPctL">WIN<br>PROBABILITY</div>
-        </div>
-        <div class="stgBar"><i id="stgBar"></i></div>
-        <div class="stgNote" id="stgNote"></div>
-      </div>
     </div>
-    <div class="stgRailHead"><span>◈ Select target</span><span class="stgRailHint">swipe ▸</span></div>
+    <div class="stgRailHead"><span>◈ All campaign targets</span><span class="stgRailHint">swipe / drag ↔</span></div>
     <div class="stgRail" id="stgRail"></div>
     <div class="stgActions">
       <button class="stgEngage" id="stgEngage">⚡ ENGAGE</button>
@@ -2246,7 +2228,7 @@ function showView(v){
   if(v==='history')renderHistory();
   if(v==='skills')renderSkills();
   if(v==='stats')renderStatsPage();
-  if(v==='battle'){if(fight&&!fight.over)showFight();else{battleBrowseTier=st.battle.tierUnlocked;renderBattleHome();}}
+  if(v==='battle'){if(fight&&!fight.over)showFight();else renderBattleHome();}
 }
 document.querySelectorAll('.navBtn').forEach(b=>b.addEventListener('click',()=>{showView(b.dataset.view);beep(880,.05,'square',.02);}));
 $('#historyBtn').addEventListener('click',()=>{showView('history');beep(880,.05,'square',.02);});
@@ -2443,21 +2425,6 @@ function stgTaunt(e){
   for(let i=0;i<e.s.length;i++)h=(h*31+e.s.charCodeAt(i))>>>0;
   return arr[h%arr.length];
 }
-function stgWinProb(e){
-  const pPL=basePL()*FORMS[st.formMax].mult,k=0.82;
-  const a=Math.pow(pPL,k),b=Math.pow(e.pl,k);
-  return Math.max(4,Math.min(96,Math.round(a/(a+b)*100)));
-}
-function stgNoteText(e,wc){
-  const rec={str:['Strength','Weights'],vit:['Vitality','Running'],agi:['Agility','Bicycle'],foc:['Focus','Boxing']};
-  let lowK='str',lowV=Infinity;
-  for(const k of ['str','vit','agi','foc']){const v=effOf(k);if(v<lowV){lowV=v;lowK=k;}}
-  const rr=rec[lowK];
-  if(st.formMax<=0)return 'Fighting in <b>Base Form</b> — cross base PL '+FORMS[1].pl.toLocaleString()+' to unlock transformations and swing this fight.';
-  if(wc>=60)return 'Your logged training has you <b>favored</b> — transform mid-fight to press it.';
-  if(wc>=42)return 'A <b>close match</b>. One more '+rr[0]+' session ('+rr[1]+') could tip it.';
-  return '<b>Underpowered.</b> Train '+rr[0]+' ('+rr[1]+') to raise your ceiling — or gamble on a Last Stand.';
-}
 function stgCount(el,target){
   if(matchMedia('(prefers-reduced-motion:reduce)').matches||document.visibilityState==='hidden'){el.textContent=fmtPL(target);return;}
   const t0=performance.now(),dur=900;
@@ -2467,11 +2434,16 @@ function selectFoe(e){
   if(!e)return;staged=e;
   const rail=$('#stgRail');if(rail)rail.querySelectorAll('.stgFoeCard').forEach(c=>c.classList.toggle('sel',c.dataset.foe===e.s));
   const T=TIERS[e.t],mf=FORMS[st.formMax];
+  const tierEnemies=ENEMIES.filter(x=>x.t===e.t),tierDone=tierEnemies.filter(x=>st.battle.cleared.includes(x.s)).length;
+  $('#battleStage').style.setProperty('--arenaC',T.c||'#35e0ff');
+  $('#regionName').textContent='TIER '+(e.t+1)+'/'+TIERS.length+' · '+FORMS[T.f].nm;
+  $('#regionSaga').textContent=T.s+(nodeState(e)==='locked'?' · LOCKED':'');
+  $('#battleSub').textContent=tierDone+'/'+tierEnemies.length;
   $('#stgMeArt').className='stgPortrait';
   $('#stgMeArt').innerHTML=`<img src="${mf.img}" alt="" style="filter:${mf.imgF||'none'}">`;
   $('#stgMeForm').textContent=mf.nm;
-  $('#stgFoeArt').className='stgPortrait'+(e.im?'':' ph');
-  $('#stgFoeArt').innerHTML=e.im?`<img src="img/enemies/${e.s}.jpg" alt="">`:'';
+  $('#stgFoeArt').className='stgPortrait';
+  $('#stgFoeArt').innerHTML=`<img src="img/enemies/${e.s}.jpg" alt="${e.n}">`;
   $('#stgFoeName').textContent=e.n.toUpperCase();
   $('#stgFoeRole').textContent=e.r.toUpperCase()+' CLASS';
   const th=stgThreatClass(e);
@@ -2482,11 +2454,7 @@ function selectFoe(e){
   $('#stgDSig').textContent=stgSignature(e);
   $('#stgDReward').textContent=stgReward(e);
   $('#stgDQuote').textContent='“'+stgTaunt(e).replace(/^"|"$/g,'')+'”';
-  const wc=stgWinProb(e);
-  $('#stgPct').textContent=wc+'%';
-  $('#stgNote').innerHTML=stgNoteText(e,wc);
   stgCount($('#stgYouPL'),basePL()*mf.mult);stgCount($('#stgFoePL'),e.pl);
-  const bar=$('#stgBar');bar.style.width='0%';void bar.offsetWidth;bar.style.width=wc+'%';
   const locked=nodeState(e)==='locked';
   const eng=$('#stgEngage');eng.disabled=locked;
   eng.textContent=locked?'◈ LOCKED':(st.battle.cleared.includes(e.s)?'⚔ REMATCH':'⚡ ENGAGE');
@@ -2663,7 +2631,7 @@ function winFight(){
   if(first){st.battle.cleared.push(e.s);st.battle.trophies[e.s]={date:todayStr(),form:FORMS[f.pForm].id};}
   const tier=ENEMIES.filter(x=>x.t===e.t);
   if(tier.every(x=>st.battle.cleared.includes(x.s))&&e.t+1>st.battle.tierUnlocked){
-    st.battle.tierUnlocked=Math.min(TIERS.length-1,e.t+1);battleBrowseTier=st.battle.tierUnlocked;
+    st.battle.tierUnlocked=Math.min(TIERS.length-1,e.t+1);
   }
   st.battle.wins++;save();renderAll();
   showResult(true,e,first);
@@ -2685,41 +2653,21 @@ function nodeState(e){
   if(e.t>st.battle.tierUnlocked)return'locked';
   return'open';
 }
-let battleBrowseTier=null;
 function renderBattleHome(){
   $('#battleFight').hidden=true;$('#battleResult').hidden=true;$('#battleStage').hidden=false;
   const b=st.battle;
-  if(battleBrowseTier==null)battleBrowseTier=b.tierUnlocked;
-  battleBrowseTier=clamp(battleBrowseTier,0,TIERS.length-1);
-  const vt=battleBrowseTier,T=TIERS[vt]||TIERS[0];
-  $('#battleStage').style.setProperty('--arenaC',T.c||'#35e0ff');
-  $('#regionName').textContent='TIER '+(vt+1)+'/'+TIERS.length+' · '+FORMS[T.f].nm;
-  $('#regionSaga').textContent=T.s+(vt>b.tierUnlocked?' · LOCKED':'');
-  const tierEnemies=ENEMIES.filter(e=>e.t===vt),tierDone=tierEnemies.filter(e=>b.cleared.includes(e.s)).length;
-  $('#battleSub').textContent=tierDone+'/'+tierEnemies.length;
-  $('#tierPrev').disabled=vt===0;
-  $('#tierNext').disabled=vt===TIERS.length-1;
-  let current=null;
-  for(const e of tierEnemies){if(e.t<=b.tierUnlocked&&!b.cleared.includes(e.s)){current=e;break;}}
-  $('#stgRail').innerHTML=tierEnemies.map(e=>{
+  const current=ENEMIES.find(e=>e.t<=b.tierUnlocked&&!b.cleared.includes(e.s))||ENEMIES.find(e=>e.t===b.tierUnlocked)||ENEMIES[0];
+  $('#stgRail').innerHTML=ENEMIES.map(e=>{
     const stt=nodeState(e);
     const badge=stt==='done'?'<span class="sfBadge done">✓</span>':stt==='locked'?'<span class="sfBadge lock">🔒</span>':(current&&e.s===current.s?'<span class="sfBadge cur">▸</span>':'');
     return `<button class="stgFoeCard ${stt}" data-foe="${e.s}" type="button">`+
-      `<span class="sfArt${e.im?'':' ph'}">${e.im?`<img src="img/enemies/${e.s}.jpg" alt="">`:''}</span>`+
+      `<span class="sfArt"><img src="img/enemies/${e.s}.jpg" alt="${e.n}" loading="lazy" decoding="async"></span>`+
       `<span class="sfName">${e.n}</span><span class="sfPL">PL ${fmtPL(e.pl)}</span>${badge}</button>`;
   }).join('');
-  const keep=staged&&staged.t===vt&&tierEnemies.some(x=>x.s===staged.s);
-  selectFoe(keep?staged:(current||tierEnemies[0]));
+  const keep=staged&&ENEMIES.some(x=>x.s===staged.s);
+  selectFoe(keep?staged:current);
   const sc=$('#stgRail').querySelector('.stgFoeCard.sel');if(sc)sc.scrollIntoView({inline:'center',block:'nearest'});
 }
-function browseBattleTier(dir){
-  const next=clamp((battleBrowseTier==null?st.battle.tierUnlocked:battleBrowseTier)+dir,0,TIERS.length-1);
-  if(next===battleBrowseTier)return;
-  battleBrowseTier=next;renderBattleHome();beep(dir>0?820:620,.04,'square',.02);
-  $('#viewBattle').scrollIntoView({block:'start',behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth'});
-}
-$('#tierPrev').addEventListener('click',()=>browseBattleTier(-1));
-$('#tierNext').addEventListener('click',()=>browseBattleTier(1));
 document.addEventListener('click',e=>{
   const mb=e.target.closest('.mvBtn');if(mb&&!mb.disabled){playerMove(mb.dataset.mv);return;}
   const fc=e.target.closest('.stgFoeCard');if(fc){const en=ENEMIES.find(x=>x.s===fc.dataset.foe);if(en){selectFoe(en);beep(680,.04,'square',.02);}return;}
