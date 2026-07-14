@@ -685,6 +685,99 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
   .mvBtn{min-height:43px;padding:6px 2px}
 }
 
+/* ====== BATTLE: PRE-FIGHT STAGING (scouter confrontation) ====== */
+#battleStage{display:flex;flex-direction:column;gap:14px}
+.stgTop{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-family:var(--fj);font-size:10px;letter-spacing:2px;
+  color:var(--dim);text-transform:uppercase;border:1px solid var(--line);background:rgba(13,17,38,.7);border-radius:6px;padding:11px 15px;position:relative}
+.stgTop::before{content:"";position:absolute;top:-1px;left:-1px;width:12px;height:12px;border-top:2px solid var(--cyan);border-left:2px solid var(--cyan)}
+.stgTop .stgSaga{font-family:var(--fd);font-size:12px;letter-spacing:1px;color:var(--pink2)}
+.stgTop .stgTier{color:var(--gold)}
+.stgTop .stgLock{margin-left:auto;display:flex;align-items:center;gap:7px;color:var(--cyan)}
+.stgTop .stgLock i{width:6px;height:6px;background:var(--cyan);box-shadow:0 0 8px var(--cyan);display:inline-block;animation:npulse 1.6s infinite}
+/* --- VS arena --- */
+.stgArena{position:relative;overflow:hidden;border:1px solid var(--line);border-radius:12px;min-height:296px;
+  background:
+    radial-gradient(ellipse at 24% 82%, rgba(53,224,255,.22), transparent 44%),
+    radial-gradient(ellipse at 76% 82%, rgba(255,59,78,.20), transparent 44%),
+    radial-gradient(ellipse at 50% -12%, rgba(255,255,255,.05), transparent 46%),
+    linear-gradient(180deg,#05070f 0%,#0a0f22 60%,#070a16 100%)}
+.stgFloor{position:absolute;left:-22%;right:-22%;bottom:0;height:40%;pointer-events:none;opacity:.7;
+  background:repeating-linear-gradient(90deg,rgba(53,224,255,.16) 0 1px,transparent 1px 54px),
+    repeating-linear-gradient(0deg,rgba(53,224,255,.13) 0 1px,transparent 1px 30px);
+  transform:perspective(420px) rotateX(60deg);transform-origin:top center;
+  -webkit-mask-image:linear-gradient(transparent,#000 34%);mask-image:linear-gradient(transparent,#000 34%)}
+.stgBolt{position:absolute;top:-12%;bottom:-12%;left:50%;width:3px;transform:rotate(19deg);pointer-events:none;
+  background:linear-gradient(180deg,transparent,#fff 32%,var(--cyan) 52%,var(--red) 70%,transparent);
+  filter:drop-shadow(0 0 10px rgba(160,230,255,.7));animation:stgBoltPulse 2.6s ease-in-out infinite}
+@keyframes stgBoltPulse{50%{opacity:.5}}
+.stgRow{position:relative;z-index:2;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:6px;padding:20px 10px 24px}
+.stgSide{display:flex;flex-direction:column;align-items:center;gap:9px}
+.stgFrame{position:relative;width:116px;height:148px}
+.stgOrbit{position:absolute;inset:-13px;border-radius:16px;border:1px dashed rgba(53,224,255,.42);animation:dashSpin2 17s linear infinite}
+.stgSide.foe .stgOrbit{border-color:rgba(255,59,78,.42);animation-direction:reverse}
+@keyframes dashSpin2{to{transform:rotate(360deg)}}
+.stgGlow{position:absolute;inset:-6px;border-radius:16px;filter:blur(15px);opacity:.55;pointer-events:none;
+  background:radial-gradient(ellipse,#35e0ff,transparent 70%);animation:stgBreathe 2.9s ease-in-out infinite}
+.stgSide.foe .stgGlow{background:radial-gradient(ellipse,#ff3b4e,transparent 70%)}
+@keyframes stgBreathe{50%{opacity:.9;transform:scale(1.06)}}
+.stgPortrait{position:absolute;inset:0;border-radius:12px;overflow:hidden;border:1px solid var(--line);
+  background:radial-gradient(ellipse at 50% 34%,rgba(28,44,80,.6),#0a0f20 74%);display:flex;align-items:center;justify-content:center}
+.stgSide.foe .stgPortrait{border-color:rgba(255,59,78,.5);background:radial-gradient(ellipse at 50% 34%,rgba(70,20,30,.55),#0c0a16 74%)}
+.stgPortrait img{width:100%;height:100%;object-fit:cover;filter:contrast(1.08) saturate(1.06);
+  -webkit-mask-image:radial-gradient(ellipse 84% 92% at 50% 42%,#000 54%,transparent 100%);
+  mask-image:radial-gradient(ellipse 84% 92% at 50% 42%,#000 54%,transparent 100%)}
+.stgPortrait.ph::after{content:"?";font-family:var(--fd);font-size:40px;color:rgba(255,90,110,.5)}
+.stgScan{position:absolute;left:6%;right:6%;height:1px;top:20%;background:var(--cyan);opacity:.7;box-shadow:0 0 10px var(--cyan);
+  animation:stgScan 2.6s linear infinite;pointer-events:none}
+.stgSide.foe .stgScan{background:var(--red);box-shadow:0 0 10px var(--red)}
+@keyframes stgScan{0%{top:8%;opacity:0}20%{opacity:.8}80%{opacity:.8}100%{top:90%;opacity:0}}
+.stgName{font-family:var(--fd);font-size:15px;letter-spacing:1px;text-align:center;line-height:1.1}
+.stgSide.you .stgName{color:var(--cyan)} .stgSide.foe .stgName{color:var(--pink2)}
+.stgForm{font-family:var(--fj);font-size:9px;letter-spacing:1.5px;color:var(--dim);text-transform:uppercase;text-align:center}
+.stgPLwrap{text-align:center;line-height:1.1}
+.stgPLlbl{font-family:var(--fj);font-size:8px;letter-spacing:2px;color:var(--dim);text-transform:uppercase;display:block}
+.stgPL{font-family:var(--fd);font-size:19px;color:var(--gold);text-shadow:0 0 14px rgba(255,215,94,.4);font-variant-numeric:tabular-nums}
+.stgMid{display:flex;flex-direction:column;align-items:center;gap:4px}
+.stgVS{font-family:var(--fd);font-size:30px;color:#fff;text-shadow:0 0 18px rgba(255,255,255,.5),0 0 40px rgba(53,224,255,.5)}
+.stgVS i{display:block;font-family:var(--fj);font-style:normal;font-size:8px;letter-spacing:3px;color:var(--dim);margin-top:2px}
+/* --- dossier + forecast --- */
+.stgGrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:640px){.stgGrid{grid-template-columns:1fr}}
+.stgCard{border:1px solid var(--line);border-radius:8px;background:rgba(13,17,38,.6);padding:14px 15px;position:relative}
+.stgCard::before{content:"";position:absolute;top:-1px;left:-1px;width:11px;height:11px;border-top:2px solid var(--cyan);border-left:2px solid var(--cyan)}
+.stgCH{display:flex;justify-content:space-between;align-items:center;font-family:var(--fj);font-size:9px;letter-spacing:2px;color:var(--dim);text-transform:uppercase;margin-bottom:11px}
+.stgCH .dot{color:var(--red)}
+.stgDName{font-family:var(--fd);font-size:18px;letter-spacing:1px;color:var(--pink2)}
+.stgDTitle{font-family:var(--fj);font-size:9px;letter-spacing:1.5px;color:var(--dim);text-transform:uppercase;margin-top:3px}
+.stgRows{display:flex;flex-direction:column;gap:7px;margin-top:11px}
+.stgDR{display:flex;justify-content:space-between;gap:10px;border-bottom:1px dashed rgba(125,135,173,.22);padding-bottom:6px}
+.stgDR .k{font-family:var(--fj);font-size:9px;letter-spacing:1.5px;color:var(--dim);text-transform:uppercase;padding-top:3px}
+.stgDR .v{font-family:var(--fj);font-weight:600;font-size:13px;color:var(--text);text-align:right}
+.stgDR .v.gold{color:var(--gold);font-variant-numeric:tabular-nums}
+.stgThreat{display:inline-block;font-family:var(--fd);font-size:11px;letter-spacing:1px;padding:1px 8px;border:1px solid currentColor;border-radius:4px}
+.stgThreat.c{color:var(--good)}.stgThreat.b{color:var(--cyan)}.stgThreat.a{color:var(--amber)}.stgThreat.s{color:var(--red)}
+.stgQuote{margin-top:11px;font-family:var(--fj);font-size:12px;font-style:italic;color:#a8c4d4;line-height:1.5;
+  border-left:2px solid rgba(255,59,78,.5);padding-left:10px}
+.stgFore .stgBig{display:flex;align-items:baseline;gap:9px}
+.stgPct{font-family:var(--fd);font-size:40px;line-height:.85;color:var(--cyan);text-shadow:0 0 18px rgba(53,224,255,.4);font-variant-numeric:tabular-nums}
+.stgPctL{font-family:var(--fj);font-size:9px;letter-spacing:2px;color:var(--dim);text-transform:uppercase;line-height:1.3}
+.stgBar{margin-top:12px;height:9px;border-radius:5px;background:rgba(255,59,78,.28);overflow:hidden;position:relative}
+.stgBar i{position:absolute;left:0;top:0;bottom:0;width:0;border-radius:5px;background:linear-gradient(90deg,rgba(53,224,255,.5),var(--cyan));
+  box-shadow:0 0 12px rgba(53,224,255,.55);transition:width .8s cubic-bezier(.2,.8,.3,1)}
+.stgNote{margin-top:11px;font-family:var(--fj);font-size:11px;line-height:1.6;color:var(--dim)}
+.stgNote b{color:var(--cyan);font-weight:600}
+.stgActions{display:flex;gap:10px}
+.stgEngage{flex:1;font-family:var(--fd);font-size:19px;letter-spacing:2px;color:#04121a;border:none;cursor:pointer;padding:15px 10px;
+  position:relative;overflow:hidden;background:linear-gradient(120deg,#7fe9ff,var(--cyan) 55%,#12a8c9);
+  clip-path:polygon(13px 0,100% 0,calc(100% - 13px) 100%,0 100%);box-shadow:0 0 26px rgba(53,224,255,.4);transition:.18s}
+.stgEngage::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.5),transparent);transform:translateX(-110%);animation:shine 3s ease-in-out infinite}
+.stgEngage:hover{transform:translateY(-2px);box-shadow:0 0 44px rgba(53,224,255,.66)}
+.stgEngage:active{transform:translateY(1px)}
+.stgBack{font-family:var(--fj);font-size:11px;letter-spacing:1px;color:var(--dim);background:none;border:1px solid var(--line);
+  border-radius:6px;padding:0 20px;cursor:pointer;transition:.18s}
+.stgBack:hover{color:var(--cyan);border-color:var(--cyan)}
+@media(prefers-reduced-motion:reduce){.stgBolt,.stgGlow,.stgOrbit,.stgScan,.stgEngage::after{animation:none}}
+
 /* ====== SKILLS / PATH ====== */
 #viewSkills{display:flex;flex-direction:column;gap:16px}
 .skHeader{border:1px solid var(--line);background:var(--panel);border-radius:6px;padding:14px 16px;position:relative}
@@ -1298,6 +1391,67 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
       <button class="tierNav" id="tierNext" type="button" aria-label="Next battle tier">›</button>
     </div>
     <div class="pathWrap" id="pathWrap"></div>
+  </div>
+  <div id="battleStage" hidden>
+    <div class="stgTop">
+      <span class="stgSaga" id="stgSaga"></span>
+      <span class="stgTier" id="stgTier"></span>
+      <span class="stgLock"><i></i> SCOUTER LOCKED</span>
+    </div>
+    <div class="stgArena" id="stgArena">
+      <div class="stgFloor"></div>
+      <div class="stgBolt"></div>
+      <div class="stgRow">
+        <div class="stgSide you">
+          <div class="stgFrame">
+            <div class="stgOrbit"></div><div class="stgGlow"></div>
+            <div class="stgPortrait" id="stgMeArt"></div>
+            <div class="stgScan"></div>
+          </div>
+          <div class="stgName">YOU</div>
+          <div class="stgForm" id="stgMeForm"></div>
+          <div class="stgPLwrap"><span class="stgPLlbl">Power Ceiling</span><span class="stgPL" id="stgYouPL">0</span></div>
+        </div>
+        <div class="stgMid"><div class="stgVS">VS<i>ENGAGE</i></div></div>
+        <div class="stgSide foe">
+          <div class="stgFrame">
+            <div class="stgOrbit"></div><div class="stgGlow"></div>
+            <div class="stgPortrait" id="stgFoeArt"></div>
+            <div class="stgScan"></div>
+          </div>
+          <div class="stgName" id="stgFoeName">FOE</div>
+          <div class="stgForm" id="stgFoeRole"></div>
+          <div class="stgPLwrap"><span class="stgPLlbl">Power Level</span><span class="stgPL" id="stgFoePL">0</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="stgGrid">
+      <div class="stgCard">
+        <div class="stgCH"><span>Target Dossier</span><span class="dot">◈ SCAN 100%</span></div>
+        <div class="stgDName" id="stgDName"></div>
+        <div class="stgDTitle" id="stgDTitle"></div>
+        <div class="stgRows">
+          <div class="stgDR"><span class="k">Power Level</span><span class="v gold" id="stgDPL"></span></div>
+          <div class="stgDR"><span class="k">Threat Class</span><span class="v"><span class="stgThreat" id="stgDThreat"></span></span></div>
+          <div class="stgDR"><span class="k">Signature</span><span class="v" id="stgDSig"></span></div>
+          <div class="stgDR"><span class="k">Reward</span><span class="v" id="stgDReward"></span></div>
+        </div>
+        <div class="stgQuote" id="stgDQuote"></div>
+      </div>
+      <div class="stgCard stgFore">
+        <div class="stgCH"><span>Combat Forecast</span><span>LIVE</span></div>
+        <div class="stgBig">
+          <div class="stgPct" id="stgPct">0%</div>
+          <div class="stgPctL">WIN<br>PROBABILITY</div>
+        </div>
+        <div class="stgBar"><i id="stgBar"></i></div>
+        <div class="stgNote" id="stgNote"></div>
+      </div>
+    </div>
+    <div class="stgActions">
+      <button class="stgEngage" id="stgEngage">⚡ ENGAGE</button>
+      <button class="stgBack" id="stgBack">◂ Retreat</button>
+    </div>
   </div>
   <div id="battleFight" hidden>
     <div class="arena" id="arena">
@@ -2113,6 +2267,80 @@ function fireProjectile(fromSel,toSel,opts){
   return new Promise(res=>setTimeout(()=>{p.remove();res();},dur));
 }
 
+/* ---- pre-fight staging: scouter confrontation, dossier & forecast ---- */
+let staged=null;
+const TRAIT_SIG={lifesteal:'Energy Absorption',regen:'Cellular Regeneration',rampage:'Berserker Surge',swift:'Blinding Speed',revive:'Undying Will',kidrain:'Ki Disruption'};
+function stgThreatClass(e){
+  if(e.r==='boss')return (e.tr&&e.tr.length>=2)?'S':'A';
+  if(e.r==='elite')return 'B';
+  return 'C';
+}
+function stgSignature(e){
+  if(BOSS_MOVES[e.s])return BOSS_MOVES[e.s].name;
+  if(e.tr)for(const t of e.tr)if(TRAIT_SIG[t])return TRAIT_SIG[t];
+  return e.r==='boss'?'Overwhelming Assault':e.r==='elite'?'Power Strike':'Rushdown';
+}
+function stgReward(e){
+  if(st.battle.cleared.includes(e.s))return 'Rematch · trophy earned';
+  const tier=ENEMIES.filter(x=>x.t===e.t);
+  const completes=tier.every(x=>x.s===e.s||st.battle.cleared.includes(x.s));
+  if(completes)return e.t+1<=TIERS.length-1?('First clear · unlocks '+TIERS[e.t+1].s):'First clear · completes the final rank';
+  return 'First clear · trophy recorded';
+}
+function stgTaunt(e){
+  const arr=FLAVOR[e.r]||FLAVOR.grunt;let h=0;
+  for(let i=0;i<e.s.length;i++)h=(h*31+e.s.charCodeAt(i))>>>0;
+  return arr[h%arr.length];
+}
+function stgWinProb(e){
+  const pPL=basePL()*FORMS[st.formMax].mult,k=0.82;
+  const a=Math.pow(pPL,k),b=Math.pow(e.pl,k);
+  return Math.max(4,Math.min(96,Math.round(a/(a+b)*100)));
+}
+function stgNoteText(e,wc){
+  const rec={str:['Strength','Weights'],vit:['Vitality','Running'],agi:['Agility','Bicycle'],foc:['Focus','Boxing']};
+  let lowK='str',lowV=Infinity;
+  for(const k of ['str','vit','agi','foc']){const v=effOf(k);if(v<lowV){lowV=v;lowK=k;}}
+  const rr=rec[lowK];
+  if(st.formMax<=0)return 'Fighting in <b>Base Form</b> — cross base PL '+FORMS[1].pl.toLocaleString()+' to unlock transformations and swing this fight.';
+  if(wc>=60)return 'Your logged training has you <b>favored</b> — transform mid-fight to press it.';
+  if(wc>=42)return 'A <b>close match</b>. One more '+rr[0]+' session ('+rr[1]+') could tip it.';
+  return '<b>Underpowered.</b> Train '+rr[0]+' ('+rr[1]+') to raise your ceiling — or gamble on a Last Stand.';
+}
+function stgCount(el,target){
+  if(matchMedia('(prefers-reduced-motion:reduce)').matches||document.visibilityState==='hidden'){el.textContent=fmtPL(target);return;}
+  const t0=performance.now(),dur=900;
+  (function step(t){const p=Math.min(1,(t-t0)/dur),k=1-Math.pow(1-p,3);el.textContent=fmtPL(target*k);if(p<1)requestAnimationFrame(step);})(t0);
+}
+function stageFight(e){
+  staged=e;
+  $('#battleLadder').hidden=true;$('#battleFight').hidden=true;$('#battleResult').hidden=true;$('#battleStage').hidden=false;
+  const T=TIERS[e.t],mf=FORMS[st.formMax];
+  $('#stgSaga').textContent=T.s;
+  $('#stgTier').textContent='· TIER '+(e.t+1)+'/'+TIERS.length;
+  $('#stgMeArt').className='stgPortrait';
+  $('#stgMeArt').innerHTML=`<img src="${mf.img}" alt="" style="filter:${mf.imgF||'none'}">`;
+  $('#stgMeForm').textContent=mf.nm;
+  $('#stgFoeArt').className='stgPortrait'+(e.im?'':' ph');
+  $('#stgFoeArt').innerHTML=e.im?`<img src="img/enemies/${e.s}.jpg" alt="">`:'';
+  $('#stgFoeName').textContent=e.n.toUpperCase();
+  $('#stgFoeRole').textContent=e.r.toUpperCase()+' CLASS';
+  const th=stgThreatClass(e);
+  $('#stgDName').textContent=e.n;
+  $('#stgDTitle').textContent=T.s;
+  $('#stgDPL').textContent=fmtPL(e.pl);
+  const tEl=$('#stgDThreat');tEl.textContent=th;tEl.className='stgThreat '+th.toLowerCase();
+  $('#stgDSig').textContent=stgSignature(e);
+  $('#stgDReward').textContent=stgReward(e);
+  $('#stgDQuote').textContent='“'+stgTaunt(e).replace(/^"|"$/g,'')+'”';
+  const wc=stgWinProb(e);
+  $('#stgPct').textContent=wc+'%';
+  $('#stgBar').style.width='0%';
+  $('#stgNote').innerHTML=stgNoteText(e,wc);
+  stgCount($('#stgYouPL'),basePL()*mf.mult);stgCount($('#stgFoePL'),e.pl);
+  const bar=$('#stgBar');bar.style.width='0%';void bar.offsetWidth;bar.style.width=wc+'%';
+  beep(300,.14,'sawtooth',.05);
+}
 function startFight(e){
   const pc=playerCombat(0);
   fight={en:e,es:enemyStats(e),pForm:0,pc,pHpMax:pc.hpMax,pHp:pc.hpMax,ki:Math.min(pc.kiMax,Math.max(30,Math.round(pc.kiMax*0.55))),
@@ -2123,7 +2351,7 @@ function startFight(e){
   const ar=$('#arena');if(ar)ar.classList.remove('clutch');
   showFight();blog(e.n+' stands before you.');beep(300,.16,'sawtooth',.05);
 }
-function showFight(){$('#battleLadder').hidden=true;$('#battleFight').hidden=false;$('#battleResult').hidden=true;renderFight();}
+function showFight(){$('#battleLadder').hidden=true;$('#battleStage').hidden=true;$('#battleFight').hidden=false;$('#battleResult').hidden=true;renderFight();}
 function setFoeArt(e){$('#foeArt').className='foeArt'+(e.im?'':' ph');$('#foeArt').innerHTML=`<span class="phName">${e.n}</span>${e.im?`<img src="img/enemies/${e.s}.jpg" alt="">`:''}`;}
 function setMeArt(f){$('#meArt').innerHTML=`<img src="${FORMS[f].img}" alt="" style="filter:${FORMS[f].imgF||'none'}">`;}
 function mvBtn(id,label,ki,disabled,hidden){return hidden?'':`<button class="mvBtn" data-mv="${id}"${disabled?' disabled':''}><b>${label}</b><span>${ki} Ki</span></button>`;}
@@ -2288,7 +2516,7 @@ function nodeState(e){
 }
 let battleBrowseTier=null;
 function renderBattleHome(){
-  $('#battleFight').hidden=true;$('#battleResult').hidden=true;$('#battleLadder').hidden=false;
+  $('#battleFight').hidden=true;$('#battleStage').hidden=true;$('#battleResult').hidden=true;$('#battleLadder').hidden=false;
   const b=st.battle;
   if(battleBrowseTier==null)battleBrowseTier=b.tierUnlocked;
   battleBrowseTier=clamp(battleBrowseTier,0,TIERS.length-1);
@@ -2329,12 +2557,14 @@ $('#tierPrev').addEventListener('click',()=>browseBattleTier(-1));
 $('#tierNext').addEventListener('click',()=>browseBattleTier(1));
 document.addEventListener('click',e=>{
   const mb=e.target.closest('.mvBtn');if(mb&&!mb.disabled){playerMove(mb.dataset.mv);return;}
-  const fc=e.target.closest('.pNode,.foeCard');if(fc&&!fc.disabled){const en=ENEMIES.find(x=>x.s===fc.dataset.foe);if(en)startFight(en);return;}
+  const fc=e.target.closest('.pNode,.foeCard');if(fc&&!fc.disabled){const en=ENEMIES.find(x=>x.s===fc.dataset.foe);if(en)stageFight(en);return;}
   const sp=e.target.closest('.scPlus');if(sp&&!sp.disabled){spendAsc(sp.dataset.stat);return;}
   const su=e.target.closest('.skUp');if(su&&!su.disabled&&su.dataset.skill){upgradeSkill(su.dataset.skill);return;}
   const tn=e.target.closest('#skTree [data-skill]');if(tn){selSkill=tn.dataset.skill;renderSkills();beep(760,.04,'square',.02);return;}
 });
 $('#retreatBtn').addEventListener('click',()=>{fight=null;renderBattleHome();beep(300,.1,'sine',.03);});
+$('#stgEngage').addEventListener('click',()=>{if(staged){const e=staged;staged=null;startFight(e);}});
+$('#stgBack').addEventListener('click',()=>{staged=null;renderBattleHome();beep(300,.1,'sine',.03);});
 
 /* ================= SKILLS SCREEN ================= */
 const STAT_NAME={vit:'VITALITY',str:'STRENGTH',agi:'AGILITY',foc:'FOCUS'};
