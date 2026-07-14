@@ -776,6 +776,31 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 .stgBack{font-family:var(--fj);font-size:11px;letter-spacing:1px;color:var(--dim);background:none;border:1px solid var(--line);
   border-radius:6px;padding:0 20px;cursor:pointer;transition:.18s}
 .stgBack:hover{color:var(--cyan);border-color:var(--cyan)}
+.stgRailHead{display:flex;align-items:baseline;justify-content:space-between;font-family:var(--fj);font-size:9px;letter-spacing:2px;
+  color:var(--dim);text-transform:uppercase;margin-top:2px}
+.stgRailHead .stgRailHint{color:var(--cyan);opacity:.7}
+.stgRail{display:flex;gap:8px;overflow-x:auto;padding:2px 1px 7px;scrollbar-width:thin;scrollbar-color:rgba(53,224,255,.3) transparent;-webkit-overflow-scrolling:touch}
+.stgRail::-webkit-scrollbar{height:5px}
+.stgRail::-webkit-scrollbar-thumb{background:rgba(53,224,255,.3);border-radius:3px}
+.stgFoeCard{flex:0 0 auto;width:88px;position:relative;display:flex;flex-direction:column;align-items:center;gap:4px;
+  padding:8px 6px;border:1px solid var(--line);border-radius:9px;background:rgba(255,255,255,.03);color:var(--dim);cursor:pointer;transition:.15s}
+.stgFoeCard:hover{border-color:var(--cyan);color:var(--text);transform:translateY(-2px)}
+.stgFoeCard.sel{border-color:var(--gold);box-shadow:0 0 16px rgba(255,215,94,.28);color:var(--text)}
+.stgFoeCard.sel::after{content:"";position:absolute;left:9px;right:9px;bottom:-1px;height:2px;background:var(--gold);box-shadow:0 0 8px var(--gold)}
+.stgFoeCard.done{opacity:.62}
+.stgFoeCard.locked{opacity:.5}
+.sfArt{width:100%;aspect-ratio:1;border-radius:6px;overflow:hidden;position:relative;display:flex;align-items:center;justify-content:center;
+  background:radial-gradient(ellipse at 50% 34%,rgba(70,20,30,.5),#0c0a16 74%)}
+.sfArt img{width:100%;height:100%;object-fit:cover;filter:contrast(1.07) saturate(1.05)}
+.sfArt.ph::after{content:"?";font-family:var(--fd);font-size:18px;color:rgba(255,90,110,.55)}
+.stgFoeCard.locked .sfArt img{filter:grayscale(1) brightness(.45)}
+.sfName{font-family:var(--fd);font-size:8.5px;letter-spacing:.2px;text-align:center;line-height:1.12;color:inherit}
+.sfPL{font-family:var(--fj);font-size:8px;color:var(--gold);letter-spacing:.3px}
+.stgFoeCard.locked .sfPL{color:var(--dim)}
+.sfBadge{position:absolute;top:4px;right:5px;font-size:11px;font-weight:800;text-shadow:0 0 6px rgba(0,0,0,.6)}
+.sfBadge.done{color:var(--good)} .sfBadge.cur{color:var(--gold)}
+.stgEngage:disabled{filter:grayscale(.7) brightness(.6);cursor:not-allowed;transform:none;box-shadow:none}
+.stgEngage:disabled::after{display:none}
 @media(prefers-reduced-motion:reduce){.stgBolt,.stgGlow,.stgOrbit,.stgScan,.stgEngage::after{animation:none}}
 
 /* ====== SKILLS / PATH ====== */
@@ -1383,20 +1408,12 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 
 <!-- ============================= BATTLE ============================= -->
 <section class="view" id="viewBattle" data-view="battle" hidden>
-  <div id="battleLadder">
+  <div id="battleStage" hidden>
     <div class="regionBar">
       <button class="tierNav" id="tierPrev" type="button" aria-label="Previous battle tier">‹</button>
       <div class="rbCore"><div class="rbName" id="regionName"></div><div class="rbSaga" id="regionSaga"></div></div>
       <div class="rbProg" id="battleSub"></div>
       <button class="tierNav" id="tierNext" type="button" aria-label="Next battle tier">›</button>
-    </div>
-    <div class="pathWrap" id="pathWrap"></div>
-  </div>
-  <div id="battleStage" hidden>
-    <div class="stgTop">
-      <span class="stgSaga" id="stgSaga"></span>
-      <span class="stgTier" id="stgTier"></span>
-      <span class="stgLock"><i></i> SCOUTER LOCKED</span>
     </div>
     <div class="stgArena" id="stgArena">
       <div class="stgFloor"></div>
@@ -1448,9 +1465,10 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
         <div class="stgNote" id="stgNote"></div>
       </div>
     </div>
+    <div class="stgRailHead"><span>◈ Select target</span><span class="stgRailHint">swipe ▸</span></div>
+    <div class="stgRail" id="stgRail"></div>
     <div class="stgActions">
       <button class="stgEngage" id="stgEngage">⚡ ENGAGE</button>
-      <button class="stgBack" id="stgBack">◂ Retreat</button>
     </div>
   </div>
   <div id="battleFight" hidden>
@@ -2119,7 +2137,7 @@ $('#historyBack').addEventListener('click',()=>{showView('daily');beep(700,.04,'
     if(e.touches.length!==1){x0=null;return;}
     const t=e.touches[0];x0=t.clientX;y0=t.clientY;t0=Date.now();
     // don't hijack swipes inside a fight, a horizontal table, or an open overlay
-    block=!!e.target.closest('#battleFight, #battleLadder, .tableWrap, .modal, .battleResult, .wkGrid');
+    block=!!e.target.closest('#battleFight, #battleStage, .tableWrap, .modal, .battleResult, .wkGrid');
   },{passive:true});
   document.addEventListener('touchend',e=>{
     if(x0==null||block){x0=null;return;}
@@ -2312,12 +2330,10 @@ function stgCount(el,target){
   const t0=performance.now(),dur=900;
   (function step(t){const p=Math.min(1,(t-t0)/dur),k=1-Math.pow(1-p,3);el.textContent=fmtPL(target*k);if(p<1)requestAnimationFrame(step);})(t0);
 }
-function stageFight(e){
-  staged=e;
-  $('#battleLadder').hidden=true;$('#battleFight').hidden=true;$('#battleResult').hidden=true;$('#battleStage').hidden=false;
+function selectFoe(e){
+  if(!e)return;staged=e;
+  const rail=$('#stgRail');if(rail)rail.querySelectorAll('.stgFoeCard').forEach(c=>c.classList.toggle('sel',c.dataset.foe===e.s));
   const T=TIERS[e.t],mf=FORMS[st.formMax];
-  $('#stgSaga').textContent=T.s;
-  $('#stgTier').textContent='· TIER '+(e.t+1)+'/'+TIERS.length;
   $('#stgMeArt').className='stgPortrait';
   $('#stgMeArt').innerHTML=`<img src="${mf.img}" alt="" style="filter:${mf.imgF||'none'}">`;
   $('#stgMeForm').textContent=mf.nm;
@@ -2335,11 +2351,12 @@ function stageFight(e){
   $('#stgDQuote').textContent='“'+stgTaunt(e).replace(/^"|"$/g,'')+'”';
   const wc=stgWinProb(e);
   $('#stgPct').textContent=wc+'%';
-  $('#stgBar').style.width='0%';
   $('#stgNote').innerHTML=stgNoteText(e,wc);
   stgCount($('#stgYouPL'),basePL()*mf.mult);stgCount($('#stgFoePL'),e.pl);
   const bar=$('#stgBar');bar.style.width='0%';void bar.offsetWidth;bar.style.width=wc+'%';
-  beep(300,.14,'sawtooth',.05);
+  const locked=nodeState(e)==='locked';
+  const eng=$('#stgEngage');eng.disabled=locked;
+  eng.textContent=locked?'◈ LOCKED':(st.battle.cleared.includes(e.s)?'⚔ REMATCH':'⚡ ENGAGE');
 }
 function startFight(e){
   const pc=playerCombat(0);
@@ -2351,7 +2368,7 @@ function startFight(e){
   const ar=$('#arena');if(ar)ar.classList.remove('clutch');
   showFight();blog(e.n+' stands before you.');beep(300,.16,'sawtooth',.05);
 }
-function showFight(){$('#battleLadder').hidden=true;$('#battleStage').hidden=true;$('#battleFight').hidden=false;$('#battleResult').hidden=true;renderFight();}
+function showFight(){$('#battleStage').hidden=true;$('#battleFight').hidden=false;$('#battleResult').hidden=true;renderFight();}
 function setFoeArt(e){$('#foeArt').className='foeArt'+(e.im?'':' ph');$('#foeArt').innerHTML=`<span class="phName">${e.n}</span>${e.im?`<img src="img/enemies/${e.s}.jpg" alt="">`:''}`;}
 function setMeArt(f){$('#meArt').innerHTML=`<img src="${FORMS[f].img}" alt="" style="filter:${FORMS[f].imgF||'none'}">`;}
 function mvBtn(id,label,ki,disabled,hidden){return hidden?'':`<button class="mvBtn" data-mv="${id}"${disabled?' disabled':''}><b>${label}</b><span>${ki} Ki</span></button>`;}
@@ -2516,36 +2533,30 @@ function nodeState(e){
 }
 let battleBrowseTier=null;
 function renderBattleHome(){
-  $('#battleFight').hidden=true;$('#battleStage').hidden=true;$('#battleResult').hidden=true;$('#battleLadder').hidden=false;
+  $('#battleFight').hidden=true;$('#battleResult').hidden=true;$('#battleStage').hidden=false;
   const b=st.battle;
   if(battleBrowseTier==null)battleBrowseTier=b.tierUnlocked;
   battleBrowseTier=clamp(battleBrowseTier,0,TIERS.length-1);
-  const viewedTier=battleBrowseTier,T=TIERS[viewedTier]||TIERS[0];
-  $('#battleLadder').style.setProperty('--arenaC',T.c||'#35e0ff');
-  $('#regionName').textContent='TIER '+(viewedTier+1)+'/'+TIERS.length+' · '+FORMS[T.f].nm;
-  $('#regionSaga').textContent=T.s+(viewedTier>b.tierUnlocked?' · LOCKED':'');
-  const tierEnemies=ENEMIES.filter(e=>e.t===viewedTier),tierDone=tierEnemies.filter(e=>b.cleared.includes(e.s)).length;
+  const vt=battleBrowseTier,T=TIERS[vt]||TIERS[0];
+  $('#battleStage').style.setProperty('--arenaC',T.c||'#35e0ff');
+  $('#regionName').textContent='TIER '+(vt+1)+'/'+TIERS.length+' · '+FORMS[T.f].nm;
+  $('#regionSaga').textContent=T.s+(vt>b.tierUnlocked?' · LOCKED':'');
+  const tierEnemies=ENEMIES.filter(e=>e.t===vt),tierDone=tierEnemies.filter(e=>b.cleared.includes(e.s)).length;
   $('#battleSub').textContent=tierDone+'/'+tierEnemies.length;
-  $('#tierPrev').disabled=viewedTier===0;
-  $('#tierNext').disabled=viewedTier===TIERS.length-1;
+  $('#tierPrev').disabled=vt===0;
+  $('#tierNext').disabled=vt===TIERS.length-1;
   let current=null;
-  for(const e of tierEnemies){if(e.t<=b.tierUnlocked&&!b.cleared.includes(e.s)){current=e.s;break;}}
-  const phone=matchMedia('(max-width:640px)').matches,SP=phone?101:112,PAD=phone?64:66,n=tierEnemies.length;
-  const H=PAD*2+Math.max(0,n-1)*SP+(phone?34:46);
-  const wrap=$('#pathWrap');wrap.style.height=H+'px';
-  const W=wrap.clientWidth||340,pts=[];
-  const nodes=tierEnemies.map((e,i)=>{
-    const x=50+(phone?22:27)*Math.sin((i+viewedTier*.7)*1.12),y=PAD+i*SP;pts.push([x/100*W,y]);
-    const stt=nodeState(e),cur=e.s===current,boss=e.r==='boss';
-    return `<button class="pNode ${stt}${boss?' boss':''}${cur?' current':''}" data-foe="${e.s}" style="left:${x.toFixed(2)}%;top:${y}px"${stt==='locked'?' disabled':''}>`+
-      `<span class="pArt${e.im?'':' ph'}">${e.im?`<img src="img/enemies/${e.s}.jpg" alt="">`:''}</span>`+
-      (stt==='done'?'<span class="pBadge done">✓</span>':stt==='locked'?'<span class="pBadge lock">🔒</span>':'')+
-      (cur?'<span class="pTag">FIGHT</span>':'')+
-      `<span class="pLabel"><b>${e.n}</b><i>PL ${fmtPL(e.pl)}</i></span></button>`;
+  for(const e of tierEnemies){if(e.t<=b.tierUnlocked&&!b.cleared.includes(e.s)){current=e;break;}}
+  $('#stgRail').innerHTML=tierEnemies.map(e=>{
+    const stt=nodeState(e);
+    const badge=stt==='done'?'<span class="sfBadge done">✓</span>':stt==='locked'?'<span class="sfBadge lock">🔒</span>':(current&&e.s===current.s?'<span class="sfBadge cur">▸</span>':'');
+    return `<button class="stgFoeCard ${stt}" data-foe="${e.s}" type="button">`+
+      `<span class="sfArt${e.im?'':' ph'}">${e.im?`<img src="img/enemies/${e.s}.jpg" alt="">`:''}</span>`+
+      `<span class="sfName">${e.n}</span><span class="sfPL">PL ${fmtPL(e.pl)}</span>${badge}</button>`;
   }).join('');
-  const path='<svg class="pathSvg" viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="none"><path d="'+pts.map((p,i)=>(i?'L':'M')+p[0].toFixed(1)+' '+p[1]).join(' ')+'"/></svg>';
-  wrap.innerHTML=path+nodes;
-  const cn=wrap.querySelector('.pNode.current');if(cn)cn.scrollIntoView({block:phone?'nearest':'center'});
+  const keep=staged&&staged.t===vt&&tierEnemies.some(x=>x.s===staged.s);
+  selectFoe(keep?staged:(current||tierEnemies[0]));
+  const sc=$('#stgRail').querySelector('.stgFoeCard.sel');if(sc)sc.scrollIntoView({inline:'center',block:'nearest'});
 }
 function browseBattleTier(dir){
   const next=clamp((battleBrowseTier==null?st.battle.tierUnlocked:battleBrowseTier)+dir,0,TIERS.length-1);
@@ -2557,14 +2568,13 @@ $('#tierPrev').addEventListener('click',()=>browseBattleTier(-1));
 $('#tierNext').addEventListener('click',()=>browseBattleTier(1));
 document.addEventListener('click',e=>{
   const mb=e.target.closest('.mvBtn');if(mb&&!mb.disabled){playerMove(mb.dataset.mv);return;}
-  const fc=e.target.closest('.pNode,.foeCard');if(fc&&!fc.disabled){const en=ENEMIES.find(x=>x.s===fc.dataset.foe);if(en)stageFight(en);return;}
+  const fc=e.target.closest('.stgFoeCard');if(fc){const en=ENEMIES.find(x=>x.s===fc.dataset.foe);if(en){selectFoe(en);beep(680,.04,'square',.02);}return;}
   const sp=e.target.closest('.scPlus');if(sp&&!sp.disabled){spendAsc(sp.dataset.stat);return;}
   const su=e.target.closest('.skUp');if(su&&!su.disabled&&su.dataset.skill){upgradeSkill(su.dataset.skill);return;}
   const tn=e.target.closest('#skTree [data-skill]');if(tn){selSkill=tn.dataset.skill;renderSkills();beep(760,.04,'square',.02);return;}
 });
 $('#retreatBtn').addEventListener('click',()=>{fight=null;renderBattleHome();beep(300,.1,'sine',.03);});
-$('#stgEngage').addEventListener('click',()=>{if(staged){const e=staged;staged=null;startFight(e);}});
-$('#stgBack').addEventListener('click',()=>{staged=null;renderBattleHome();beep(300,.1,'sine',.03);});
+$('#stgEngage').addEventListener('click',()=>{if(staged&&nodeState(staged)!=='locked')startFight(staged);});
 
 /* ================= SKILLS SCREEN ================= */
 const STAT_NAME={vit:'VITALITY',str:'STRENGTH',agi:'AGILITY',foc:'FOCUS'};
