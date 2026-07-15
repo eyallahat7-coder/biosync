@@ -1875,7 +1875,7 @@ function defaultState(){return{
   history:[],lastSync:null,form:0,formMax:0,battle:defaultBattle(),
   ascPoints:0,skillPoints:0,streakPaid:0,
   trained:{vit:0,str:0,agi:0,foc:0},
-  skills:{strike:0,ki:0,ult:0,guard:0,charge:0},battleXpResetV1:true,characterLevelResetV2:true,formCurveV3:true};}
+  skills:{strike:0,ki:0,ult:0,guard:0,charge:0},battleXpResetV1:true,characterLevelResetV2:true,formCurveV3:true,battleCampaignResetV3:true};}
 
 let st=load();
 function load(){
@@ -1902,6 +1902,10 @@ function load(){
         const earned=earnedFormIndex(s);
         s.formMax=Math.min(s.formMax||0,earned);s.form=Math.min(s.form||0,s.formMax);
         s.formCurveV3=true;localStorage.setItem(KEY,JSON.stringify(s));
+      }
+      if(!s.battleCampaignResetV3){
+        s.battle=defaultBattle();s.battleCampaignResetV3=true;
+        localStorage.setItem(KEY,JSON.stringify(s));
       }
       return s;}}}catch(e){}
   return defaultState();
