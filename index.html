@@ -330,6 +330,9 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 .dateRow{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border:1px dashed rgba(53,224,255,.35);background:rgba(53,224,255,.04)}
 .dateRow .dk{font-family:var(--fj);font-size:10px;letter-spacing:2px;color:var(--dim);text-transform:uppercase}
 .dateRow .dv{font-family:var(--fd);font-size:16px;color:var(--cyan);text-shadow:0 0 10px rgba(53,224,255,.4)}
+.pastDayBtn{font-family:var(--fj);font-size:9px;letter-spacing:1.2px;color:var(--gold);background:rgba(255,215,94,.08);border:1px solid rgba(255,215,94,.36);padding:7px 10px;cursor:pointer;transition:.15s;text-transform:uppercase}
+.pastDayBtn:hover:not(:disabled){background:rgba(255,215,94,.17);border-color:var(--gold);box-shadow:0 0 16px rgba(255,215,94,.2)}
+.pastDayBtn:disabled{opacity:.38;cursor:not-allowed}
 .twoCol{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .toggleRow{display:flex;align-items:center;justify-content:space-between;border:1px solid var(--line);background:rgba(255,255,255,.03);padding:14px 16px}
 .toggleRow .tl{display:flex;flex-direction:column;gap:3px}
@@ -390,6 +393,8 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 .bq.part{color:var(--bg);background:linear-gradient(120deg,var(--amber),#ff9d3d)}
 .bq.bad{color:#fff;background:rgba(255,77,94,.5)}
 .bq.miss{color:var(--red);border:1px solid rgba(255,77,94,.5)}
+.histFix{margin-left:7px;font-family:var(--fj);font-size:8px;letter-spacing:1px;color:var(--gold);border:1px solid rgba(255,215,94,.45);background:rgba(255,215,94,.08);padding:4px 7px;cursor:pointer}
+.histFix:hover{background:rgba(255,215,94,.18);border-color:var(--gold)}
 .emptyRow{text-align:center;color:var(--dim);font-family:var(--fj);letter-spacing:1px;padding:34px!important}
 /* ====== BOTTOM NAV ====== */
 .bottomNav{position:fixed;left:0;right:0;bottom:0;z-index:40;display:flex;justify-content:center;gap:6px;
@@ -428,6 +433,22 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 .mYes:hover{box-shadow:0 0 44px rgba(255,215,94,.8)}
 .mNo{font-family:var(--fd);font-size:12px;letter-spacing:2px;color:var(--dim);background:none;border:1px solid rgba(255,255,255,.18);padding:13px 22px;cursor:pointer;transition:.15s}
 .mNo:hover{color:var(--text);border-color:rgba(255,255,255,.4)}
+.pastBox{width:min(590px,94vw);max-height:min(800px,92vh);overflow:auto;text-align:left;border-color:rgba(53,224,255,.5);box-shadow:0 0 70px rgba(53,224,255,.18);padding:24px 28px}
+.pastHead{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;padding-bottom:13px;border-bottom:1px solid var(--line);margin-bottom:16px}
+.pastHead .mTitle{margin:0;color:var(--cyan)}
+.pastHead b{display:block;margin-top:5px;font-family:var(--fd);font-size:22px;letter-spacing:1px;color:#fff}
+.pastDate{font-family:var(--fj);font-size:10px;letter-spacing:1.5px;color:var(--gold);text-align:right}
+.pastGrid{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.pastGrid .field{gap:6px}.pastGrid .field input{font-size:16px;padding:10px 12px}
+.pastWorkout{margin-top:14px}.pastWorkout .wkGrid{grid-template-columns:repeat(4,1fr);gap:7px;margin-top:7px}
+.pastWorkout .wkOpt{padding:8px 4px;min-height:58px;font-size:8px}.pastWorkout .wkOpt .wi{font-size:17px}
+.pastExtras{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-top:14px}
+.pastTarget{display:flex;align-items:center;justify-content:space-between;gap:8px;border:1px solid var(--line);background:rgba(255,255,255,.03);padding:10px 12px}
+.pastTarget label{font-family:var(--fj);font-size:9px;letter-spacing:1px;color:var(--dim);text-transform:uppercase}
+.pastTarget input{width:82px;background:rgba(255,255,255,.05);border:1px solid var(--line);color:var(--cyan);font-family:var(--fd);font-size:13px;padding:7px;text-align:center;outline:none}
+.pastNote{margin-top:13px;font-family:var(--fj);font-size:10px;letter-spacing:.7px;line-height:1.45;color:var(--dim)}
+.pastActions{display:flex;gap:10px;margin-top:18px}.pastActions .mYes{flex:1}.pastActions .mNo{flex:0 0 auto}
+.pastSaved{color:var(--good)!important}
 /* ====== BATTLE ====== */
 #viewBattle .ladderWrap{display:flex;flex-direction:column;gap:14px;margin-top:4px}
 .tierBlock{border:1px solid var(--line);border-radius:6px;background:rgba(13,17,38,.5);padding:12px 13px}
@@ -1090,11 +1111,14 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
   .pHead h2{font-size:12px}
   .dateRow{padding:10px 14px}
   .dateRow .dv{font-size:13px}
+  .dateRow{gap:9px;flex-wrap:wrap}.pastDayBtn{width:100%;padding:8px}
   .field label{font-size:10px}
   .field input[type=number]{font-size:16px;padding:10px 12px}
   .togWrap{grid-template-columns:1fr}
   .targetsRow{gap:12px}
   .syncBtn{font-size:14px;padding:15px}
+  .pastBox{padding:20px 16px}.pastHead{align-items:flex-start;flex-direction:column}.pastDate{text-align:left}
+  .pastGrid,.pastExtras{grid-template-columns:1fr}.pastWorkout .wkGrid{grid-template-columns:repeat(2,1fr)}
   /* history */
   .histSummary{gap:8px}
   .hsChip{min-width:0;flex:1 1 28%;padding:8px 10px}
@@ -1455,6 +1479,7 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
     <div class="dateRow">
       <span class="dk">Date</span>
       <span class="dv" id="dlDate">—</span>
+      <button class="pastDayBtn" id="editYesterdayBtn">LOG YESTERDAY</button>
     </div>
     <div class="twoCol">
       <div class="field">
@@ -1699,6 +1724,51 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
     </div>
   </div>
 </div>
+
+<div class="modal" id="pastModal" hidden>
+  <div class="mBox pastBox" role="dialog" aria-modal="true" aria-labelledby="pastTitle">
+    <div class="pastHead">
+      <div>
+        <div class="mTitle">Temporal correction</div>
+        <b id="pastTitle">LOG YESTERDAY</b>
+      </div>
+      <div class="pastDate" id="pastDate"></div>
+    </div>
+    <div class="pastGrid">
+      <div class="field">
+        <label for="pastCal">CALORIES CONSUMED</label>
+        <input type="number" id="pastCal" min="0" max="12000" placeholder="e.g. 2200">
+      </div>
+      <div class="field">
+        <label for="pastProtein">PROTEIN CONSUMED (g)</label>
+        <input type="number" id="pastProtein" min="0" max="600" placeholder="e.g. 150">
+      </div>
+    </div>
+    <div class="field pastWorkout">
+      <label>WORKOUT TYPE</label>
+      <div class="wkGrid" id="pastWorkoutGrid"></div>
+    </div>
+    <div class="pastExtras">
+      <div class="field">
+        <label for="pastSleep">SLEEP (hours)</label>
+        <input type="number" id="pastSleep" min="0" max="16" step="0.5" placeholder="e.g. 8">
+      </div>
+      <div class="toggleRow">
+        <div class="tl"><b>CREATINE</b><span>Taken yesterday?</span></div>
+        <button class="switch" id="pastCreatine" role="switch" aria-label="Creatine taken yesterday" aria-checked="false"></button>
+      </div>
+    </div>
+    <div class="pastExtras">
+      <div class="pastTarget"><label for="pastCalTarget">Calorie target</label><input type="number" id="pastCalTarget" min="800" max="8000" step="50"></div>
+      <div class="pastTarget"><label for="pastProteinTarget">Protein target</label><input type="number" id="pastProteinTarget" min="30" max="400" step="5"></div>
+    </div>
+    <div class="pastNote" id="pastNote">Saving replaces the missed-day penalty and restores the correct character progress.</div>
+    <div class="pastActions">
+      <button class="mYes" id="savePastDay">SAVE YESTERDAY</button>
+      <button class="mNo" id="cancelPastDay">CANCEL</button>
+    </div>
+  </div>
+</div>
 <script>
 'use strict';
 /* ================= STATE ================= */
@@ -1712,6 +1782,8 @@ const xpNeed=l=>100+(l-1)*60;
 const WD=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
 const MO=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 function prettyDate(ds){const d=parseDay(ds);return WD[d.getDay()]+', '+MO[d.getMonth()]+' '+d.getDate()+' '+d.getFullYear();}
+function offsetDayStr(ds,amount){const d=parseDay(ds);d.setDate(d.getDate()+amount);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+const yesterdayStr=()=>offsetDayStr(todayStr(),-1);
 
 /* ================= FORMS ================= */
 const FORMS=[
@@ -1883,6 +1955,112 @@ function computeDeltas(){
   const sd=SLEEP_DELTA[sleepGrade()];for(const k in sd)d[k]=(d[k]||0)+sd[k];
   d.foc+=Math.min(3,1+Math.floor((st.streak+1)/4));
   return d;
+}
+
+/* ===== YESTERDAY REPAIR ===== */
+function dayWorkoutDef(day){return WORKOUTS.find(w=>w.id===(day.workout||'none'))||WORKOUTS[0];}
+function daySleepGrade(day){
+  const s=day.sleep;
+  if(!s)return'none';
+  if(s>=7.5&&s<=9)return'optimal';
+  if(s>=6.5&&s<7.5)return'good';
+  if(s>9&&s<=10.5)return'much';
+  if(s>=5&&s<6.5)return'low';
+  return'poor';
+}
+function pastDayMetrics(day,calTarget,proteinTarget,streakBefore){
+  const ratio=day.cal/(calTarget||2200);
+  const grade=!day.cal?'empty':ratio>=.9&&ratio<=1.1?'optimal':ratio>=.72&&ratio<=1.28?'fair':ratio>1.28?'over':ratio<.55?'critical':'low';
+  const protein=day.protein/(proteinTarget||150),workout=dayWorkoutDef(day),sleep=daySleepGrade(day);
+  const d={vit:0,str:0,agi:0,foc:0};
+  if(grade==='optimal'){d.vit+=4;d.foc+=2;}
+  else if(grade==='fair'){d.vit+=2;d.foc+=1;}
+  else if(grade==='over'){d.vit-=3;d.agi-=2;}
+  else if(grade==='critical'||grade==='empty'){d.vit-=3;d.str-=2;}
+  else d.vit-=1;
+  if(protein>=.9){d.str+=4;d.vit+=1;}
+  else if(protein>=.6)d.str+=2;
+  else if(protein>0)d.str+=1;
+  else d.str-=1;
+  for(const k in workout.d)d[k]=(d[k]||0)+workout.d[k];
+  if(day.creatine){d.str+=2;d.foc+=1;}
+  const sleepDelta=SLEEP_DELTA[sleep];for(const k in sleepDelta)d[k]=(d[k]||0)+sleepDelta[k];
+  d.foc+=Math.min(3,1+Math.floor((streakBefore+1)/4));
+  const trained=workout.id!=='none',calOk=grade==='optimal'||grade==='fair',proOk=protein>=.8;
+  const sleepBonus=sleep==='optimal'?15:sleep==='good'?8:0,streakAfter=streakBefore+1;
+  const xp=30+(trained?25:0)+(calOk?20:0)+(proOk?15:0)+(day.creatine?10:0)+sleepBonus+Math.min(30,streakAfter*2);
+  return{d,xp,q:(trained&&calOk&&proOk)?'good':(trained||calOk||proOk)?'part':'bad'};
+}
+function historyEntry(date){return st.history.find(h=>h.date===date);}
+function streakBeforeDate(date){
+  let count=0,cursor=offsetDayStr(date,-1);
+  while(true){const h=historyEntry(cursor);if(!h||h.q==='miss')break;count++;cursor=offsetDayStr(cursor,-1);}
+  return count;
+}
+function replaceHistoryEntry(entry){
+  const i=st.history.findIndex(h=>h.date===entry.date);
+  if(i>=0)st.history[i]=entry;else st.history.push(entry);
+  st.history.sort((a,b)=>a.date.localeCompare(b.date));
+  if(st.history.length>365)st.history=st.history.slice(-365);
+}
+function adjustProgressXp(amount){
+  st.xp+=amount;
+  while(st.xp>=xpNeed(st.level)){
+    st.xp-=xpNeed(st.level);st.level++;
+    for(const k in st.stats)st.stats[k]=clamp(st.stats[k]+2,1,100);
+  }
+  while(st.xp<0&&st.level>1){
+    st.level--;st.xp+=xpNeed(st.level);
+    for(const k in st.stats)st.stats[k]=clamp(st.stats[k]-2,1,100);
+  }
+  st.xp=Math.max(0,st.xp);
+}
+function retroStreakReward(dayNumber){return{ap:dayNumber>=3&&dayNumber%3===0?1:0,sp:dayNumber>=4?1:0};}
+let pastWorkoutChoice='none';
+function openPastDay(){
+  if(st.today.synced){alert('Unlock today first, then you can edit yesterday without losing today\'s progress.');return;}
+  const date=yesterdayStr(),old=historyEntry(date),logged=old&&old.q!=='miss';
+  const day=logged?old:{cal:0,protein:0,workout:'none',sleep:0,creatine:false};
+  $('#pastTitle').textContent=logged?'EDIT YESTERDAY':old?'REPAIR MISSED DAY':'LOG YESTERDAY';
+  $('#savePastDay').textContent=logged?'UPDATE YESTERDAY':'SAVE YESTERDAY';
+  $('#pastDate').textContent=prettyDate(date);
+  $('#pastCal').value=day.cal||'';$('#pastProtein').value=day.protein||'';$('#pastSleep').value=day.sleep||'';
+  $('#pastCalTarget').value=old&&old.t?old.t:st.calTarget;$('#pastProteinTarget').value=old&&old.pt?old.pt:st.proteinTarget;
+  pastWorkoutChoice=day.workout||'none';
+  $('#pastWorkoutGrid').innerHTML=WORKOUTS.map(w=>`<button class="wkOpt${w.id===pastWorkoutChoice?' sel':''}" type="button" data-past-workout="${w.id}"><span class="wi">${w.icon}</span>${w.nm}</button>`).join('');
+  const cr=$('#pastCreatine');cr.classList.toggle('on',!!day.creatine);cr.setAttribute('aria-checked',day.creatine?'true':'false');
+  $('#pastNote').textContent=logged?'Updating recalculates yesterday’s stat and XP contribution.':'Saving removes yesterday’s missed-day penalty and restores the correct streak.';
+  $('#pastModal').hidden=false;setTimeout(()=>$('#pastCal').focus(),60);beep(760,.06,'triangle',.025);
+}
+function closePastDay(){$('#pastModal').hidden=true;}
+function savePastLog(){
+  if(st.today.synced){closePastDay();return;}
+  const date=yesterdayStr(),old=historyEntry(date),wasLogged=old&&old.q!=='miss';
+  const day={date,cal:clamp(Math.round(Number($('#pastCal').value)||0),0,12000),protein:clamp(Math.round(Number($('#pastProtein').value)||0),0,600),
+    workout:pastWorkoutChoice,sleep:clamp(Number($('#pastSleep').value)||0,0,16),creatine:$('#pastCreatine').classList.contains('on')};
+  if(!day.cal&&!day.protein&&day.workout==='none'&&!day.sleep&&!day.creatine&&!confirm('Nothing is logged for yesterday. Save it as an empty day?'))return;
+  const calTarget=clamp(Math.round(Number($('#pastCalTarget').value)||st.calTarget),800,8000);
+  const proteinTarget=clamp(Math.round(Number($('#pastProteinTarget').value)||st.proteinTarget),30,400);
+  const priorStreak=streakBeforeDate(date),metrics=pastDayMetrics(day,calTarget,proteinTarget,priorStreak);
+  const oldD=wasLogged&&old.d?old.d:{vit:0,str:0,agi:0,foc:0};
+  for(const k in st.stats){
+    const restored=old&&old.q==='miss'?2:0;
+    st.stats[k]=clamp(st.stats[k]-(oldD[k]||0)+(metrics.d[k]||0)+restored,1,100);
+  }
+  adjustProgressXp(metrics.xp-(wasLogged?(old.xp||0):0));
+  if(!wasLogged){
+    st.streak=priorStreak+1;st.best=Math.max(st.best,st.streak);st.streakPaid=st.streak;
+    const reward=retroStreakReward(st.streak);st.ascPoints=(st.ascPoints||0)+reward.ap;st.skillPoints=(st.skillPoints||0)+reward.sp;
+  }
+  replaceHistoryEntry({date,cal:day.cal,protein:day.protein,workout:day.workout,sport:day.workout!=='none',sleep:day.sleep,creatine:day.creatine,
+    t:calTarget,pt:proteinTarget,d:metrics.d,xp:metrics.xp,q:metrics.q,retro:true});
+  if(st.today.preSync){
+    st.today.preSync={stats:{...st.stats},xp:st.xp,level:st.level,streak:st.streak,best:st.best,
+      streakPaid:st.streakPaid,ascPoints:st.ascPoints,skillPoints:st.skillPoints};
+  }
+  st.lastSync=date;save();closePastDay();renderAll();
+  const note=$('#syncNote');note.textContent='Yesterday saved — character progress and streak recalculated.';note.classList.add('pastSaved');
+  setTimeout(()=>note.classList.remove('pastSaved'),2600);beep(880,.09,'triangle',.04);setTimeout(()=>beep(1180,.1,'triangle',.04),90);
 }
 /* ===== SKILLS & TRAINED STATS ===== */
 function effOf(k){return Math.min(100,st.stats[k])+((st.trained&&st.trained[k])||0);}
@@ -2164,6 +2342,9 @@ function renderDaily(){
   const sy=$('#syncBtn');sy.disabled=locked;sy.hidden=locked;
   sy.textContent='SYNC TO CHARACTER';
   const eb=$('#editTodayBtn');eb.hidden=!(locked&&st.today.preSync);
+  const yesterday=historyEntry(yesterdayStr()),yb=$('#editYesterdayBtn');
+  yb.disabled=locked;yb.textContent=yesterday&&yesterday.q!=='miss'?'EDIT YESTERDAY':yesterday?'REPAIR YESTERDAY':'LOG YESTERDAY';
+  yb.title=locked?'Unlock today before changing yesterday':'';
   $('#syncNote').textContent=locked?'Synced ✔ — tap Unlock to add or fix something.':'Applies your day to the character. You can keep editing until you sync.';
   const gp=$('#gradePreview');
   gp.textContent=locked?'':gradeText();
@@ -2196,7 +2377,8 @@ function renderHistory(){
     `<div class="hsChip"><b>${avgP||'—'}</b><span>Avg Protein g</span></div>`+
     `<div class="hsChip gd"><b>${st.best}</b><span>Best Streak</span></div>`;
   const rows=[...st.history].reverse().map(h=>{
-    if(h.q==='miss')return`<tr class="rMiss"><td>${prettyDate(h.date)}</td><td>—</td><td>—</td><td>—</td><td>—</td><td class="no">✕</td><td><span class="bq miss">MISSED</span></td></tr>`;
+    const editable=h.date===yesterdayStr()&&!st.today.synced,editBtn=editable?`<button class="histFix" data-edit-past="${h.date}">${h.q==='miss'?'REPAIR':'EDIT'}</button>`:'';
+    if(h.q==='miss')return`<tr class="rMiss"><td>${prettyDate(h.date)}</td><td>—</td><td>—</td><td>—</td><td>—</td><td class="no">✕</td><td><span class="bq miss">MISSED</span>${editBtn}</td></tr>`;
     const badge={good:['PERFECT','good'],part:['PARTIAL','part'],bad:['POOR','bad']}[h.q]||['—',''];
     const wk=h.workout?wkName(h.workout):(h.sport?'✦ Other':null);
     const wkCell=wk?`<td class="wkCell">${wk}</td>`:`<td class="no">✕</td>`;
@@ -2204,7 +2386,7 @@ function renderHistory(){
     return`<tr><td>${prettyDate(h.date)}</td><td>${h.cal} kcal</td><td>${h.protein||0} g</td>`+
       wkCell+slCell+
       `<td class="${h.creatine?'yes':'no'}">${h.creatine?'✔':'✕'}</td>`+
-      `<td><span class="bq ${badge[1]}">${badge[0]}</span></td></tr>`;
+      `<td><span class="bq ${badge[1]}">${badge[0]}</span>${editBtn}</td></tr>`;
   });
   $('#histBody').innerHTML=rows.join('')||`<tr><td colspan="7" class="emptyRow">No records yet ─ log your first day</td></tr>`;
 }
@@ -2776,6 +2958,21 @@ $('#proteinTargetInput').addEventListener('change',e=>{st.proteinTarget=clamp(Ma
 $('#crToggle').addEventListener('click',()=>{if(st.today.synced)return;st.today.creatine=!st.today.creatine;save();renderDaily();beep(st.today.creatine?1200:440,.08,'triangle',.03);});
 $('#syncBtn').addEventListener('click',syncDay);
 $('#editTodayBtn').addEventListener('click',unlockToday);
+$('#editYesterdayBtn').addEventListener('click',openPastDay);
+$('#pastWorkoutGrid').addEventListener('click',e=>{
+  const b=e.target.closest('[data-past-workout]');if(!b)return;
+  pastWorkoutChoice=b.dataset.pastWorkout;
+  $('#pastWorkoutGrid').querySelectorAll('.wkOpt').forEach(x=>x.classList.toggle('sel',x===b));
+  beep(pastWorkoutChoice==='none'?440:1050,.06,'triangle',.025);
+});
+$('#pastCreatine').addEventListener('click',e=>{
+  e.currentTarget.classList.toggle('on');e.currentTarget.setAttribute('aria-checked',e.currentTarget.classList.contains('on')?'true':'false');
+});
+$('#savePastDay').addEventListener('click',savePastLog);
+$('#cancelPastDay').addEventListener('click',closePastDay);
+$('#pastModal').addEventListener('click',e=>{if(e.target.id==='pastModal')closePastDay();});
+$('#histBody').addEventListener('click',e=>{if(e.target.closest('[data-edit-past]'))openPastDay();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#pastModal').hidden)closePastDay();});
 $('#resetBtn').addEventListener('click',()=>{
   if(confirm('Reset all save data? Your character, level, forms and history will be wiped.')){
     localStorage.removeItem(KEY);location.reload();
