@@ -1813,6 +1813,7 @@ const FORMS=[
 {id:'uis',    nm:'ULTRA INSTINCT SIGN', img:'img/forms-clean/uis.png',     pl:28000, mult:500000000000,  fx:1,   tag:'OMEN',               desc:'The omen. The body begins to move on its own.'},
 {id:'ue',     nm:'ULTRA EGO',           img:'img/forms-clean/ue.png',      pl:32200, mult:3000000000000, fx:1.15,tag:'VEGETA ONLY',        desc:'God of Destruction technique. Power grows with damage taken.'}
 ];
+const FORM_DAYS=[0,7,30,45,60,80,105,135,170,210,255,305,365];
 const FORM_COLORS={base:'#8affc8',kaioken:'#ff4d5e',ssj:'#ffd75e',ussj:'#ffb03a',ssj2:'#ffe986',ssj3:'#ffcc52',goldape:'#ffb84d',ssj4:'#ff4d70',ssg:'#ff5b5b',ssb:'#57b8ff',ssbk:'#a3b8ff',uis:'#e4efff',ue:'#b57aff'};
 
 /* ================= WORKOUTS ================= */
@@ -1879,20 +1880,21 @@ function missionRewardText(r){
 }
 
 function freshDay(date){return{date,cal:0,protein:0,workout:'none',sleep:0,creatine:false,synced:false,deltas:null,preSync:null,mission:{id:pickMission(),done:false}};}
+function qualifiesProgress(q){return q==='good'||q==='part';}
 function defaultState(){return{
   level:1,xp:0,
   stats:{vit:1,str:1,agi:1,foc:1},
   streak:0,best:0,calTarget:2200,proteinTarget:150,
   today:freshDay(todayStr()),
-  history:[],lastSync:null,form:0,formMax:0,battle:defaultBattle(),
+  history:[],lastSync:null,qualifiedDays:0,form:0,formMax:0,battle:defaultBattle(),
   ascPoints:0,skillPoints:0,streakPaid:0,
   trained:{vit:0,str:0,agi:0,foc:0},
-  skills:{strike:0,ki:0,ult:0,guard:0,charge:0},battleXpResetV1:true,characterLevelResetV2:true,formCurveV3:true,battleCampaignResetV3:true,battlePowerResetV4:true};}
+  skills:{strike:0,ki:0,ult:0,guard:0,charge:0},battleXpResetV1:true,characterLevelResetV2:true,formCurveV3:true,battleCampaignResetV3:true,battlePowerResetV4:true,progressionCurveV5:true,skillCurveV5:true,battleRatioResetV5:true};}
 
 let st=load();
 function load(){
   try{const raw=localStorage.getItem(KEY);if(raw){const s=JSON.parse(raw);
-    if(s&&s.stats){s.form=Math.min(s.form||0,FORMS.length-1);s.formMax=Math.min(s.formMax||0,FORMS.length-1);s.proteinTarget=s.proteinTarget||150;
+    if(s&&s.stats){s.form=Math.min(s.form||0,FORMS.length-1);s.formMax=Math.min(s.formMax||0,FORMS.length-1);s.proteinTarget=s.proteinTarget||150;s.history=s.history||[];
       if(s.today){if(s.today.workout===undefined)s.today.workout=s.today.sport?'other':'none';if(s.today.sleep===undefined)s.today.sleep=0;
         if(!s.today.mission)s.today.mission={id:pickMission(),done:!!s.today.synced};}
       if(!s.battle)s.battle=defaultBattle();
@@ -1921,6 +1923,16 @@ function load(){
       }
       if(!s.battlePowerResetV4){
         s.battle=defaultBattle();s.battlePowerResetV4=true;
+        localStorage.setItem(KEY,JSON.stringify(s));
+      }
+      if(s.qualifiedDays===undefined)s.qualifiedDays=s.history.filter(h=>qualifiesProgress(h.q)).length;
+      if(!s.progressionCurveV5){
+        const earned=earnedFormIndex(s);
+        s.formMax=Math.min(s.formMax||0,earned);s.form=Math.min(s.form||0,s.formMax);
+        s.progressionCurveV5=true;localStorage.setItem(KEY,JSON.stringify(s));
+      }
+      if(!s.battleRatioResetV5){
+        s.battle=defaultBattle();s.battleRatioResetV5=true;
         localStorage.setItem(KEY,JSON.stringify(s));
       }
       return s;}}}catch(e){}
@@ -2073,6 +2085,7 @@ function savePastLog(){
     st.stats[k]=clamp(st.stats[k]-(oldD[k]||0)+(metrics.d[k]||0)+restored,1,100);
   }
   adjustProgressXp(metrics.xp-(wasLogged?(old.xp||0):0));
+  st.qualifiedDays=Math.max(0,(st.qualifiedDays||0)+(qualifiesProgress(metrics.q)?1:0)-(wasLogged&&qualifiesProgress(old.q)?1:0));
   if(!wasLogged){
     st.streak=priorStreak+1;st.best=Math.max(st.best,st.streak);st.streakPaid=st.streak;
     const reward=retroStreakReward(st.streak);st.ascPoints=(st.ascPoints||0)+reward.ap;st.skillPoints=(st.skillPoints||0)+reward.sp;
@@ -2081,14 +2094,19 @@ function savePastLog(){
     t:calTarget,pt:proteinTarget,d:metrics.d,xp:metrics.xp,q:metrics.q,retro:true});
   if(st.today.preSync){
     st.today.preSync={stats:{...st.stats},xp:st.xp,level:st.level,streak:st.streak,best:st.best,
-      streakPaid:st.streakPaid,ascPoints:st.ascPoints,skillPoints:st.skillPoints};
+      streakPaid:st.streakPaid,ascPoints:st.ascPoints,skillPoints:st.skillPoints,qualifiedDays:st.qualifiedDays||0};
   }
   st.lastSync=date;save();closePastDay();renderAll();
   const note=$('#syncNote');note.textContent='Yesterday saved — character progress and streak recalculated.';note.classList.add('pastSaved');
   setTimeout(()=>note.classList.remove('pastSaved'),2600);beep(880,.09,'triangle',.04);setTimeout(()=>beep(1180,.1,'triangle',.04),90);
 }
 /* ===== SKILLS & TRAINED STATS ===== */
-function effOf(k){return Math.min(100,st.stats[k])+((st.trained&&st.trained[k])||0);}
+function trainingMomentum(k,s=st){
+  const recent=(s.history||[]).slice(-28),total=recent.reduce((sum,h)=>sum+(qualifiesProgress(h.q)&&h.d?Math.max(0,h.d[k]||0):0),0);
+  return Math.min(15,total*.04);
+}
+function effectiveStat(s,k){return Math.min(100,s.stats[k]||1)+((s.trained&&s.trained[k])||0)+trainingMomentum(k,s);}
+function effOf(k){return effectiveStat(st,k);}
 const SKILLS={
   strike:{base:1.0,kind:'atk',tiers:[[0,'Strike'],[2,'Meteor Combo'],[4,'Wolf Fang Fist'],[6,'Dragon Fist']]},
   ki:{base:1.9,kind:'atk',tiers:[[0,'Ki Blast'],[2,'Kamehameha'],[4,'Super Kamehameha'],[6,'Big Bang Kamehameha']]},
@@ -2096,7 +2114,14 @@ const SKILLS={
   guard:{kind:'guard',tiers:[[0,'Guard'],[3,'Ki Barrier'],[6,'Instant Transmission']]},
   charge:{kind:'charge',tiers:[[0,'Charge'],[3,'Meditation'],[6,'Divine Focus']]}
 };
-const SKILL_MAX=6, SKILL_COST=[1,1,2,2,3,3];
+const SKILL_MAX=6, SKILL_COST=[2,3,5,8,13,21],LEGACY_SKILL_COST=[1,1,2,2,3,3];
+function migrateSkillCurveV5(){
+  if(st.skillCurveV5)return;
+  let refund=st.skillPoints||0;
+  for(const id of Object.keys(SKILLS)){const lv=Math.min(SKILL_MAX,(st.skills&&st.skills[id])||0);for(let i=0;i<lv;i++)refund+=LEGACY_SKILL_COST[i];}
+  st.skills={strike:0,ki:0,ult:0,guard:0,charge:0};st.skillPoints=refund;st.skillCurveV5=true;save();
+}
+migrateSkillCurveV5();
 function skillLevel(id){return (st.skills&&st.skills[id])||0;}
 function skillName(id){let nm=SKILLS[id].tiers[0][1];for(const[lv,n]of SKILLS[id].tiers)if(skillLevel(id)>=lv)nm=n;return nm;}
 function skillMult(id){return 1+skillLevel(id)*0.11;}
@@ -2111,10 +2136,10 @@ function awardStreakPoints(){
   return {ap,sp};
 }
 function stateBasePL(s){
-  const trained=s.trained||{},eff=k=>Math.min(100,s.stats[k]||1)+(trained[k]||0);
+  const eff=k=>effectiveStat(s,k);
   return Math.round((eff('vit')*1.2+eff('str')*1.4+eff('agi')*1.1+eff('foc')*1.3)*(1+(s.level||1)*.2)*7);
 }
-function earnedFormIndex(s){const pl=stateBasePL(s);let idx=0;for(let i=1;i<FORMS.length;i++){if(pl<FORMS[i].pl)break;idx=i;}return idx;}
+function earnedFormIndex(s){const pl=stateBasePL(s),days=s.qualifiedDays||0;let idx=0;for(let i=1;i<FORMS.length;i++){if(pl<FORMS[i].pl||days<FORM_DAYS[i])break;idx=i;}return idx;}
 function basePL(){return stateBasePL(st);}
 function fmtPL(n){
   if(n>=1e15)return(n/1e15).toFixed(2)+'Qa';
@@ -2133,7 +2158,7 @@ function syncDay(){
   }
   if(!st.today.preSync){
     st.today.preSync={stats:{...st.stats},xp:st.xp,level:st.level,streak:st.streak,best:st.best,
-      streakPaid:st.streakPaid,ascPoints:st.ascPoints,skillPoints:st.skillPoints};
+      streakPaid:st.streakPaid,ascPoints:st.ascPoints,skillPoints:st.skillPoints,qualifiedDays:st.qualifiedDays||0};
   }
   const prevStreak=st.streak;
   const d=computeDeltas();
@@ -2152,6 +2177,7 @@ function syncDay(){
     for(const k in st.stats)st.stats[k]=clamp(st.stats[k]+2,1,100);}
   st.today.synced=true;st.today.deltas=d;st.lastSync=st.today.date;
   const q=(trained&&calOk&&proOk)?'good':(trained||calOk||proOk)?'part':'bad';
+  if(qualifiesProgress(q))st.qualifiedDays=(st.qualifiedDays||0)+1;
   pushHistory({date:st.today.date,cal:st.today.cal,protein:st.today.protein,workout:st.today.workout,sport:trained,
     sleep:st.today.sleep,creatine:st.today.creatine,t:st.calTarget,pt:st.proteinTarget,d:d,xp:gain,q:q});
   save();
@@ -2180,6 +2206,8 @@ function unlockToday(){
   const p=st.today.preSync;
   st.stats={...p.stats};st.xp=p.xp;st.level=p.level;st.streak=p.streak;st.best=p.best;
   st.streakPaid=p.streakPaid;st.ascPoints=p.ascPoints;st.skillPoints=p.skillPoints;
+  const currentEntry=historyEntry(st.today.date);
+  st.qualifiedDays=Number.isFinite(p.qualifiedDays)?p.qualifiedDays:Math.max(0,(st.qualifiedDays||0)-(currentEntry&&qualifiesProgress(currentEntry.q)?1:0));
   st.today.synced=false;st.today.deltas=null;
   if(st.today.mission)st.today.mission.done=false;
   if(st.history.length&&st.history[st.history.length-1].date===st.today.date)st.history.pop();
@@ -2187,7 +2215,7 @@ function unlockToday(){
 }
 
 /* ================= TRANSFORMATIONS ================= */
-function canUnlock(){return st.formMax<FORMS.length-1&&basePL()>=FORMS[st.formMax+1].pl;}
+function canUnlock(){const i=st.formMax+1;return i<FORMS.length&&basePL()>=FORMS[i].pl&&(st.qualifiedDays||0)>=FORM_DAYS[i];}
 function openTfModal(idx){
   const f=FORMS[idx];
   $('#tfName').textContent=f.nm;
@@ -2262,7 +2290,7 @@ function animateStats(){
 function paintStats(){
   const tr=st.trained||{},ev={};
   for(const k of['vit','str','agi','foc']){
-    ev[k]=Math.min(100,disp[k])+(tr[k]||0);
+    ev[k]=Math.min(100,disp[k])+(tr[k]||0)+trainingMomentum(k);
     $('#b-'+k).style.width=clamp(ev[k],0,100)+'%';
     $('#v-'+k).textContent=Math.round(ev[k]);
   }
@@ -2308,9 +2336,9 @@ function renderForm(){
   if(st.formMax<FORMS.length-1&&FORMS[st.formMax+1].img){const pre=new Image();pre.src=FORMS[st.formMax+1].img;}
   const nfEl=$('#nextForm'),ready=$('#tfReady');
   if(st.formMax<FORMS.length-1){
-    const nx=FORMS[st.formMax+1],currentPL=basePL();
-    if(currentPL>=nx.pl){ready.hidden=false;nfEl.textContent='⚡ THRESHOLD REACHED ─ '+nx.nm;}
-    else{const progress=clamp(Math.floor(currentPL/nx.pl*100),0,99);ready.hidden=true;nfEl.textContent='NEXT FORM: '+nx.nm+' · '+currentPL.toLocaleString()+' / '+nx.pl.toLocaleString()+' PL · '+progress+'%';}
+    const i=st.formMax+1,nx=FORMS[i],currentPL=basePL(),days=st.qualifiedDays||0;
+    if(canUnlock()){ready.hidden=false;nfEl.textContent='⚡ THRESHOLD REACHED ─ '+nx.nm;}
+    else{ready.hidden=true;nfEl.textContent='NEXT FORM: '+nx.nm+' · PL '+currentPL.toLocaleString()+' / '+nx.pl.toLocaleString()+' · TRAINING '+Math.min(days,FORM_DAYS[i])+' / '+FORM_DAYS[i]+' DAYS';}
   }else{ready.hidden=true;nfEl.textContent='FINAL FORM ACHIEVED';}
 }
 function renderMeta(){
@@ -2487,19 +2515,19 @@ const TIERS=[
   {s:'Saiyan Saga — the Invasion',f:0,c:'#ffb03a',a:6,l:3},
   {s:'Saiyan Saga — the Prince',f:1,c:'#ffb03a',a:11,l:6},
   {s:'Frieza Force — Namek',f:1,c:'#39d98a',a:16,l:9},
-  {s:'The Ginyu Force',f:2,c:'#39d98a',a:22,l:12},
+  {s:'The Ginyu Force',f:1,c:'#39d98a',a:22,l:12},
   {s:'Emperor of Evil — Frieza',f:2,c:'#39d98a',a:29,l:16},
   {s:'The Cold Empire',f:3,c:'#35e0ff',a:37,l:20},
-  {s:'Red Ribbon Androids',f:4,c:'#35e0ff',a:45,l:24},
+  {s:'Red Ribbon Androids',f:3,c:'#35e0ff',a:45,l:24},
   {s:'The Bio-Android — Cell',f:4,c:'#35e0ff',a:53,l:28},
-  {s:'Majin Resurrection',f:5,c:'#b06bff',a:61,l:32},
+  {s:'Majin Resurrection',f:4,c:'#b06bff',a:61,l:32},
   {s:'The Djinn — Buu',f:5,c:'#b06bff',a:70,l:36},
   {s:'Movie Terrors',f:6,c:'#ff8a3c',a:80,l:40},
   {s:'GT — Tuffles & Dragons',f:7,c:'#ff4d5e',a:90,l:45},
   {s:'The Gods Arrive',f:8,c:'#ffd75e',a:100,l:50},
   {s:'Future’s End — Zamasu',f:9,c:'#35e0ff',a:110,l:55},
   {s:'Tournament of Power',f:10,c:'#ffd75e',a:120,l:60},
-  {s:'The Legendary — Broly',f:11,c:'#b06bff',a:130,l:64},
+  {s:'The Legendary — Broly',f:10,c:'#b06bff',a:130,l:64},
   {s:'Cosmic Convicts',f:11,c:'#ff2e88',a:140,l:68},
   {s:'The Absolute',f:12,c:'#ff3b4e',a:150,l:74}
 ];
@@ -2573,21 +2601,22 @@ function checkLastStand(){
 }
 function playerPL(form){return basePL()*FORMS[form].mult;}
 function playerCombat(f){
-  const s={vit:effOf('vit'),str:effOf('str'),agi:effOf('agi'),foc:effOf('foc')},pl=playerPL(f),root=Math.sqrt(Math.max(1,pl));
+  const s={vit:effOf('vit'),str:effOf('str'),agi:effOf('agi'),foc:effOf('foc')},pl=playerPL(f);
   const avg=Math.max(1,(s.vit+s.str+s.agi+s.foc)/4),profile=v=>clamp(.65+.35*(v/avg),.75,1.3);
   const vit=profile(s.vit),str=profile(s.str),agi=profile(s.agi);
-  return {form:f,pl,hpMax:Math.round(55+root*4.5*vit),atk:8+root*1.15*str,
-    def:4+root*.42*vit,spd:10+Math.log10(pl+1)*5*agi,kiMax:Math.round(s.foc*.7+25),
-    kiRegen:Math.round(4+s.foc*.15),crit:Math.min(55,5+s.foc*.45)};
+  return {form:f,pl,hpMax:Math.round(320*vit),atk:50*str,
+    def:25*vit,spd:(24+Math.log10(pl+1)*2)*agi,kiMax:Math.min(120,Math.round(s.foc*.7+25)),
+    kiRegen:Math.min(24,Math.round(4+s.foc*.15)),crit:Math.min(55,5+s.foc*.45)};
 }
 function enemyStats(e){
-  const b=ROLE[e.r],pl=e.pl,root=Math.sqrt(Math.max(1,pl));
-  return {pl,hpMax:Math.round(55+root*4.5*b.hp),atk:(8+root*1.15)*b.atk,
-    def:(4+root*.42)*b.def,spd:(10+Math.log10(pl+1)*5)*b.spd,crit:b.crit};
+  const b=ROLE[e.r],pl=e.pl;
+  return {pl,hpMax:Math.round(320*b.hp),atk:50*b.atk,
+    def:25*b.def,spd:(24+Math.log10(pl+1)*2)*b.spd,crit:b.crit};
 }
 function roll(p){return Math.random()*100<p;}
-function calcHit(atk,power,crit,def,ign){const eff=def*(1-(ign||0));const c=roll(crit);
-  return {d:Math.max(1,Math.round(atk*power*(c?1.8:1)*(0.9+Math.random()*0.2)*(100/(100+eff)))),c};}
+function plFactor(attackerPL,defenderPL){return clamp(Math.pow(Math.max(1,attackerPL)/Math.max(1,defenderPL),.6),.25,4);}
+function calcHit(atk,power,crit,def,ign,attackerPL,defenderPL){const eff=def*(1-(ign||0)),c=roll(crit);
+  return {d:Math.max(1,Math.round(atk*power*(c?1.8:1)*(0.9+Math.random()*0.2)*(100/(100+eff))*plFactor(attackerPL,defenderPL))),c};}
 function bigFx(){const a=$('#arena');if(a){a.classList.remove('shake');void a.offsetWidth;a.classList.add('shake');}}
 function bflash(){const f=$('#battleFlash');if(f){f.classList.remove('go');void f.offsetWidth;f.classList.add('go');}}
 function bfloat(txt,cls){const l=$('#battleFloat');if(!l)return;const s=document.createElement('span');
@@ -2735,7 +2764,7 @@ function pAttack(power,ign,label,kind){
   const comboMult=1+Math.min(f.combo,5)*0.1;
   const forced=f.lastStandActive;
   const heavy=power>1.5;
-  const r=calcHit(f.pc.atk,power*comboMult,forced?100:f.pc.crit,f.es.def,ign);
+  const r=calcHit(f.pc.atk,power*comboMult,forced?100:f.pc.crit,f.es.def,ign,f.pc.pl,f.es.pl);
   f.eHp-=r.d;f.combo++;
   if(forced){f.lastStandActive=false;f.lastStandUsed=true;$('#arena').classList.remove('clutch');
     blog('LAST STAND! Your '+label+' connects with devastating force for '+r.d+'!');}
@@ -2799,9 +2828,9 @@ function enemyTurn(){
       const bm=BOSS_MOVES[f.en.s],moveName=bm?bm.name:'devastating strike';
       const dodge=Math.max(0,Math.min(35,(f.pc.spd-f.es.spd)*0.5));
       if(roll(dodge)){bfloat('DODGE','miss');blog('You dodge the '+moveName+'!');anim('#meArt','lunge',420);buzz(10);return;}
-      const r=calcHit(atk,2.2,f.es.crit,f.pc.def);let d=r.d;
+      const r=calcHit(atk,2.2,f.es.crit,f.pc.def,0,f.es.pl,f.pc.pl);let d=r.d;
       if(f.guard){f.guard=false;
-        if(skillLevel('guard')>=6){d=0;bfloat('COUNTER','crit');const cd=Math.round(f.pc.atk*0.8);f.eHp-=cd;anim('#foeArt','hurt',440);blog('Instant Transmission negates the '+moveName+' — counter for '+cd+'!');}
+        if(skillLevel('guard')>=6){d=0;bfloat('COUNTER','crit');const cd=Math.round(f.pc.atk*.8*plFactor(f.pc.pl,f.es.pl));f.eHp-=cd;anim('#foeArt','hurt',440);blog('Instant Transmission negates the '+moveName+' — counter for '+cd+'!');}
         else{d=Math.round(d*guardMitig()*0.5);bfloat('PERFECT BLOCK','crit');blog('PERFECT BLOCK! You shatter the '+moveName+' for minimal damage.');beep(1100,.1,'square',.04);}
       }else{blog(f.en.n+' unleashes '+moveName+' for '+d+'!'+maybeFlavor('boss'));}
       fireProjectile('#foeArt','#meArt',{color:'#ff5a3c',size:'big',dur:340});
@@ -2825,9 +2854,9 @@ function enemyTurn(){
     const power=(f.en.r!=='boss'&&f.eTurn%3===0)?1.7:1.0;
     const dodge=Math.max(0,Math.min(35,(f.pc.spd-f.es.spd)*0.5));
     if(roll(dodge)){bfloat('DODGE','miss');blog('You dodged '+f.en.n+'’s attack!');anim('#meArt','lunge',420);buzz(8);continue;}
-    const r=calcHit(atk,power,f.es.crit,f.pc.def);let d=r.d;
+    const r=calcHit(atk,power,f.es.crit,f.pc.def,0,f.es.pl,f.pc.pl);let d=r.d;
     if(f.guard){f.guard=false;
-      if(skillLevel('guard')>=6){d=0;bfloat('COUNTER','crit');const cd=Math.round(f.pc.atk*0.6);f.eHp-=cd;anim('#foeArt','hurt',440);blog('Instant Transmission! You phase out and counter for '+cd+'.');}
+      if(skillLevel('guard')>=6){d=0;bfloat('COUNTER','crit');const cd=Math.round(f.pc.atk*.6*plFactor(f.pc.pl,f.es.pl));f.eHp-=cd;anim('#foeArt','hurt',440);blog('Instant Transmission! You phase out and counter for '+cd+'.');}
       else{d=Math.round(d*guardMitig());bfloat('BLOCK','miss');}}
     if(d>0)f.combo=0;
     f.pHp-=d;bfloat('-'+d,'foe');
@@ -2949,9 +2978,9 @@ function renderStatsPage(){
   $('#stPoints').innerHTML=`<div class="skPill asc"><b>${st.ascPoints||0}</b><span>Ascension ⬡ — spend below</span></div>`;
   let sh='';
   for(const k of['vit','str','agi','foc']){
-    const base=Math.min(100,Math.round(st.stats[k])),tr=(st.trained&&st.trained[k])||0,eff=base+tr;
+    const base=Math.min(100,Math.round(st.stats[k])),bonus=((st.trained&&st.trained[k])||0)+trainingMomentum(k),eff=Math.round(base+bonus);
     const can=(st.ascPoints||0)>0;
-    sh+=`<div class="statCard s-${k}"><div class="scTop"><span class="scName">${STAT_NAME[k]}</span><span class="scVal">${eff}${tr?` <i>+${tr}</i>`:''}</span></div>`+
+    sh+=`<div class="statCard s-${k}"><div class="scTop"><span class="scName">${STAT_NAME[k]}</span><span class="scVal">${eff}${bonus?` <i>+${bonus.toFixed(1)}</i>`:''}</span></div>`+
       `<button class="scPlus" data-stat="${k}"${can?'':' disabled'}>+2  ·  spend ⬡</button></div>`;
   }
   $('#skStats').innerHTML=sh;
