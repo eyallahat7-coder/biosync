@@ -433,6 +433,60 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 .mYes:hover{box-shadow:0 0 44px rgba(255,215,94,.8)}
 .mNo{font-family:var(--fd);font-size:12px;letter-spacing:2px;color:var(--dim);background:none;border:1px solid rgba(255,255,255,.18);padding:13px 22px;cursor:pointer;transition:.15s}
 .mNo:hover{color:var(--text);border-color:rgba(255,255,255,.4)}
+/* ====== DAILY SYNC RITUAL ====== */
+body.syncRitualOpen{overflow:hidden}
+.syncRitual{--srMain:#35e0ff;--srSecond:#ff5d91;position:fixed;inset:0;z-index:218;overflow:hidden;isolation:isolate;background:#02050c;color:#fff;opacity:0}
+.syncRitual.isRunning{opacity:1}
+.syncRitual[data-grade="good"]{--srMain:#57ffc2;--srSecond:#35e0ff}.syncRitual[data-grade="bad"]{--srMain:#ff526d;--srSecond:#ff9c42}
+.srWorld,.srAtmos,.srGrid,.srFlash,.srScan,.srVignette{position:absolute;inset:0}
+.srWorld{overflow:hidden;background:#030712}
+.srAtmos{background:radial-gradient(circle at 50% 49%,color-mix(in srgb,var(--srMain) 16%,transparent),transparent 27%),radial-gradient(ellipse at 50% 100%,#101c36,#050814 58%,#010208);transition:filter .6s,transform 2.4s cubic-bezier(.12,.7,.2,1)}
+.srGrid{left:-18%;right:-18%;top:46%;bottom:-35%;inset-block-start:46%;transform:perspective(620px) rotateX(64deg);transform-origin:50% 0;background:repeating-linear-gradient(90deg,transparent 0 7%,rgba(53,224,255,.12) 7.15% 7.3%,transparent 7.45% 14%),repeating-linear-gradient(0deg,transparent 0 50px,rgba(53,224,255,.12) 52px 53px);-webkit-mask-image:linear-gradient(transparent,#000 20%);mask-image:linear-gradient(transparent,#000 20%)}
+.srTop{position:absolute;z-index:12;left:3vw;right:3vw;top:max(20px,env(safe-area-inset-top));display:flex;justify-content:space-between;gap:20px;font-family:var(--fj);font-size:9px;letter-spacing:.34em;color:rgba(255,255,255,.42);opacity:0;transition:.5s}
+.srTop b{font-weight:400;color:var(--srMain)}
+.srSource{--sc:#fff;position:absolute;z-index:8;width:min(220px,22vw);min-height:82px;padding:13px 16px 12px 44px;border:1px solid color-mix(in srgb,var(--sc) 45%,transparent);background:linear-gradient(100deg,color-mix(in srgb,var(--sc) 12%,rgba(4,8,18,.88)),rgba(4,8,18,.72));box-shadow:inset 0 0 24px color-mix(in srgb,var(--sc) 6%,transparent);clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px);opacity:0;transform:scale(.8);transition:opacity .45s,transform .7s cubic-bezier(.2,1.2,.3,1),filter .5s}
+.srSource.cal{--sc:#ffc94d;left:5vw;top:17vh}.srSource.pro{--sc:#ff5d91;right:5vw;top:17vh}.srSource.train{--sc:#35e0ff;left:5vw;bottom:17vh}.srSource.rest{--sc:#9f7cff;right:5vw;bottom:17vh}
+.srSource i{position:absolute;left:13px;top:14px;font-family:var(--fd);font-style:normal;font-size:18px;color:var(--sc);opacity:.58}.srSource span{display:block;font-family:var(--fj);font-size:8px;letter-spacing:.3em;color:var(--sc)}
+.srSource b{display:block;margin-top:6px;font-family:var(--fd);font-size:16px;letter-spacing:.08em;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.srSource small{display:block;margin-top:3px;font-family:var(--fj);font-size:8px;letter-spacing:.13em;color:rgba(255,255,255,.48);text-transform:uppercase}
+.srConduits{position:absolute;z-index:4;inset:7% 0 3%;width:100%;height:90%;overflow:visible;pointer-events:none}
+.srConduits path{fill:none;stroke-width:3;stroke-linecap:round;stroke-dasharray:13 15;vector-effect:non-scaling-stroke;opacity:0}.srConduits .cal{stroke:url(#srGCal)}.srConduits .pro{stroke:url(#srGPro)}.srConduits .train{stroke:url(#srGTrain)}.srConduits .rest{stroke:url(#srGRest)}
+.srCoreField{position:absolute;z-index:7;left:50%;top:50%;width:260px;height:260px;transform:translate(-50%,-50%)}
+.srCoreField i{--cc:#fff;position:absolute;width:16px;height:16px;border-radius:50%;background:#fff;box-shadow:0 0 12px #fff,0 0 34px var(--cc),0 0 70px var(--cc);opacity:0;transition:1s cubic-bezier(.14,.8,.18,1)}
+.srCoreField .cal{--cc:#ffc94d;left:7%;top:18%}.srCoreField .pro{--cc:#ff5d91;right:7%;top:18%}.srCoreField .train{--cc:#35e0ff;left:7%;bottom:18%}.srCoreField .rest{--cc:#9f7cff;right:7%;bottom:18%}
+.srAvatar{position:absolute;z-index:6;left:50%;top:52%;width:min(37vw,460px);height:min(64vh,650px);transform:translate(-50%,-50%) scale(.9);opacity:.2;transition:left 1s cubic-bezier(.15,.8,.2,1),opacity .6s,transform 1s cubic-bezier(.15,.8,.2,1),filter .55s}
+.srAvatar img{position:absolute;z-index:3;inset:0;width:100%;height:100%;object-fit:contain;object-position:center bottom;filter:brightness(.35) grayscale(.55) drop-shadow(0 24px 26px #000);transition:filter .7s}
+.srAvatar small{position:absolute;z-index:7;left:50%;bottom:2%;transform:translateX(-50%);font-family:var(--fj);font-size:8px;letter-spacing:.32em;color:var(--srMain);white-space:nowrap;opacity:0}
+.srAura{position:absolute;z-index:1;left:50%;top:50%;width:110%;height:92%;transform:translate(-50%,-50%) scale(.25);border-radius:50%;background:radial-gradient(ellipse,#fff 0,color-mix(in srgb,var(--srMain) 70%,white) 12%,color-mix(in srgb,var(--srMain) 32%,transparent) 43%,transparent 70%);filter:blur(12px);opacity:0}
+.srOrbit{position:absolute;z-index:2;left:50%;top:50%;border:1px solid color-mix(in srgb,var(--srMain) 70%,transparent);border-radius:50%;opacity:0}.srOrbit.a{width:94%;height:34%;transform:translate(-50%,-50%) rotate(12deg)}.srOrbit.b{width:108%;height:48%;transform:translate(-50%,-50%) rotate(-20deg)}.srOrbit.c{width:80%;height:68%;transform:translate(-50%,-50%) rotate(74deg)}
+.srFusion{position:absolute;z-index:5;left:50%;top:50%;width:min(42vw,520px);height:min(42vw,520px);transform:translate(-50%,-50%);opacity:0}.srFusion i{position:absolute;inset:46%;border:1px solid var(--srMain);border-radius:50%;box-shadow:0 0 24px var(--srMain)}
+.srResolve{position:absolute;z-index:25;left:5vw;top:17vh;width:min(48vw,700px);opacity:0;transform:translateY(28px);transition:.75s cubic-bezier(.15,.8,.2,1);text-shadow:0 4px 28px #000}
+.srKicker{display:block;font-family:var(--fj);font-size:10px;letter-spacing:.55em;color:var(--srMain);margin-bottom:10px}.srResolve h2{font-family:var(--fd);font-size:clamp(42px,6.5vw,96px);line-height:.88;letter-spacing:.02em;background:linear-gradient(180deg,#fff,color-mix(in srgb,var(--srMain) 72%,white) 55%,var(--srSecond));-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 20px color-mix(in srgb,var(--srMain) 36%,transparent))}.srResolve>p{margin-top:12px;font-family:var(--fd);font-size:clamp(10px,1.2vw,16px);letter-spacing:.22em;color:rgba(255,255,255,.76);text-transform:uppercase}
+.srDeltas{display:grid;grid-template-columns:repeat(4,minmax(74px,1fr));gap:7px;margin-top:18px}.srDelta{--dc:#fff;padding:9px 10px;border-top:2px solid var(--dc);background:linear-gradient(180deg,color-mix(in srgb,var(--dc) 12%,transparent),rgba(255,255,255,.025))}.srDelta span{display:block;font-family:var(--fj);font-size:8px;letter-spacing:.2em;color:rgba(255,255,255,.46)}.srDelta b{display:block;margin-top:4px;font-family:var(--fd);font-size:20px;color:var(--dc)}
+.srRewardLine{display:flex;flex-wrap:wrap;gap:7px;margin-top:11px}.srRewardLine span{font-family:var(--fj);font-size:8.5px;letter-spacing:.13em;padding:6px 9px;border:1px solid rgba(255,255,255,.16);background:rgba(4,8,18,.58);color:#fff}.srRewardLine .xp{border-color:rgba(255,93,145,.5);color:#ffacc8}.srRewardLine .streak{border-color:rgba(255,201,77,.5);color:#ffe09a}.srRewardLine .bonus{border-color:rgba(87,255,194,.5);color:#aaffdd}
+.srPower{display:flex;align-items:baseline;gap:12px;margin-top:14px}.srPower small{font-family:var(--fj);font-size:8px;letter-spacing:.28em;color:rgba(255,255,255,.45)}.srPower b{font-family:var(--fd);font-size:clamp(30px,4vw,56px);color:#fff}.srPower i{font-family:var(--fd);font-style:normal;font-size:12px;color:var(--srMain)}
+.srThreshold{position:relative;margin-top:13px;padding:9px 12px 9px 58px;border:1px solid color-mix(in srgb,var(--srMain) 55%,transparent);background:linear-gradient(90deg,color-mix(in srgb,var(--srMain) 14%,transparent),transparent);clip-path:polygon(8px 0,100% 0,calc(100% - 8px) 100%,0 100%)}.srThreshold::before{content:'◈';position:absolute;left:20px;top:50%;transform:translateY(-50%);font-size:22px;color:var(--srMain);filter:drop-shadow(0 0 8px var(--srMain))}.srThreshold span,.srThreshold b,.srThreshold small{display:block}.srThreshold span{font-family:var(--fj);font-size:7px;letter-spacing:.28em;color:var(--srMain)}.srThreshold b{margin-top:2px;font-family:var(--fd);font-size:15px;letter-spacing:.08em}.srThreshold small{margin-top:2px;font-family:var(--fj);font-size:7.5px;letter-spacing:.1em;color:rgba(255,255,255,.54)}
+.srSkip,.srContinue{position:absolute;z-index:40;font-family:var(--fd);letter-spacing:.2em;color:#fff;cursor:pointer;background:rgba(3,7,15,.62);border:1px solid rgba(255,255,255,.2)}.srSkip{right:max(18px,env(safe-area-inset-right));top:max(18px,env(safe-area-inset-top));font-size:9px;padding:9px 13px;opacity:0}.srContinue{right:5vw;bottom:5vh;font-size:10px;padding:14px 22px;border-color:var(--srMain);opacity:0;pointer-events:none;transform:translateY(12px);transition:.45s}.srContinue span{color:var(--srMain);margin-left:10px}.srSkip:focus-visible,.srContinue:focus-visible{outline:2px solid #fff;outline-offset:3px}
+.srFlash{z-index:30;background:#fff;opacity:0;pointer-events:none}.srScan{z-index:20;opacity:.12;pointer-events:none;background:repeating-linear-gradient(0deg,transparent 0 3px,rgba(255,255,255,.1) 4px 5px)}.srVignette{z-index:21;pointer-events:none;box-shadow:inset 0 0 13vw 3vw #000}
+.syncRitual.phaseLink .srTop,.syncRitual.phaseLink .srSkip{opacity:1}.syncRitual.phaseLink .srSource{opacity:1;transform:scale(1)}.syncRitual.phaseLink .srAvatar{opacity:.48;transform:translate(-50%,-50%) scale(.94)}
+.syncRitual.phaseFeed .srConduits path{opacity:.9;animation:srFlow .6s linear infinite}.syncRitual.phaseFeed .srCoreField i{opacity:1;animation:srCorePulse .55s ease-in-out infinite alternate}.syncRitual.phaseFeed .srSource{box-shadow:0 0 30px color-mix(in srgb,var(--sc) 18%,transparent),inset 0 0 24px color-mix(in srgb,var(--sc) 12%,transparent)}
+.syncRitual.phaseFuse .srSource{opacity:0;filter:blur(5px);transform:scale(.78)}.syncRitual.phaseFuse .srConduits path{animation:srDrain .72s ease-in forwards}.syncRitual.phaseFuse .srCoreField i{left:50%;right:auto;top:50%;bottom:auto;transform:translate(-50%,-50%) scale(1.5);animation:none}.syncRitual.phaseFuse .srFusion{opacity:1}.syncRitual.phaseFuse .srFusion i{animation:srFuseRing .9s ease-in forwards}.syncRitual.phaseFuse .srFusion i:nth-child(2){animation-delay:.11s}.syncRitual.phaseFuse .srFusion i:nth-child(3){animation-delay:.22s}
+.syncRitual.phaseBurst .srFlash{animation:srFlash .7s ease-out}.syncRitual.phaseBurst .srAtmos{filter:brightness(1.8);transform:scale(1.08)}.syncRitual.phaseBurst .srAvatar{opacity:1;transform:translate(-50%,-50%) scale(1.06)}.syncRitual.phaseBurst .srAvatar img{filter:brightness(1.08) saturate(1.16) drop-shadow(0 0 26px var(--srMain)) drop-shadow(0 24px 24px #000)}.syncRitual.phaseBurst .srAura{animation:srAuraWake 1.2s ease-out forwards}.syncRitual.phaseBurst .srOrbit{opacity:.7;animation:srOrbit 2.2s linear infinite}.syncRitual.phaseBurst .srOrbit.b{animation-direction:reverse;animation-duration:3s}.syncRitual.phaseBurst .srAvatar small{opacity:1}
+.syncRitual.phaseResolve .srAvatar{left:75%;opacity:.88;transform:translate(-50%,-50%) scale(.98)}.syncRitual.phaseResolve .srResolve{opacity:1;transform:none}.syncRitual.phaseResolve .srContinue:not(:disabled){opacity:1;pointer-events:auto;transform:none}
+.syncRitual[data-grade="bad"].phaseBurst .srAvatar{animation:srStrain .22s linear 4}.syncRitual[data-grade="bad"] .srAvatar img{filter:saturate(.65) drop-shadow(0 0 24px #ff526d) drop-shadow(0 24px 24px #000)}
+@keyframes srFlow{to{stroke-dashoffset:-56}}
+@keyframes srCorePulse{to{transform:scale(1.45);filter:brightness(1.6)}}
+@keyframes srDrain{0%{opacity:1;stroke-dashoffset:0}100%{opacity:0;stroke-dashoffset:-240;stroke-width:9}}
+@keyframes srFuseRing{0%{opacity:1;inset:46%}100%{opacity:0;inset:-12%}}
+@keyframes srFlash{0%{opacity:0}8%,22%{opacity:1}100%{opacity:0}}
+@keyframes srAuraWake{0%{opacity:1;transform:translate(-50%,-50%) scale(.2)}48%{opacity:1}100%{opacity:.55;transform:translate(-50%,-50%) scale(1)}}
+@keyframes srOrbit{to{transform:translate(-50%,-50%) rotate(372deg)}}
+@keyframes srStrain{0%,100%{margin-left:0}50%{margin-left:5px}}
+@media(max-width:640px){
+  .srTop{left:4vw;right:4vw;font-size:7px;letter-spacing:.2em}.srSource{width:140px;min-height:66px;padding:9px 8px 8px 34px}.srSource.cal,.srSource.pro{top:10vh}.srSource.train,.srSource.rest{bottom:auto;top:31vh}.srSource.cal,.srSource.train{left:4vw}.srSource.pro,.srSource.rest{right:4vw}.srSource i{left:9px;top:10px;font-size:14px}.srSource span{font-size:6.5px}.srSource b{font-size:12px;margin-top:4px}.srSource small{font-size:6.5px}
+  .srConduits{inset:3% -28%;width:156%;height:76%}.srAvatar{width:78vw;height:58dvh;top:55%}.srCoreField{width:180px;height:180px;top:53%}.srFusion{width:94vw;height:94vw;top:54%}
+  .syncRitual.phaseResolve .srAvatar{left:50%;top:24%;width:72vw;height:43dvh;transform:translate(-50%,-50%) scale(.88)}.srResolve{left:5vw;right:5vw;top:auto;bottom:9.5dvh;width:auto;text-align:center}.srKicker{font-size:7.5px;margin-bottom:6px}.srResolve h2{font-size:clamp(30px,10vw,44px);line-height:.92}.srResolve>p{font-size:8px;margin-top:7px}.srDeltas{gap:4px;margin-top:10px;grid-template-columns:repeat(4,1fr)}.srDelta{padding:6px 3px}.srDelta span{font-size:6.5px;letter-spacing:.1em}.srDelta b{font-size:15px}.srRewardLine{justify-content:center;gap:4px;margin-top:7px}.srRewardLine span{font-size:6.8px;padding:4px 6px}.srPower{justify-content:center;margin-top:7px;gap:7px}.srPower small{font-size:6.5px}.srPower b{font-size:27px}.srPower i{font-size:9px}.srThreshold{text-align:left;margin-top:6px;padding:6px 8px 6px 44px}.srThreshold::before{left:15px;font-size:18px}.srContinue{left:12vw;right:12vw;bottom:2.5dvh;text-align:center;padding:11px}.srSkip{right:12px;top:max(12px,env(safe-area-inset-top))}.srVignette{box-shadow:inset 0 0 24vw 4vw #000}
+}
+@media(prefers-reduced-motion:reduce){.syncRitual *{animation:none!important;transition:none!important}.syncRitual .srSource,.syncRitual .srConduits,.syncRitual .srCoreField,.syncRitual .srFusion{display:none}.syncRitual .srAvatar{left:72%;opacity:.8;transform:translate(-50%,-50%) scale(.95)}.syncRitual .srAvatar img{filter:drop-shadow(0 0 22px var(--srMain))}.syncRitual .srResolve,.syncRitual .srTop,.syncRitual .srSkip,.syncRitual .srContinue:not(:disabled){opacity:1;transform:none}.syncRitual .srContinue:not(:disabled){pointer-events:auto}}
 /* ====== TRANSFORMATION CINEMA ====== */
 body.tfCinemaOpen{overflow:hidden}
 .tfCinema{--tc:#ffd75e;--tc2:#ff8a3c;position:fixed;inset:0;z-index:220;overflow:hidden;background:#02030a;color:#fff;isolation:isolate;opacity:0}
@@ -1014,6 +1068,50 @@ body.tfCinemaOpen{overflow:hidden}
 @keyframes arcLines{to{background-position:96px 0}}
 .arcUltName{position:absolute;left:50%;top:17%;z-index:14;transform:translateX(-50%) skewX(-8deg);font-family:'Haettenschweiler','Impact','Arial Narrow',var(--fd);font-size:35px;letter-spacing:.12em;white-space:nowrap;opacity:0;background:linear-gradient(180deg,#fff,var(--cyan));-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 22px rgba(62,224,255,.75));pointer-events:none}
 .arcUltName.go{animation:arcUlt 1.5s ease-out forwards}@keyframes arcUlt{0%{opacity:0;transform:translateX(-50%) skewX(-8deg) scale(1.6)}15%{opacity:1;transform:translateX(-50%) skewX(-8deg) scale(1)}80%{opacity:1}100%{opacity:0}}
+
+/* ====== BATTLE DIRECTOR ====== */
+body.battleCinematicOpen{overflow:hidden}
+.arcStage{perspective:900px;isolation:isolate}
+.arcStage .arcFighter{transition:transform .42s cubic-bezier(.16,.8,.22,1),filter .3s,opacity .25s}
+.arcStage.dir-track-player .arcFighter.you{transform:translateX(78px) scale(1.22);z-index:6}.arcStage.dir-track-player .arcFighter.foe{transform:translateX(20px) scale(.88);filter:brightness(.62) blur(1px)}
+.arcStage.dir-track-foe .arcFighter.foe{transform:translateX(-78px) scale(1.24);z-index:6}.arcStage.dir-track-foe .arcFighter.you{transform:translateX(-20px) scale(.88);filter:brightness(.58) blur(1px)}
+.arcStage.dir-impact-player .arcFighter.foe{transform:translateX(92px) rotate(5deg) scale(.88);filter:brightness(1.8) saturate(.2)}.arcStage.dir-impact-foe .arcFighter.you{transform:translateX(-92px) rotate(-5deg) scale(.88);filter:brightness(1.8) saturate(.2)}
+.arcStage.dir-aftermath .arcFighter{filter:brightness(.42) saturate(.55)}
+.arcDamage{position:absolute;z-index:1;inset:0;pointer-events:none;opacity:.92}.arcDamage svg{position:absolute;left:0;right:0;bottom:0;width:100%;height:76%;overflow:visible}.arcDamage g{fill:none;stroke:rgba(255,232,194,.76);stroke-width:3;filter:drop-shadow(0 0 5px var(--arenaC));opacity:0;transition:opacity .35s}.arcDamage path{vector-effect:non-scaling-stroke}
+.arcStage[data-damage="1"] .arcDamage .d1,.arcStage[data-damage="2"] .arcDamage .d1,.arcStage[data-damage="2"] .arcDamage .d2,.arcStage[data-damage="3"] .arcDamage g{opacity:1}
+#battleFight.phaseBroken .arcStage::before{content:"";position:absolute;z-index:0;left:50%;top:42%;width:56%;aspect-ratio:1;border-radius:50%;transform:translate(-50%,-50%);background:radial-gradient(circle,#100008 0 48%,#ff3148 49% 50%,transparent 52%);box-shadow:0 0 70px rgba(255,49,72,.45);animation:bdEclipse 3s ease-in-out infinite alternate}
+#battleFight.phaseBroken .arcFloor{filter:hue-rotate(305deg) brightness(1.3)}
+.battleDirector{--bd:#35e0ff;position:fixed;z-index:216;inset:0;overflow:hidden;pointer-events:none;opacity:0;color:#fff;isolation:isolate}.battleDirector.show{opacity:1}.battleDirector.full{background:#010207}.battleDirector.full.show{pointer-events:auto;cursor:wait}
+.bdBackdrop,.bdSpeed,.bdBeam,.bdHit{position:absolute;inset:0}.bdBackdrop{z-index:0;background:rgba(1,2,7,.82);opacity:0}.bdSpeed{z-index:3;opacity:0;background:repeating-linear-gradient(168deg,transparent 0 15px,rgba(255,255,255,.13) 16px 18px,transparent 19px 31px);transform:scale(1.4)}.bdBeam{z-index:6;left:-20%;right:-20%;top:43%;bottom:auto;height:16%;background:linear-gradient(180deg,transparent,var(--bd) 28%,#fff 48% 55%,var(--bd) 72%,transparent);filter:blur(5px);transform:scaleX(.02);opacity:0}.bdHit{z-index:12;background:#fff;opacity:0;mix-blend-mode:screen}
+.bdPanel{position:absolute;z-index:2;overflow:hidden;opacity:0;background:#060912;border:2px solid rgba(255,255,255,.78)}.bdPanel img{position:absolute;inset:-10%;width:120%;height:120%;object-fit:contain;filter:grayscale(1) contrast(1.45) brightness(.82) drop-shadow(0 0 20px var(--bd))}.bdPanel i{position:absolute;inset:0;box-shadow:inset 0 0 0 4px #05060b,inset 0 0 45px #000}
+.bdPanel.lead{left:-4%;top:5%;width:60%;height:90%;clip-path:polygon(0 0,100% 0,78% 100%,0 100%)}.bdPanel.target{right:-4%;top:5%;width:55%;height:90%;clip-path:polygon(22% 0,100% 0,100% 100%,0 100%)}
+.bdCaption{position:absolute;z-index:10;left:6vw;bottom:8vh;max-width:76vw;opacity:0;text-shadow:0 4px 28px #000}.bdCaption small,.bdCaption b,.bdCaption span{display:block}.bdCaption small{font-family:var(--fj);font-size:9px;letter-spacing:.5em;color:var(--bd)}.bdCaption b{margin-top:6px;font-family:'Haettenschweiler','Impact','Arial Narrow',var(--fd);font-size:clamp(42px,8vw,116px);font-weight:400;line-height:.82;letter-spacing:.04em;font-style:italic;text-transform:uppercase;background:linear-gradient(180deg,#fff,color-mix(in srgb,var(--bd) 68%,white),var(--bd));-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 20px color-mix(in srgb,var(--bd) 50%,transparent))}.bdCaption span{margin-top:10px;font-family:var(--fd);font-size:clamp(9px,1.3vw,16px);letter-spacing:.25em}
+.bdImpactWord{position:absolute;z-index:16;left:50%;top:50%;transform:translate(-50%,-50%) skewX(-12deg);font-family:'Haettenschweiler','Impact','Arial Narrow',var(--fd);font-size:clamp(48px,12vw,154px);line-height:.8;letter-spacing:.02em;color:#fff;-webkit-text-stroke:2px #05060a;text-shadow:8px 8px 0 var(--bd),0 0 25px #000;opacity:0;white-space:nowrap}
+.bdSlash{position:absolute;z-index:14;left:-20%;width:140%;height:4px;background:#fff;box-shadow:0 0 12px #fff,0 0 25px var(--bd);opacity:0}.bdSlash.a{top:34%;transform:rotate(-14deg)}.bdSlash.b{top:53%;transform:rotate(11deg)}.bdSlash.c{top:68%;transform:rotate(-7deg)}
+/* Impact frame: a half-second manga cut only for crits and heavy blows. */
+.battleDirector.impact.show .bdBackdrop{opacity:.74}.battleDirector.impact.show .bdPanel{opacity:1;animation:bdPanelHit .5s steps(2) forwards}.battleDirector.impact.show .bdPanel.lead{filter:brightness(1.25)}.battleDirector.impact.show .bdImpactWord{animation:bdWord .52s cubic-bezier(.15,1.3,.2,1) forwards}.battleDirector.impact.show .bdSlash{animation:bdSlash .38s ease-out forwards}.battleDirector.impact.show .bdHit{animation:bdHit .38s steps(2)}
+/* Full-screen three-shot ultimate: preparation → release → aftermath. */
+.battleDirector.ult.show .bdBackdrop{opacity:1;background:radial-gradient(circle at 28% 50%,color-mix(in srgb,var(--bd) 24%,#04050b),#010207 58%)}.battleDirector.ult.prep .bdPanel.lead{opacity:1;width:66%;animation:bdPrepIn .45s cubic-bezier(.1,.85,.2,1)}.battleDirector.ult.prep .bdPanel.target{opacity:.18;filter:brightness(.35)}.battleDirector.ult.prep .bdCaption{opacity:1;left:auto;right:6vw;bottom:11vh;text-align:right}.battleDirector.ult.prep .bdCaption b{font-size:clamp(48px,8vw,118px)}
+.battleDirector.ult.fire .bdPanel{opacity:0}.battleDirector.ult.fire .bdSpeed{opacity:1;animation:bdSpeed .28s linear infinite}.battleDirector.ult.fire .bdBeam{opacity:1;animation:bdBeam .62s cubic-bezier(.15,.75,.15,1) forwards}.battleDirector.ult.fire .bdCaption{opacity:0}.battleDirector.ult.fire .bdHit{animation:bdHit .5s steps(2) .34s}
+.battleDirector.ult.after .bdBackdrop{opacity:.9;background:linear-gradient(180deg,#090b12,#020308)}.battleDirector.ult.after .bdPanel.target{opacity:1;left:44%;right:-3%;width:60%;animation:bdTargetAfter .55s ease-out forwards}.battleDirector.ult.after .bdPanel.lead{opacity:.12;filter:brightness(.4)}.battleDirector.ult.after .bdCaption{opacity:1;left:6vw;right:auto;bottom:8vh;text-align:left}.battleDirector.ult.after .bdCaption small{color:#fff}.battleDirector.ult.after .bdCaption b{font-size:clamp(36px,6vw,82px)}
+/* Named boss attacks and phase transitions own the viewport. */
+.battleDirector.boss.show .bdBackdrop,.battleDirector.phase.show .bdBackdrop{opacity:1;background:radial-gradient(circle at 72% 42%,color-mix(in srgb,var(--bd) 26%,#13040a),#010207 62%)}.battleDirector.boss.show .bdPanel.lead,.battleDirector.phase.show .bdPanel.lead{opacity:1;left:42%;width:62%;clip-path:polygon(24% 0,100% 0,100% 100%,0 100%);animation:bdBossIn .65s cubic-bezier(.12,.82,.2,1)}.battleDirector.boss.show .bdPanel.target,.battleDirector.phase.show .bdPanel.target{display:none}.battleDirector.boss.show .bdCaption,.battleDirector.phase.show .bdCaption{opacity:1;animation:bdCaptionIn .45s ease-out}.battleDirector.boss.show .bdSpeed{opacity:.35;animation:bdSpeed .35s linear infinite}.battleDirector.phase.show .bdBackdrop::after{content:"";position:absolute;left:72%;top:42%;width:min(48vw,48vh);height:min(48vw,48vh);border-radius:50%;transform:translate(-50%,-50%);background:#030107;box-shadow:0 0 0 2px var(--bd),0 0 80px var(--bd);animation:bdPhaseSun 1.2s ease-out}.battleDirector.phase.show .bdSlash{opacity:1;animation:bdSlash .7s ease-out}
+.battleDirector.boss.strike .bdPanel.lead{transform:scale(1.08);filter:brightness(1.55) saturate(1.35)}.battleDirector.boss.strike .bdBeam{opacity:1;top:48%;height:9%;transform-origin:right center;animation:bdBossBeam .5s cubic-bezier(.12,.8,.2,1) forwards}.battleDirector.boss.strike .bdHit{animation:bdHit .46s steps(2) .16s}.battleDirector.boss.strike .bdCaption{transform:translateX(-2vw)}
+@keyframes bdPanelHit{0%{transform:scale(1.2);filter:invert(1)}18%{filter:none}100%{transform:scale(1)}}
+@keyframes bdWord{0%{opacity:0;transform:translate(-50%,-50%) skewX(-12deg) scale(2)}18%,72%{opacity:1;transform:translate(-50%,-50%) skewX(-12deg) scale(1)}100%{opacity:0;transform:translate(-50%,-50%) skewX(-12deg) scale(.9)}}
+@keyframes bdSlash{0%{opacity:0;transform:translateX(-55%) rotate(-12deg)}22%{opacity:1}100%{opacity:0;transform:translateX(45%) rotate(8deg)}}
+@keyframes bdHit{0%,100%{opacity:0}12%,36%{opacity:1}}
+@keyframes bdPrepIn{from{transform:translateX(-28%) scale(1.15);filter:brightness(3)}to{transform:none}}
+@keyframes bdSpeed{to{background-position:180px 0}}
+@keyframes bdBeam{0%{transform:scaleX(.02);filter:blur(12px);opacity:0}12%{opacity:1}45%{transform:scaleX(1);filter:blur(3px);opacity:1}72%{transform:scaleX(1.12);filter:blur(4px);opacity:1}100%{transform:scaleX(1.25);opacity:0}}
+@keyframes bdTargetAfter{0%{transform:translateX(18%) rotate(5deg);filter:invert(1)}100%{transform:translateX(0);filter:none}}
+@keyframes bdBossIn{from{transform:translateX(25%) scale(1.18);filter:brightness(2.5)}to{transform:none}}
+@keyframes bdBossBeam{0%{transform:scaleX(.02);filter:blur(12px)}55%{transform:scaleX(1.1);filter:blur(2px)}100%{transform:scaleX(1);filter:blur(6px);opacity:.2}}
+@keyframes bdCaptionIn{from{opacity:0;transform:translateX(-40px)}to{opacity:1;transform:none}}
+@keyframes bdPhaseSun{0%{transform:translate(-50%,-50%) scale(.1);opacity:0}50%{opacity:1}100%{transform:translate(-50%,-50%) scale(1.7);opacity:.25}}
+@keyframes bdEclipse{to{filter:brightness(1.4);transform:translate(-50%,-50%) scale(1.05)}}
+@media(max-width:700px){.bdCaption{left:5vw;bottom:10dvh;max-width:90vw}.bdCaption small{font-size:7px}.bdCaption b{font-size:clamp(38px,14vw,68px)}.bdCaption span{font-size:8px;line-height:1.4}.battleDirector.ult.prep .bdPanel.lead{width:92%;height:72%;top:5%}.battleDirector.ult.prep .bdCaption{right:5vw;left:5vw;bottom:8dvh;text-align:center}.battleDirector.ult.after .bdPanel.target{left:20%;width:86%;height:74%}.battleDirector.boss.show .bdPanel.lead,.battleDirector.phase.show .bdPanel.lead{left:16%;width:90%;height:75%;top:3%}.battleDirector.boss.show .bdCaption,.battleDirector.phase.show .bdCaption{bottom:8dvh}.bdImpactWord{font-size:18vw}}
+@media(prefers-reduced-motion:reduce){.arcStage .arcFighter{transition:none}.battleDirector *{animation:none!important;transition:none!important}.battleDirector.show .bdBackdrop{opacity:.86}.battleDirector.show .bdCaption{opacity:1}.battleDirector.impact.show .bdImpactWord{opacity:1}.battleDirector.full .bdPanel.lead{opacity:.7}.arcDamage g{transition:none}#battleFight.phaseBroken .arcStage::before{animation:none}}
 
 .arcCommands{position:relative;z-index:16;padding:6px 13px 15px;background:linear-gradient(180deg,rgba(4,7,15,.25),rgba(4,7,15,.86))}
 .arcTicker{display:flex;align-items:center;justify-content:flex-start;text-align:left;gap:10px;min-height:33px;margin:0 0 10px;padding:7px 12px;border:1px solid rgba(62,224,255,.18);border-radius:0;background:rgba(0,0,0,.35);font-family:Consolas,'Cascadia Mono',monospace;font-size:10px;letter-spacing:.07em;color:#9df2ff}
@@ -1750,6 +1848,9 @@ body.tfCinemaOpen{overflow:hidden}
 
       <div class="arcStage">
         <div class="arcFloor"></div><div class="arcHorizon"></div>
+        <div class="arcDamage" id="arcDamage" aria-hidden="true">
+          <svg viewBox="0 0 1000 360" preserveAspectRatio="none"><g class="d1"><path d="M502 348l-44-64 18-42-66-45m64 45 68-36 28-68m-112 146-94 20-51-31"/></g><g class="d2"><path d="M544 348l62-75-12-54 82-48m-70 102 96 14 74-34m-182-34-32-74 24-66"/></g><g class="d3"><path d="M438 348l-113-56-104 15m104-15-42-77-92-45m414 178 104-68 109 9m-109-9 35-74 82-56"/></g></svg>
+        </div>
         <div class="arcFighter you" id="meArt"></div>
         <div class="arcFighter foe" id="foeArt"></div>
         <div id="projLayer"></div><div id="battleFloat"></div><div id="battleFlash"></div>
@@ -1767,6 +1868,14 @@ body.tfCinemaOpen{overflow:hidden}
   </div>
 </section>
 <div class="battleResult" id="battleResult" hidden></div>
+<div class="battleDirector" id="battleDirector" aria-hidden="true">
+  <div class="bdBackdrop"></div><div class="bdSpeed"></div><div class="bdBeam"></div><div class="bdHit"></div>
+  <section class="bdPanel lead"><img id="bdLeadArt" alt=""><i></i></section>
+  <section class="bdPanel target"><img id="bdTargetArt" alt=""><i></i></section>
+  <div class="bdCaption"><small id="bdKicker">LIMIT BREAK</small><b id="bdTitle"></b><span id="bdSub"></span></div>
+  <div class="bdImpactWord" id="bdImpactWord"></div>
+  <i class="bdSlash a"></i><i class="bdSlash b"></i><i class="bdSlash c"></i>
+</div>
 
 <section class="view" id="viewSkills" data-view="skills" hidden>
   <div class="skHeader">
@@ -1835,6 +1944,47 @@ body.tfCinemaOpen{overflow:hidden}
 </nav>
 
 <div class="lvlup" id="lvlup"><div class="ring"></div><div class="txt">LEVEL UP</div><div class="sub2">ALL STATS +2 ─ POWER RISING</div></div>
+
+<div class="syncRitual" id="syncRitual" hidden role="dialog" aria-modal="true" aria-labelledby="srTitle">
+  <div class="srWorld">
+    <div class="srAtmos"></div><div class="srGrid"></div>
+    <header class="srTop"><span>BIOSYNC // DAILY INTEGRATION</span><b id="srDate"></b></header>
+    <svg class="srConduits" viewBox="0 0 1000 700" preserveAspectRatio="none" aria-hidden="true">
+      <defs>
+        <linearGradient id="srGCal"><stop stop-color="#ffc94d"/><stop offset="1" stop-color="#fff2b7"/></linearGradient>
+        <linearGradient id="srGPro"><stop stop-color="#ff5d91"/><stop offset="1" stop-color="#ffd0e0"/></linearGradient>
+        <linearGradient id="srGTrain"><stop stop-color="#35e0ff"/><stop offset="1" stop-color="#bdf7ff"/></linearGradient>
+        <linearGradient id="srGRest"><stop stop-color="#9f7cff"/><stop offset="1" stop-color="#e1d7ff"/></linearGradient>
+      </defs>
+      <path class="cal" d="M88 150 C275 150 296 310 480 346"/>
+      <path class="pro" d="M912 150 C725 150 704 310 520 346"/>
+      <path class="train" d="M88 552 C282 552 306 397 480 354"/>
+      <path class="rest" d="M912 552 C718 552 694 397 520 354"/>
+    </svg>
+    <div class="srSource cal"><i>01</i><span>NUTRITION</span><b id="srCalV">0 KCAL</b><small id="srCalS"></small></div>
+    <div class="srSource pro"><i>02</i><span>PROTEIN</span><b id="srProV">0 G</b><small id="srProS"></small></div>
+    <div class="srSource train"><i>03</i><span>TRAINING</span><b id="srTrainV">REST</b><small id="srTrainS"></small></div>
+    <div class="srSource rest"><i>04</i><span>RECOVERY</span><b id="srRestV">0 H</b><small id="srRestS"></small></div>
+    <div class="srCoreField" aria-hidden="true"><i class="cal"></i><i class="pro"></i><i class="train"></i><i class="rest"></i></div>
+    <div class="srAvatar">
+      <i class="srOrbit a"></i><i class="srOrbit b"></i><i class="srOrbit c"></i><span class="srAura"></span>
+      <img id="srAvatar" alt=""><small id="srForm"></small>
+    </div>
+    <div class="srFusion" aria-hidden="true"><i></i><i></i><i></i></div>
+  </div>
+  <div class="srResolve">
+    <span class="srKicker" id="srKicker">DAILY SYNC COMPLETE</span>
+    <h2 id="srTitle">DISCIPLINE RECORDED</h2>
+    <p id="srVerdict"></p>
+    <div class="srDeltas" id="srDeltas"></div>
+    <div class="srRewardLine" id="srRewardLine"></div>
+    <div class="srPower"><small>POWER LEVEL</small><b id="srPower">0</b><i id="srPowerGain"></i></div>
+    <div class="srThreshold" id="srThreshold" hidden><span>SIGNAL DETECTED</span><b id="srThresholdName"></b><small id="srThresholdMeta"></small></div>
+  </div>
+  <div class="srFlash"></div><div class="srScan"></div><div class="srVignette"></div>
+  <button class="srSkip" id="srSkip" type="button">SKIP</button>
+  <button class="srContinue" id="srContinue" type="button" disabled>RETURN TO CHAMBER <span>▸</span></button>
+</div>
 
 <div class="modal" id="tfModal" hidden>
   <div class="mBox">
@@ -2291,12 +2441,13 @@ function fmtPL(n){
   return Math.round(n).toLocaleString();
 }
 function syncDay(){
-  if(st.today.synced)return;
+  if(st.today.synced||syncRitualLock)return;
   const g=calGrade();
   const trained=workoutDef().id!=='none';
   if(g==='empty'&&!trained&&!st.today.protein&&!st.today.creatine&&!st.today.sleep){
     if(!confirm('Nothing logged today — syncing an empty day will damage your character. Sync anyway?'))return;
   }
+  const before={stats:{...st.stats},xp:st.xp,level:st.level,streak:st.streak,pl:playerPL(st.form)};
   if(!st.today.preSync){
     st.today.preSync={stats:{...st.stats},xp:st.xp,level:st.level,streak:st.streak,best:st.best,
       streakPaid:st.streakPaid,ascPoints:st.ascPoints,skillPoints:st.skillPoints,qualifiedDays:st.qualifiedDays||0};
@@ -2323,18 +2474,67 @@ function syncDay(){
     sleep:st.today.sleep,creatine:st.today.creatine,t:st.calTarget,pt:st.proteinTarget,d:d,xp:gain,q:q});
   save();
   showView('home');
-  const stage=$('#stage');stage.classList.remove('burst');void stage.offsetWidth;stage.classList.add('burst');
-  let i=0;
-  for(const k in d){if(d[k]!==0){const v=d[k];
-    setTimeout(()=>spawnFloat((v>0?'+':'')+v+' '+k.toUpperCase(),v>0?'up':'dn'),i*260);i++;}}
-  setTimeout(()=>spawnFloat('+'+gain+' XP','xp'),i*260+150);
-  if(pts.ap)setTimeout(()=>spawnFloat('+'+pts.ap+' ASCENSION ⬡','up'),i*260+420);
-  if(pts.sp)setTimeout(()=>spawnFloat('+'+pts.sp+' SKILL ✦','up'),i*260+620);
-  if(missionRes)setTimeout(()=>{spawnFloat('🎯 '+missionRes.def.nm+' '+missionRewardText(missionRes.reward),'up');beep(920,.1,'triangle',.05);setTimeout(()=>beep(1240,.12,'triangle',.05),90);},i*260+820);
-  beep(740,.09);setTimeout(()=>beep(1180,.12),90);
-  if(leveled)setTimeout(levelUpFX,700);
   renderAll();
-  if(canUnlock())setTimeout(()=>openTfModal(st.formMax+1),leveled?3200:1600);
+  startSyncRitual({before,d,g,q,gain,pts,missionRes,leveled,trained,after:{stats:{...st.stats},xp:st.xp,level:st.level,streak:st.streak,pl:playerPL(st.form)},unlockIdx:canUnlock()?st.formMax+1:null});
+}
+let syncRitualLock=false,srTimers=[],srRun=0,srPowerRAF=0,srReturnFocus=null,srPendingUnlock=null;
+function srLater(fn,ms){const run=srRun,t=setTimeout(()=>{if(run===srRun)fn();},ms);srTimers.push(t);return t;}
+function srPhase(name){$('#syncRitual').classList.add('phase'+name);}
+function srThresholdInfo(){
+  const idx=st.formMax+1;if(idx>=FORMS.length)return null;
+  const f=FORMS[idx],plPct=clamp(basePL()/f.pl,0,1),dayPct=clamp((st.qualifiedDays||0)/FORM_DAYS[idx],0,1),ready=canUnlock();
+  if(!ready&&Math.min(plPct,dayPct)<.72)return null;
+  return{idx,f,ready,plPct,dayPct};
+}
+function srBuild(summary){
+  const c=$('#syncRitual'),form=FORMS[st.form],wd=workoutDef(),proRatio=proteinRatio(),sleep=sleepGrade();
+  c.dataset.grade=summary.q;$('#srDate').textContent=prettyDate(st.today.date).toUpperCase();
+  $('#srAvatar').src=form.img;$('#srAvatar').alt=form.nm;$('#srForm').textContent=form.nm+' // LINKED';
+  $('#srCalV').textContent=(st.today.cal||0).toLocaleString()+' KCAL';$('#srCalS').textContent={optimal:'TARGET LOCKED',fair:'WITHIN RANGE',over:'ABOVE TARGET',low:'BELOW TARGET',critical:'CRITICAL DEFICIT',empty:'NO INPUT'}[summary.g];
+  $('#srProV').textContent=(st.today.protein||0)+' G';$('#srProS').textContent=proRatio>=.9?'TARGET LOCKED':proRatio>=.6?'PARTIAL SIGNAL':'LOW SIGNAL';
+  $('#srTrainV').textContent=wd.id==='none'?'REST':wd.nm.toUpperCase();$('#srTrainS').textContent=wd.id==='none'?'RECOVERY MODE':Object.keys(wd.d).map(x=>x.toUpperCase()).join(' + ');
+  $('#srRestV').textContent=st.today.sleep?(st.today.sleep+' H'):'NO DATA';$('#srRestS').textContent={optimal:'FULL RECOVERY',good:'STABLE RECOVERY',much:'EXTENDED REST',low:'RECOVERY LOW',poor:'SYSTEM FATIGUE',none:'UNMEASURED'}[sleep];
+  const copy=summary.q==='good'?['ALL SYSTEMS ALIGNED','PERFECT SYNC','Nutrition, training and recovery converged at full efficiency.']:summary.q==='part'?['DAILY INTEGRATION COMPLETE','SYNC STABILIZED','The day strengthened your character, with room to sharpen tomorrow.']:['SYSTEM STRAIN RECORDED','RECOVERY REQUIRED','The link held, but today’s inputs reduced combat readiness.'];
+  $('#srKicker').textContent=copy[0];$('#srTitle').textContent=copy[1];$('#srVerdict').textContent=copy[2];
+  const colors={vit:'#57ffc2',str:'#ff5d91',agi:'#35e0ff',foc:'#ffc94d'};
+  $('#srDeltas').innerHTML=['vit','str','agi','foc'].map(k=>{const v=summary.after.stats[k]-summary.before.stats[k];return `<div class="srDelta" style="--dc:${v<0?'#ff526d':colors[k]}"><span>${k.toUpperCase()}</span><b>${v>0?'+':''}${v}</b></div>`;}).join('');
+  const rewards=[`<span class="xp">+${summary.gain} XP</span>`,`<span class="streak">STREAK ${summary.after.streak}</span>`];
+  if(summary.after.level>summary.before.level)rewards.push(`<span class="bonus">LEVEL ${summary.after.level} ↑</span>`);
+  if(summary.pts.ap)rewards.push(`<span class="bonus">+${summary.pts.ap} ASCENSION</span>`);if(summary.pts.sp)rewards.push(`<span class="bonus">+${summary.pts.sp} SKILL</span>`);
+  if(summary.missionRes)rewards.push(`<span class="bonus">MISSION · ${summary.missionRes.def.nm}</span>`);
+  $('#srRewardLine').innerHTML=rewards.join('');$('#srPower').textContent=fmtPL(summary.before.pl);
+  const plGain=summary.after.pl-summary.before.pl;$('#srPowerGain').textContent=(plGain>=0?'+':'')+fmtPL(plGain);
+  const th=srThresholdInfo(),box=$('#srThreshold');
+  if(th){box.hidden=false;$('#srThresholdName').textContent=th.ready?th.f.nm+' READY':th.f.nm+' APPROACHING';$('#srThresholdMeta').textContent=Math.round(th.plPct*100)+'% POWER GATE · '+(st.qualifiedDays||0)+' / '+FORM_DAYS[th.idx]+' QUALIFIED DAYS';}
+  else box.hidden=true;
+}
+function srAnimatePower(from,to,dur){
+  cancelAnimationFrame(srPowerRAF);const el=$('#srPower'),start=performance.now(),safe=Math.max(1,from),ratio=Math.max(1,to)/safe;
+  const tick=now=>{const p=clamp((now-start)/dur,0,1),e=1-Math.pow(1-p,3),v=ratio>12?Math.exp(Math.log(safe)+(Math.log(Math.max(1,to))-Math.log(safe))*e):from+(to-from)*e;el.textContent=fmtPL(v);if(p<1)srPowerRAF=requestAnimationFrame(tick);};srPowerRAF=requestAnimationFrame(tick);
+}
+function srSound(grade){
+  [164,246,329,493].forEach((f,i)=>srLater(()=>beep(f,.3,grade==='bad'?'sawtooth':'sine',.028),i*170));
+  srLater(()=>{beep(grade==='bad'?72:62,.55,'square',.06);[659,880,1174].forEach((f,i)=>srLater(()=>beep(f,.3,'triangle',.034),90+i*65));},2320);
+}
+function startSyncRitual(summary){
+  const c=$('#syncRitual');syncRitualLock=true;srRun++;srReturnFocus=document.activeElement;srPendingUnlock=summary.unlockIdx;
+  srTimers.forEach(clearTimeout);srTimers=[];cancelAnimationFrame(srPowerRAF);c.hidden=false;c.className='syncRitual';srBuild(summary);
+  document.body.classList.add('syncRitualOpen');void c.offsetWidth;c.classList.add('isRunning');srPhase('Link');$('#srContinue').disabled=true;$('#srSkip').focus({preventScroll:true});
+  const reduced=matchMedia('(prefers-reduced-motion:reduce)').matches;
+  if(reduced){srPhase('Burst');srPhase('Resolve');$('#srContinue').disabled=false;$('#srPower').textContent=fmtPL(summary.after.pl);srLater(()=>finishSyncRitual(false),5000);return;}
+  srSound(summary.q);if(!navigator.userActivation||navigator.userActivation.hasBeenActive)buzz([18,45,18]);
+  srLater(()=>srPhase('Feed'),520);srLater(()=>srPhase('Fuse'),1660);
+  srLater(()=>{srPhase('Burst');if(!navigator.userActivation||navigator.userActivation.hasBeenActive)buzz([45,25,90]);},2410);
+  srLater(()=>{srPhase('Resolve');$('#srContinue').disabled=false;srAnimatePower(summary.before.pl,summary.after.pl,1300);$('#srContinue').focus({preventScroll:true});},3180);
+  srLater(()=>finishSyncRitual(false),7200);
+}
+function finishSyncRitual(skipped){
+  if(!syncRitualLock)return;srRun++;srTimers.forEach(clearTimeout);srTimers=[];cancelAnimationFrame(srPowerRAF);srPowerRAF=0;
+  const c=$('#syncRitual');c.hidden=true;c.className='syncRitual';delete c.dataset.grade;document.body.classList.remove('syncRitualOpen');syncRitualLock=false;
+  const stage=$('#stage');stage.classList.remove('burst');void stage.offsetWidth;stage.classList.add('burst');renderAll();
+  const unlock=srPendingUnlock;srPendingUnlock=null;const focus=srReturnFocus;srReturnFocus=null;
+  if(unlock!==null){setTimeout(()=>openTfModal(unlock),260);return;}
+  if(focus&&focus.offsetParent!==null)focus.focus();else document.querySelector('.navBtn[data-view="home"]').focus();
 }
 function levelUpFX(){
   const o=$('#lvlup');o.classList.remove('show');void o.offsetWidth;o.classList.add('show');
@@ -2706,14 +2906,14 @@ $('#historyBack').addEventListener('click',()=>{showView('daily');beep(700,.04,'
     if(e.touches.length!==1){x0=null;return;}
     const t=e.touches[0];x0=t.clientX;y0=t.clientY;t0=Date.now();
     // don't hijack swipes inside a fight, a horizontal table, or an open overlay
-    block=!!e.target.closest('#battleFight, #battleStage, .tableWrap, .modal, .battleResult, .wkGrid');
+    block=!!e.target.closest('#battleFight, #battleStage, .tableWrap, .modal, .battleResult, .wkGrid, .syncRitual, .tfCinema, .battleDirector');
   },{passive:true});
   document.addEventListener('touchend',e=>{
     if(x0==null||block){x0=null;return;}
     const t=e.changedTouches[0],dx=t.clientX-x0,dy=t.clientY-y0;x0=null;
     if(Date.now()-t0>600)return;
     if(Math.abs(dx)<60||Math.abs(dx)<Math.abs(dy)*1.5)return;   // must be a clear horizontal flick
-    if(document.querySelector('.battleResult:not([hidden]), .modal:not([hidden])'))return;
+    if(document.querySelector('.battleResult:not([hidden]), .modal:not([hidden]), .syncRitual:not([hidden]), .tfCinema:not([hidden]), .battleDirector.show'))return;
     const ord=navOrder(),i=ord.indexOf(currentView());if(i<0)return;
     const ni=dx>0?i-1:i+1;                                       // swipe right → previous, left → next
     if(ni<0||ni>=ord.length)return;
@@ -2920,9 +3120,10 @@ function startFight(e){
   const startForm=st.form,pc=playerCombat(startForm);
   fight={en:e,es:enemyStats(e),pForm:startForm,pc,pHpMax:pc.hpMax,pHp:pc.hpMax,ki:Math.min(pc.kiMax,Math.max(30,Math.round(pc.kiMax*0.55))),
     guard:false,over:false,revived:false,eTurn:0,enraged:false,
-    combo:0,charging:false,lastStandActive:false,lastStandUsed:false};
+    combo:0,charging:false,lastStandActive:false,lastStandUsed:false,arenaDamage:0,_postDelay:0};
   fight.eHpMax=fight.es.hpMax;fight.eHp=fight.es.hpMax;fight.eAtk=fight.es.atk;
-  const bf=$('#battleFight');bf.style.setProperty('--arenaC',(TIERS[e.t]&&TIERS[e.t].c)||'#35e0ff');bf.classList.remove('enraged');
+  bdReset();clearTimeout(bdCameraTimer);const stage=document.querySelector('.arcStage');if(stage){BD_CAMERA_CLASSES.forEach(x=>stage.classList.remove(x));stage.dataset.damage='0';}
+  const bf=$('#battleFight');bf.style.setProperty('--arenaC',(TIERS[e.t]&&TIERS[e.t].c)||'#35e0ff');bf.classList.remove('enraged','phaseBroken');
   const ar=$('#arena');if(ar)ar.classList.remove('clutch');
   const cine=$('#arcCine'),ult=$('#arcUltName');if(cine)cine.classList.remove('on');if(ult){ult.classList.remove('go');ult.textContent='';}
   showFight();blog(e.n+' stands before you.');beep(300,.16,'sawtooth',.05);
@@ -2936,11 +3137,56 @@ function mvBtn(id,label,ki,disabled,hidden,guardRec){
   if(hidden)return'';const cls='mvBtn '+((id==='strike'||id==='ki')?'atk ':id==='ult'?'atk ult ':id==='xform'?'xform ':'')+(guardRec?'guardRec':'');
   return `<button class="${cls.trim()}" data-mv="${id}" data-icon="${ARC_MOVE_ICON[id]||'✦'}"${disabled?' disabled':''}><b>${label}</b><span>${ki} KI</span></button>`;
 }
-function arcCinematic(label){
-  const cine=$('#arcCine'),name=$('#arcUltName');if(!cine||!name)return;
-  name.textContent=label.toUpperCase();cine.classList.remove('on');name.classList.remove('go');void cine.offsetWidth;cine.classList.add('on');name.classList.add('go');
-  setTimeout(()=>{cine.classList.remove('on');name.classList.remove('go');},1600);
+let bdTimers=[],bdRun=0,bdMode='',bdCameraTimer=0;
+const BD_CAMERA_CLASSES=['dir-track-player','dir-track-foe','dir-impact-player','dir-impact-foe','dir-aftermath'];
+function bdLater(fn,ms,run=bdRun){const id=setTimeout(()=>{if(run===bdRun)fn();},ms);bdTimers.push(id);return id;}
+function bdReset(){
+  bdRun++;bdTimers.forEach(clearTimeout);bdTimers=[];bdMode='';
+  const d=$('#battleDirector');if(d){d.className='battleDirector';d.setAttribute('aria-hidden','true');}
+  document.body.classList.remove('battleCinematicOpen');
 }
+function battleCamera(cls,ms=460){
+  const stage=document.querySelector('.arcStage');if(!stage)return;
+  clearTimeout(bdCameraTimer);BD_CAMERA_CLASSES.forEach(x=>stage.classList.remove(x));void stage.offsetWidth;stage.classList.add(cls);
+  const active=fight;bdCameraTimer=setTimeout(()=>{if(fight===active)stage.classList.remove(cls);},ms);
+}
+function setArenaDamage(level){
+  if(!fight)return;fight.arenaDamage=clamp(Math.round(level)||0,0,3);
+  const stage=document.querySelector('.arcStage');if(stage)stage.dataset.damage=String(fight.arenaDamage);
+}
+function damageArena(amount=1){if(fight)setArenaDamage((fight.arenaDamage||0)+amount);}
+function bdActorData(side){
+  const f=fight;if(!f)return null;const pf=FORMS[f.pForm],player={name:pf.nm,img:pf.img,color:FORM_COLORS[pf.id]||'#35e0ff'};
+  const enemy={name:f.en.n,img:'img/enemies/'+f.en.s+'.jpg',color:f.en.r==='boss'?'#ff365d':'#ff7a2f'};
+  return side==='player'?{lead:player,target:enemy}:{lead:enemy,target:player};
+}
+function bdSetup(mode,side,title,kicker,sub,full=false,shot=''){
+  const actors=bdActorData(side),d=$('#battleDirector');if(!actors||!d)return 0;bdReset();bdMode=mode;
+  d.className='battleDirector '+mode+' '+side+(full?' full':'')+(shot?' '+shot:'');d.style.setProperty('--bd',actors.lead.color);
+  $('#bdLeadArt').src=actors.lead.img;$('#bdLeadArt').alt=actors.lead.name;$('#bdTargetArt').src=actors.target.img;$('#bdTargetArt').alt=actors.target.name;
+  $('#bdKicker').textContent=kicker;$('#bdTitle').textContent=title;$('#bdSub').textContent=sub;$('#bdImpactWord').textContent='';
+  d.setAttribute('aria-hidden','false');if(full)document.body.classList.add('battleCinematicOpen');void d.offsetWidth;d.classList.add('show');return bdRun;
+}
+function battleDirectorImpact(side,word){
+  if(['ult','boss','phase'].includes(bdMode))return false;const token=bdSetup('impact',side,word,'IMPACT FRAME','',false);if(!token)return false;
+  $('#bdImpactWord').textContent=word;battleCamera(side==='player'?'dir-impact-player':'dir-impact-foe',520);bdLater(bdReset,610,token);return true;
+}
+function battleDirectorUlt(label){
+  const target=fight?fight.en.n.toUpperCase():'TARGET',token=bdSetup('ult','player',label,'LIMIT BREAK','KI OUTPUT // MAXIMUM',true,'prep');if(!token)return;
+  battleCamera('dir-track-player',720);
+  bdLater(()=>{$('#battleDirector').classList.remove('prep');$('#battleDirector').classList.add('fire');},650,token);
+  bdLater(()=>{const d=$('#battleDirector');d.classList.remove('fire');d.classList.add('after');$('#bdKicker').textContent='AFTERMATH';$('#bdTitle').textContent='DIRECT HIT';$('#bdSub').textContent=target+' // IMPACT CONFIRMED';battleCamera('dir-aftermath',620);},1390,token);
+  bdLater(bdReset,2200,token);
+}
+function battleDirectorBoss(label){
+  if(bdMode==='phase'||bdMode==='ult')return false;const token=bdSetup('boss','foe',label,'BOSS TECHNIQUE','DEFEND OR BE BROKEN',true);if(!token)return false;
+  battleCamera('dir-track-foe',520);bdLater(()=>{$('#battleDirector').classList.add('strike');battleCamera('dir-impact-foe',520);},460,token);bdLater(bdReset,1120,token);return true;
+}
+function battleDirectorPhase(){
+  if(!fight)return;const token=bdSetup('phase','foe','PHASE TWO','LIMITER RELEASED',fight.en.n.toUpperCase()+' // THE ARENA HAS CHANGED',true);if(!token)return;
+  battleCamera('dir-track-foe',760);bdLater(()=>{$('#bdKicker').textContent='THREAT ESCALATED';$('#bdTitle').textContent='NO MORE RESTRAINT';},850,token);bdLater(bdReset,1760,token);
+}
+function arcCinematic(label){battleDirectorUlt(label);}
 function renderFight(){
   const f=fight;if(!f)return;
   $('#foeName').textContent=f.en.n;
@@ -2979,21 +3225,25 @@ function pAttack(power,ign,label,kind){
   const forced=f.lastStandActive;
   const heavy=power>1.5;
   const r=calcHit(f.pc.atk,power*comboMult,forced?100:f.pc.crit,f.es.def,ign,f.pc.pl,f.es.pl);
+  const directed=r.c||forced||power>=2.4;
   f.eHp-=r.d;f.combo++;
   if(forced){f.lastStandActive=false;f.lastStandUsed=true;$('#arena').classList.remove('clutch');
     blog('LAST STAND! Your '+label+' connects with devastating force for '+r.d+'!');}
   else{blog('Your '+label+' hits for '+r.d+(r.c?' — critical!':'.')+(f.combo>=3?(' COMBO x'+f.combo+'!'):''));}
   const impact=()=>{
+    battleCamera('dir-impact-player',directed?520:280);
     bflash();bfloat('-'+r.d+(r.c?'!':''),r.c?'crit':'dmg');
     anim('#foeArt','hurt',440);spark('#foeArt',r.c||heavy);if(r.c||heavy||forced)punch();
     buzz(r.c?[22,28,55]:heavy?26:16);beep(forced?960:(r.c?900:620),.08,'square',.03);
     if(f.combo>=3)bfloat('COMBO x'+f.combo,'clutch');
+    if(directed){damageArena(kind==='ult'?2:1);if(kind!=='ult')battleDirectorImpact('player',forced?'LAST STAND':(r.c?'CRITICAL':'ARMOR BREAK'));}
   };
   if(kind==='beam'||kind==='ult'){
     const col=kind==='ult'?'#ff2e88':(skillLevel('ki')>=2?'#4fa8ff':'#35e0ff');
-    f._replyDelay=kind==='ult'?1600:760;
+    f._replyDelay=kind==='ult'?2250:760;
+    battleCamera('dir-track-player',kind==='ult'?560:360);
     beep(kind==='ult'?200:480,.12,'sawtooth',.035);
-    if(kind==='ult'){arcCinematic(label);setTimeout(()=>fireProjectile('#meArt','#foeArt',{color:col,size:'ult',dur:620}).then(impact),430);}
+    if(kind==='ult'){arcCinematic(label);setTimeout(()=>fireProjectile('#meArt','#foeArt',{color:col,size:'ult',dur:650}).then(impact),650);}
     else fireProjectile('#meArt','#foeArt',{color:col,size:heavy?'big':'',dur:340}).then(impact);
   }else{
     f._replyDelay=720;
@@ -3024,14 +3274,15 @@ function playerMove(m){
   setTimeout(()=>{                                  // then the enemy responds
     if(!fight||fight.over)return;
     enemyTurn();
-    if(fight.pHp<=0){renderFight();setTimeout(loseFight,480);return;}
-    fight.ki=Math.min(fight.pc.kiMax,fight.ki+fight.pc.kiRegen);
-    fight.busy=false;renderFight();
+    const settle=fight._postDelay||0;fight._postDelay=0;
+    if(fight.pHp<=0){renderFight();setTimeout(loseFight,Math.max(480,settle));return;}
+    const unlockTurn=()=>{if(!fight||fight.over)return;fight.ki=Math.min(fight.pc.kiMax,fight.ki+fight.pc.kiRegen);fight.busy=false;renderFight();};
+    if(settle)setTimeout(unlockTurn,settle);else unlockTurn();
   },replyDelay);
 }
 function enemyTurn(){
   const f=fight;f.eTurn++;
-  if(f.en.r==='boss'&&f.eHp<=f.eHpMax*0.3&&!f.enraged){f.enraged=true;$('#battleFight').classList.add('enraged');blog(f.en.n.toUpperCase()+' POWERS UP!');bfloat('ENRAGED','crit');bigFx();bflash();anim('#foeArt','lunge',420);buzz([50,40,70]);beep(140,.3,'sawtooth',.05);}
+  if(f.en.r==='boss'&&f.eHp<=f.eHpMax*0.3&&!f.enraged){f.enraged=true;$('#battleFight').classList.add('enraged','phaseBroken');setArenaDamage(3);battleDirectorPhase();f._postDelay=Math.max(f._postDelay||0,1800);blog(f.en.n.toUpperCase()+' POWERS UP!');bfloat('ENRAGED','crit');bigFx();bflash();anim('#foeArt','lunge',420);buzz([50,40,70]);beep(140,.3,'sawtooth',.05);}
   if(hasTrait('rampage'))f.eAtk*=1.06;
   const atk=f.eAtk*(f.enraged?1.3:1);
 
@@ -3040,6 +3291,7 @@ function enemyTurn(){
     if(f.charging){
       f.charging=false;
       const bm=BOSS_MOVES[f.en.s],moveName=bm?bm.name:'devastating strike';
+      battleDirectorBoss(moveName);damageArena(2);f._postDelay=Math.max(f._postDelay||0,1160);
       const dodge=Math.max(0,Math.min(35,(f.pc.spd-f.es.spd)*0.5));
       if(roll(dodge)){bfloat('DODGE','miss');blog('You dodge the '+moveName+'!');anim('#meArt','lunge',420);buzz(10);return;}
       const r=calcHit(atk,2.2,f.es.crit,f.pc.def,0,f.es.pl,f.pc.pl);let d=r.d;
@@ -3066,6 +3318,7 @@ function enemyTurn(){
   for(let i=0;i<attacks;i++){
     if(f.pHp<=0)break;
     const power=(f.en.r!=='boss'&&f.eTurn%3===0)?1.7:1.0;
+    if(power>1)battleCamera('dir-track-foe',320);
     const dodge=Math.max(0,Math.min(35,(f.pc.spd-f.es.spd)*0.5));
     if(roll(dodge)){bfloat('DODGE','miss');blog('You dodged '+f.en.n+'’s attack!');anim('#meArt','lunge',420);buzz(8);continue;}
     const r=calcHit(atk,power,f.es.crit,f.pc.def,0,f.es.pl,f.pc.pl);let d=r.d;
@@ -3075,6 +3328,7 @@ function enemyTurn(){
     if(d>0)f.combo=0;
     f.pHp-=d;bfloat('-'+d,'foe');
     hitFx('#meArt','#foeArt',r.c,power>1);buzz(power>1?[16,18,38]:14);
+    if(d>0&&(r.c||power>1)){damageArena(1);if(battleDirectorImpact('foe',r.c?'CRITICAL':'HEAVY BLOW'))f._postDelay=Math.max(f._postDelay||0,640);}
     blog(f.en.n+(power>1?' unleashes a heavy blow':' strikes')+' for '+d+'.'+maybeFlavor(f.en.r));beep(220,.09,'square',.03);
     if(hasTrait('lifesteal'))f.eHp=Math.min(f.eHpMax,f.eHp+d*0.3);
     if(hasTrait('kidrain'))f.ki=Math.max(0,f.ki-8);
@@ -3232,6 +3486,8 @@ $('#calTargetInput').addEventListener('change',e=>{st.calTarget=clamp(Math.round
 $('#proteinTargetInput').addEventListener('change',e=>{st.proteinTarget=clamp(Math.round(Number(e.target.value)||150),30,400);save();renderDaily();});
 $('#crToggle').addEventListener('click',()=>{if(st.today.synced)return;st.today.creatine=!st.today.creatine;save();renderDaily();beep(st.today.creatine?1200:440,.08,'triangle',.03);});
 $('#syncBtn').addEventListener('click',syncDay);
+$('#srSkip').addEventListener('click',()=>finishSyncRitual(true));
+$('#srContinue').addEventListener('click',()=>finishSyncRitual(false));
 $('#editTodayBtn').addEventListener('click',unlockToday);
 $('#editYesterdayBtn').addEventListener('click',openPastDay);
 $('#pastWorkoutGrid').addEventListener('click',e=>{
@@ -3248,12 +3504,16 @@ $('#cancelPastDay').addEventListener('click',closePastDay);
 $('#pastModal').addEventListener('click',e=>{if(e.target.id==='pastModal')closePastDay();});
 $('#histBody').addEventListener('click',e=>{if(e.target.closest('[data-edit-past]'))openPastDay();});
 document.addEventListener('keydown',e=>{
-  const cinema=$('#tfCinema');
+  const ritual=$('#syncRitual'),cinema=$('#tfCinema');
+  if(!ritual.hidden&&e.key==='Tab'){
+    const focusable=[$('#srSkip'),...($('#srContinue').disabled?[]:[$('#srContinue')])],at=focusable.indexOf(document.activeElement);
+    e.preventDefault();focusable[(at+(e.shiftKey?-1:1)+focusable.length)%focusable.length].focus();return;
+  }
   if(!cinema.hidden&&e.key==='Tab'){
     const focusable=[$('#tfCSkip'),...($('#tfCContinue').disabled?[]:[$('#tfCContinue')])],at=focusable.indexOf(document.activeElement);
     e.preventDefault();focusable[(at+(e.shiftKey?-1:1)+focusable.length)%focusable.length].focus();return;
   }
-  if(e.key!=='Escape')return;if(!cinema.hidden)finishTfCinema(true);else if(!$('#pastModal').hidden)closePastDay();
+  if(e.key!=='Escape')return;if(!ritual.hidden)finishSyncRitual(true);else if(!cinema.hidden)finishTfCinema(true);else if(!$('#pastModal').hidden)closePastDay();
 });
 $('#resetBtn').addEventListener('click',()=>{
   if(confirm('Reset all save data? Your character, level, forms and history will be wiped.')){
