@@ -1788,18 +1788,18 @@ const yesterdayStr=()=>offsetDayStr(todayStr(),-1);
 /* ================= FORMS ================= */
 const FORMS=[
 {id:'base',   nm:'BASE FORM',           img:'img/forms-clean/base.png',    pl:0,     mult:1,       fx:1,   tag:'',                   desc:'Natural state. Build your power through daily discipline.'},
-{id:'kaioken',nm:'KAIOKEN',             img:'img/forms-clean/kaioken.png', pl:300,   mult:10,      fx:1.05,tag:'KING KAI TECHNIQUE', desc:'A crimson surge that multiplies power at the cost of strain on the body.'},
-{id:'ssj',    nm:'SUPER SAIYAN',        img:'img/forms-clean/ssj.png',     pl:800,   mult:50,      fx:1,   tag:'THE LEGENDARY',      desc:'The legendary transformation, triggered by need... or by relentless training.'},
-{id:'ussj',   nm:'ULTRA SUPER SAIYAN',  img:'img/forms-clean/ussj.png',    pl:1500,  mult:60,      fx:1.45,tag:'GRADE 3',            desc:'Maximum muscle mass. Raw power over speed.'},
-{id:'ssj2',   nm:'SUPER SAIYAN 2',      img:'img/forms-clean/ssj2.png',    pl:2600,  mult:100,     fx:1,   tag:'ASCENDED',           desc:'Ascended Saiyan. Lightning wreathes the body.'},
-{id:'ssj3',   nm:'SUPER SAIYAN 3',      img:'img/forms-clean/ssj3.png',    pl:4200,  mult:400,     fx:1,   tag:'FULL POWER',         desc:'Hair grows to the waist, eyebrows vanish. Enormous ki drain.'},
-{id:'goldape',nm:'GOLDEN GREAT APE',    img:'img/forms-clean/goldape.png', pl:6000,  mult:500,     fx:1,   tag:'GT',                 desc:'Primal Oozaru power fused with Super Saiyan energy.'},
-{id:'ssj4',   nm:'SUPER SAIYAN 4',      img:'img/forms-clean/ssj4.png',    pl:8000,  mult:4000,    fx:1.1, tag:'GT',                 desc:'Crimson fur, black mane. Primal power under full control.'},
-{id:'ssg',    nm:'SUPER SAIYAN GOD',    img:'img/forms-clean/ssg.png',     pl:9800,  mult:10000,   fx:.9,  tag:'DIVINE',             desc:'Divine ki. A lean crimson god-form of pure efficiency.'},
-{id:'ssb',    nm:'SUPER SAIYAN BLUE',   img:'img/forms-clean/ssb.png',     pl:11800, mult:50000,   fx:1,   tag:'SSGSS',              desc:'Super Saiyan God Super Saiyan. God ki, mastered.'},
-{id:'ssbk',   nm:'SSB KAIOKEN',         img:'img/forms-clean/ssbk.png',    pl:14000, mult:200000,  fx:1,   tag:'GOKU ONLY',          desc:'Blue times Kaioken. A gamble of body and soul.'},
-{id:'uis',    nm:'ULTRA INSTINCT SIGN', img:'img/forms-clean/uis.png',     pl:17000, mult:500000,  fx:1,   tag:'OMEN',               desc:'The omen. The body begins to move on its own.'},
-{id:'ue',     nm:'ULTRA EGO',           img:'img/forms-clean/ue.png',      pl:20500, mult:2000000, fx:1.15,tag:'VEGETA ONLY',        desc:'God of Destruction technique. Power grows with damage taken.'}
+{id:'kaioken',nm:'KAIOKEN',             img:'img/forms-clean/kaioken.png', pl:4000,  mult:10,      fx:1.05,tag:'KING KAI TECHNIQUE', desc:'A crimson surge that multiplies power at the cost of strain on the body.'},
+{id:'ssj',    nm:'SUPER SAIYAN',        img:'img/forms-clean/ssj.png',     pl:10800, mult:50,      fx:1,   tag:'THE LEGENDARY',      desc:'The legendary transformation, triggered by need... or by relentless training.'},
+{id:'ussj',   nm:'ULTRA SUPER SAIYAN',  img:'img/forms-clean/ussj.png',    pl:12600, mult:60,      fx:1.45,tag:'GRADE 3',            desc:'Maximum muscle mass. Raw power over speed.'},
+{id:'ssj2',   nm:'SUPER SAIYAN 2',      img:'img/forms-clean/ssj2.png',    pl:14000, mult:100,     fx:1,   tag:'ASCENDED',           desc:'Ascended Saiyan. Lightning wreathes the body.'},
+{id:'ssj3',   nm:'SUPER SAIYAN 3',      img:'img/forms-clean/ssj3.png',    pl:15400, mult:400,     fx:1,   tag:'FULL POWER',         desc:'Hair grows to the waist, eyebrows vanish. Enormous ki drain.'},
+{id:'goldape',nm:'GOLDEN GREAT APE',    img:'img/forms-clean/goldape.png', pl:17500, mult:500,     fx:1,   tag:'GT',                 desc:'Primal Oozaru power fused with Super Saiyan energy.'},
+{id:'ssj4',   nm:'SUPER SAIYAN 4',      img:'img/forms-clean/ssj4.png',    pl:19600, mult:4000,    fx:1.1, tag:'GT',                 desc:'Crimson fur, black mane. Primal power under full control.'},
+{id:'ssg',    nm:'SUPER SAIYAN GOD',    img:'img/forms-clean/ssg.png',     pl:21700, mult:10000,   fx:.9,  tag:'DIVINE',             desc:'Divine ki. A lean crimson god-form of pure efficiency.'},
+{id:'ssb',    nm:'SUPER SAIYAN BLUE',   img:'img/forms-clean/ssb.png',     pl:23800, mult:50000,   fx:1,   tag:'SSGSS',              desc:'Super Saiyan God Super Saiyan. God ki, mastered.'},
+{id:'ssbk',   nm:'SSB KAIOKEN',         img:'img/forms-clean/ssbk.png',    pl:25900, mult:200000,  fx:1,   tag:'GOKU ONLY',          desc:'Blue times Kaioken. A gamble of body and soul.'},
+{id:'uis',    nm:'ULTRA INSTINCT SIGN', img:'img/forms-clean/uis.png',     pl:28000, mult:500000,  fx:1,   tag:'OMEN',               desc:'The omen. The body begins to move on its own.'},
+{id:'ue',     nm:'ULTRA EGO',           img:'img/forms-clean/ue.png',      pl:32200, mult:2000000, fx:1.15,tag:'VEGETA ONLY',        desc:'God of Destruction technique. Power grows with damage taken.'}
 ];
 const FORM_COLORS={base:'#8affc8',kaioken:'#ff4d5e',ssj:'#ffd75e',ussj:'#ffb03a',ssj2:'#ffe986',ssj3:'#ffcc52',goldape:'#ffb84d',ssj4:'#ff4d70',ssg:'#ff5b5b',ssb:'#57b8ff',ssbk:'#a3b8ff',uis:'#e4efff',ue:'#b57aff'};
 
@@ -1875,7 +1875,7 @@ function defaultState(){return{
   history:[],lastSync:null,form:0,formMax:0,battle:defaultBattle(),
   ascPoints:0,skillPoints:0,streakPaid:0,
   trained:{vit:0,str:0,agi:0,foc:0},
-  skills:{strike:0,ki:0,ult:0,guard:0,charge:0},battleXpResetV1:true,characterLevelResetV2:true};}
+  skills:{strike:0,ki:0,ult:0,guard:0,charge:0},battleXpResetV1:true,characterLevelResetV2:true,formCurveV3:true};}
 
 let st=load();
 function load(){
@@ -1897,6 +1897,11 @@ function load(){
       if(!s.characterLevelResetV2){
         s.level=2;s.xp=0;s.characterLevelResetV2=true;
         localStorage.setItem(KEY,JSON.stringify(s));
+      }
+      if(!s.formCurveV3){
+        const earned=earnedFormIndex(s);
+        s.formMax=Math.min(s.formMax||0,earned);s.form=Math.min(s.form||0,s.formMax);
+        s.formCurveV3=true;localStorage.setItem(KEY,JSON.stringify(s));
       }
       return s;}}}catch(e){}
   return defaultState();
@@ -2085,9 +2090,12 @@ function awardStreakPoints(){
   st.ascPoints=(st.ascPoints||0)+ap;st.skillPoints=(st.skillPoints||0)+sp;
   return {ap,sp};
 }
-function basePL(){
-  return Math.round((effOf('vit')*1.2+effOf('str')*1.4+effOf('agi')*1.1+effOf('foc')*1.3)*(1+st.level*.2)*7);
+function stateBasePL(s){
+  const trained=s.trained||{},eff=k=>Math.min(100,s.stats[k]||1)+(trained[k]||0);
+  return Math.round((eff('vit')*1.2+eff('str')*1.4+eff('agi')*1.1+eff('foc')*1.3)*(1+(s.level||1)*.2)*7);
 }
+function earnedFormIndex(s){const pl=stateBasePL(s);let idx=0;for(let i=1;i<FORMS.length;i++){if(pl<FORMS[i].pl)break;idx=i;}return idx;}
+function basePL(){return stateBasePL(st);}
 function fmtPL(n){
   if(n>=1e15)return(n/1e15).toFixed(2)+'Qa';
   if(n>=1e12)return(n/1e12).toFixed(2)+'T';
@@ -2280,9 +2288,9 @@ function renderForm(){
   if(st.formMax<FORMS.length-1&&FORMS[st.formMax+1].img){const pre=new Image();pre.src=FORMS[st.formMax+1].img;}
   const nfEl=$('#nextForm'),ready=$('#tfReady');
   if(st.formMax<FORMS.length-1){
-    const nx=FORMS[st.formMax+1];
-    if(basePL()>=nx.pl){ready.hidden=false;nfEl.textContent='⚡ THRESHOLD REACHED ─ '+nx.nm;}
-    else{ready.hidden=true;nfEl.textContent='NEXT FORM: '+nx.nm+' @ BASE PL '+nx.pl.toLocaleString();}
+    const nx=FORMS[st.formMax+1],currentPL=basePL();
+    if(currentPL>=nx.pl){ready.hidden=false;nfEl.textContent='⚡ THRESHOLD REACHED ─ '+nx.nm;}
+    else{const progress=clamp(Math.floor(currentPL/nx.pl*100),0,99);ready.hidden=true;nfEl.textContent='NEXT FORM: '+nx.nm+' · '+currentPL.toLocaleString()+' / '+nx.pl.toLocaleString()+' PL · '+progress+'%';}
   }else{ready.hidden=true;nfEl.textContent='FINAL FORM ACHIEVED';}
 }
 function renderMeta(){
