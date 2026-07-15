@@ -1788,18 +1788,18 @@ const yesterdayStr=()=>offsetDayStr(todayStr(),-1);
 /* ================= FORMS ================= */
 const FORMS=[
 {id:'base',   nm:'BASE FORM',           img:'img/forms-clean/base.png',    pl:0,     mult:1,       fx:1,   tag:'',                   desc:'Natural state. Build your power through daily discipline.'},
-{id:'kaioken',nm:'KAIOKEN',             img:'img/forms-clean/kaioken.png', pl:4000,  mult:10,      fx:1.05,tag:'KING KAI TECHNIQUE', desc:'A crimson surge that multiplies power at the cost of strain on the body.'},
-{id:'ssj',    nm:'SUPER SAIYAN',        img:'img/forms-clean/ssj.png',     pl:10800, mult:50,      fx:1,   tag:'THE LEGENDARY',      desc:'The legendary transformation, triggered by need... or by relentless training.'},
-{id:'ussj',   nm:'ULTRA SUPER SAIYAN',  img:'img/forms-clean/ussj.png',    pl:12600, mult:60,      fx:1.45,tag:'GRADE 3',            desc:'Maximum muscle mass. Raw power over speed.'},
-{id:'ssj2',   nm:'SUPER SAIYAN 2',      img:'img/forms-clean/ssj2.png',    pl:14000, mult:100,     fx:1,   tag:'ASCENDED',           desc:'Ascended Saiyan. Lightning wreathes the body.'},
-{id:'ssj3',   nm:'SUPER SAIYAN 3',      img:'img/forms-clean/ssj3.png',    pl:15400, mult:400,     fx:1,   tag:'FULL POWER',         desc:'Hair grows to the waist, eyebrows vanish. Enormous ki drain.'},
-{id:'goldape',nm:'GOLDEN GREAT APE',    img:'img/forms-clean/goldape.png', pl:17500, mult:500,     fx:1,   tag:'GT',                 desc:'Primal Oozaru power fused with Super Saiyan energy.'},
-{id:'ssj4',   nm:'SUPER SAIYAN 4',      img:'img/forms-clean/ssj4.png',    pl:19600, mult:4000,    fx:1.1, tag:'GT',                 desc:'Crimson fur, black mane. Primal power under full control.'},
-{id:'ssg',    nm:'SUPER SAIYAN GOD',    img:'img/forms-clean/ssg.png',     pl:21700, mult:10000,   fx:.9,  tag:'DIVINE',             desc:'Divine ki. A lean crimson god-form of pure efficiency.'},
-{id:'ssb',    nm:'SUPER SAIYAN BLUE',   img:'img/forms-clean/ssb.png',     pl:23800, mult:50000,   fx:1,   tag:'SSGSS',              desc:'Super Saiyan God Super Saiyan. God ki, mastered.'},
-{id:'ssbk',   nm:'SSB KAIOKEN',         img:'img/forms-clean/ssbk.png',    pl:25900, mult:200000,  fx:1,   tag:'GOKU ONLY',          desc:'Blue times Kaioken. A gamble of body and soul.'},
-{id:'uis',    nm:'ULTRA INSTINCT SIGN', img:'img/forms-clean/uis.png',     pl:28000, mult:500000,  fx:1,   tag:'OMEN',               desc:'The omen. The body begins to move on its own.'},
-{id:'ue',     nm:'ULTRA EGO',           img:'img/forms-clean/ue.png',      pl:32200, mult:2000000, fx:1.15,tag:'VEGETA ONLY',        desc:'God of Destruction technique. Power grows with damage taken.'}
+{id:'kaioken',nm:'KAIOKEN',             img:'img/forms-clean/kaioken.png', pl:4000,  mult:40,            fx:1.05,tag:'KING KAI TECHNIQUE', desc:'A crimson surge that multiplies power at the cost of strain on the body.'},
+{id:'ssj',    nm:'SUPER SAIYAN',        img:'img/forms-clean/ssj.png',     pl:10800, mult:5000,          fx:1,   tag:'THE LEGENDARY',      desc:'The legendary transformation, triggered by need... or by relentless training.'},
+{id:'ussj',   nm:'ULTRA SUPER SAIYAN',  img:'img/forms-clean/ussj.png',    pl:12600, mult:15000,         fx:1.45,tag:'GRADE 3',            desc:'Maximum muscle mass. Raw power over speed.'},
+{id:'ssj2',   nm:'SUPER SAIYAN 2',      img:'img/forms-clean/ssj2.png',    pl:14000, mult:300000,        fx:1,   tag:'ASCENDED',           desc:'Ascended Saiyan. Lightning wreathes the body.'},
+{id:'ssj3',   nm:'SUPER SAIYAN 3',      img:'img/forms-clean/ssj3.png',    pl:15400, mult:5000000,       fx:1,   tag:'FULL POWER',         desc:'Hair grows to the waist, eyebrows vanish. Enormous ki drain.'},
+{id:'goldape',nm:'GOLDEN GREAT APE',    img:'img/forms-clean/goldape.png', pl:17500, mult:30000000,      fx:1,   tag:'GT',                 desc:'Primal Oozaru power fused with Super Saiyan energy.'},
+{id:'ssj4',   nm:'SUPER SAIYAN 4',      img:'img/forms-clean/ssj4.png',    pl:19600, mult:250000000,     fx:1.1, tag:'GT',                 desc:'Crimson fur, black mane. Primal power under full control.'},
+{id:'ssg',    nm:'SUPER SAIYAN GOD',    img:'img/forms-clean/ssg.png',     pl:21700, mult:600000000,     fx:.9,  tag:'DIVINE',             desc:'Divine ki. A lean crimson god-form of pure efficiency.'},
+{id:'ssb',    nm:'SUPER SAIYAN BLUE',   img:'img/forms-clean/ssb.png',     pl:23800, mult:3000000000,    fx:1,   tag:'SSGSS',              desc:'Super Saiyan God Super Saiyan. God ki, mastered.'},
+{id:'ssbk',   nm:'SSB KAIOKEN',         img:'img/forms-clean/ssbk.png',    pl:25900, mult:25000000000,   fx:1,   tag:'GOKU ONLY',          desc:'Blue times Kaioken. A gamble of body and soul.'},
+{id:'uis',    nm:'ULTRA INSTINCT SIGN', img:'img/forms-clean/uis.png',     pl:28000, mult:500000000000,  fx:1,   tag:'OMEN',               desc:'The omen. The body begins to move on its own.'},
+{id:'ue',     nm:'ULTRA EGO',           img:'img/forms-clean/ue.png',      pl:32200, mult:3000000000000, fx:1.15,tag:'VEGETA ONLY',        desc:'God of Destruction technique. Power grows with damage taken.'}
 ];
 const FORM_COLORS={base:'#8affc8',kaioken:'#ff4d5e',ssj:'#ffd75e',ussj:'#ffb03a',ssj2:'#ffe986',ssj3:'#ffcc52',goldape:'#ffb84d',ssj4:'#ff4d70',ssg:'#ff5b5b',ssb:'#57b8ff',ssbk:'#a3b8ff',uis:'#e4efff',ue:'#b57aff'};
 
@@ -1875,7 +1875,7 @@ function defaultState(){return{
   history:[],lastSync:null,form:0,formMax:0,battle:defaultBattle(),
   ascPoints:0,skillPoints:0,streakPaid:0,
   trained:{vit:0,str:0,agi:0,foc:0},
-  skills:{strike:0,ki:0,ult:0,guard:0,charge:0},battleXpResetV1:true,characterLevelResetV2:true,formCurveV3:true,battleCampaignResetV3:true};}
+  skills:{strike:0,ki:0,ult:0,guard:0,charge:0},battleXpResetV1:true,characterLevelResetV2:true,formCurveV3:true,battleCampaignResetV3:true,battlePowerResetV4:true};}
 
 let st=load();
 function load(){
@@ -1905,6 +1905,10 @@ function load(){
       }
       if(!s.battleCampaignResetV3){
         s.battle=defaultBattle();s.battleCampaignResetV3=true;
+        localStorage.setItem(KEY,JSON.stringify(s));
+      }
+      if(!s.battlePowerResetV4){
+        s.battle=defaultBattle();s.battlePowerResetV4=true;
         localStorage.setItem(KEY,JSON.stringify(s));
       }
       return s;}}}catch(e){}
@@ -2464,10 +2468,9 @@ $('#historyBack').addEventListener('click',()=>{showView('daily');beep(700,.04,'
 })();
 
 /* ================= BATTLE MODE ================= */
-const BM=[1.00,1.15,1.35,1.55,1.80,2.10,2.45,2.85,3.30,3.80,4.35,5.00,5.75];
-const ROLE={grunt:{hp:1.4,atk:0.9,def:1.0,spd:0.95},elite:{hp:1.7,atk:1.05,def:1.1,spd:1.05},boss:{hp:2.2,atk:1.25,def:1.2,spd:1.0}};
+const ROLE={grunt:{hp:.92,atk:.92,def:.95,spd:.95,crit:8},elite:{hp:1.08,atk:1,def:1.05,spd:1.02,crit:10},boss:{hp:1.25,atk:1.08,def:1.1,spd:1,crit:12}};
 function defaultBattle(){return{cleared:[],tierUnlocked:0,wins:0,losses:0,trophies:{}};}
-/* TIERS: s=saga label · f=form gate (index into FORMS) · c=arena tint · a/l=enemy scaling refs */
+/* TIERS: s=saga label · f=recommended form (index into FORMS) · c=arena tint */
 const TIERS=[
   {s:'Saiyan Saga — the Invasion',f:0,c:'#ffb03a',a:6,l:3},
   {s:'Saiyan Saga — the Prince',f:1,c:'#ffb03a',a:11,l:6},
@@ -2556,16 +2559,19 @@ function checkLastStand(){
     buzz([60,40,60,40,120]);
   }
 }
+function playerPL(form){return basePL()*FORMS[form].mult;}
 function playerCombat(f){
-  const s={vit:effOf('vit'),str:effOf('str'),agi:effOf('agi'),foc:effOf('foc')},l=st.level,M=BM[f];
-  return {form:f,M,hpMax:Math.round((s.vit*6+l*8+40)*Math.sqrt(M)),atk:(s.str*1.4+l+8)*M,
-    def:s.vit*0.5+l*0.7+5,spd:s.agi+l*0.3,kiMax:Math.round(s.foc*0.7+25),
-    kiRegen:Math.round(4+s.foc*0.15),crit:Math.min(55,5+s.foc*0.45)};
+  const s={vit:effOf('vit'),str:effOf('str'),agi:effOf('agi'),foc:effOf('foc')},pl=playerPL(f),root=Math.sqrt(Math.max(1,pl));
+  const avg=Math.max(1,(s.vit+s.str+s.agi+s.foc)/4),profile=v=>clamp(.65+.35*(v/avg),.75,1.3);
+  const vit=profile(s.vit),str=profile(s.str),agi=profile(s.agi);
+  return {form:f,pl,hpMax:Math.round(55+root*4.5*vit),atk:8+root*1.15*str,
+    def:4+root*.42*vit,spd:10+Math.log10(pl+1)*5*agi,kiMax:Math.round(s.foc*.7+25),
+    kiRegen:Math.round(4+s.foc*.15),crit:Math.min(55,5+s.foc*.45)};
 }
 function enemyStats(e){
-  const T=TIERS[e.t],M=BM[T.f],a=T.a,l=T.l,b=ROLE[e.r];
-  return {hpMax:Math.round((a*6+l*8+40)*Math.sqrt(M)*b.hp),atk:(a*1.4+l+8)*M*b.atk,
-    def:(a*0.5+l*0.7+5)*b.def,spd:(a+l*0.3)*b.spd,crit:10};
+  const b=ROLE[e.r],pl=e.pl,root=Math.sqrt(Math.max(1,pl));
+  return {pl,hpMax:Math.round(55+root*4.5*b.hp),atk:(8+root*1.15)*b.atk,
+    def:(4+root*.42)*b.def,spd:(10+Math.log10(pl+1)*5)*b.spd,crit:b.crit};
 }
 function roll(p){return Math.random()*100<p;}
 function calcHit(atk,power,crit,def,ign){const eff=def*(1-(ign||0));const c=roll(crit);
@@ -2629,7 +2635,7 @@ function stgCount(el,target){
 function selectFoe(e){
   if(!e)return;staged=e;
   const rail=$('#stgRail');if(rail)rail.querySelectorAll('.stgFoeCard').forEach(c=>c.classList.toggle('sel',c.dataset.foe===e.s));
-  const T=TIERS[e.t],mf=FORMS[st.formMax];
+  const T=TIERS[e.t],mf=FORMS[st.form];
   const tierEnemies=ENEMIES.filter(x=>x.t===e.t),tierDone=tierEnemies.filter(x=>st.battle.cleared.includes(x.s)).length;
   $('#battleStage').style.setProperty('--arenaC',T.c||'#35e0ff');
   $('#regionName').textContent='TIER '+(e.t+1)+'/'+TIERS.length+' · '+FORMS[T.f].nm;
@@ -2650,14 +2656,14 @@ function selectFoe(e){
   $('#stgDSig').textContent=stgSignature(e);
   $('#stgDReward').textContent=stgReward(e);
   $('#stgDQuote').textContent='“'+stgTaunt(e).replace(/^"|"$/g,'')+'”';
-  stgCount($('#stgYouPL'),basePL()*mf.mult);stgCount($('#stgFoePL'),e.pl);
+  stgCount($('#stgYouPL'),playerPL(st.form));stgCount($('#stgFoePL'),e.pl);
   const locked=nodeState(e)==='locked';
   const eng=$('#stgEngage');eng.disabled=locked;
   eng.textContent=locked?'◈ LOCKED':(st.battle.cleared.includes(e.s)?'⚔ REMATCH':'⚡ ENGAGE');
 }
 function startFight(e){
-  const pc=playerCombat(0);
-  fight={en:e,es:enemyStats(e),pForm:0,pc,pHpMax:pc.hpMax,pHp:pc.hpMax,ki:Math.min(pc.kiMax,Math.max(30,Math.round(pc.kiMax*0.55))),
+  const startForm=st.form,pc=playerCombat(startForm);
+  fight={en:e,es:enemyStats(e),pForm:startForm,pc,pHpMax:pc.hpMax,pHp:pc.hpMax,ki:Math.min(pc.kiMax,Math.max(30,Math.round(pc.kiMax*0.55))),
     guard:false,over:false,revived:false,eTurn:0,enraged:false,
     combo:0,charging:false,lastStandActive:false,lastStandUsed:false};
   fight.eHpMax=fight.es.hpMax;fight.eHp=fight.es.hpMax;fight.eAtk=fight.es.atk;
@@ -2692,7 +2698,7 @@ function renderFight(){
   $('#meKiNum').textContent=Math.round(f.ki)+' / '+Math.round(f.pc.kiMax);
   const kiPct=clamp(f.ki/f.pc.kiMax*100,0,100),kiOn=Math.ceil(kiPct/10);
   $('#meKi').innerHTML=Array.from({length:10},(_,i)=>`<i class="${i<kiOn?'on':''}"></i>`).join('');
-  $('#meForm').textContent=FORMS[f.pForm].nm+' · PL '+fmtPL(basePL()*FORMS[f.pForm].mult);
+  $('#meForm').textContent=FORMS[f.pForm].nm+' · PL '+fmtPL(f.pc.pl);
   $('#turnN').textContent=(f.eTurn||0)+1;$('#arcPhase').textContent=f.busy?'RESOLVING':(f.charging?'DANGER':'YOUR MOVE');
   const cb=$('#comboBadge');
   if(f.combo>=2){cb.hidden=false;cb.textContent='COMBO ×'+f.combo;}else{cb.hidden=true;}
@@ -2740,8 +2746,8 @@ function pAttack(power,ign,label,kind){
   }
 }
 function transformFight(){
-  const f=fight;f.pForm=st.formMax;const pc=playerCombat(f.pForm);
-  f.pc=pc;f.pHpMax=pc.hpMax;f.pHp=Math.min(pc.hpMax,f.pHp+pc.hpMax*0.10);
+  const f=fight,hpRatio=clamp(f.pHp/f.pHpMax,0,1);f.pForm=st.formMax;const pc=playerCombat(f.pForm);
+  f.pc=pc;f.pHpMax=pc.hpMax;f.pHp=Math.round(Math.min(pc.hpMax,pc.hpMax*(hpRatio+0.10)));
   f._replyDelay=1050;
   blog('You transform — '+FORMS[f.pForm].nm+'!');bigFx();bflash();setTimeout(()=>spark('#meArt',true),40);buzz([20,25,20,25,80]);
   beep(180,.18,'sawtooth',.04);setTimeout(()=>beep(1240,.16,'triangle',.05),160);
@@ -2847,12 +2853,14 @@ function showResult(win,e,first){
 function nodeState(e){
   if(st.battle.cleared.includes(e.s))return'done';
   if(e.t>st.battle.tierUnlocked)return'locked';
+  const tier=ENEMIES.filter(x=>x.t===e.t),index=tier.findIndex(x=>x.s===e.s);
+  if(index>0&&!st.battle.cleared.includes(tier[index-1].s))return'locked';
   return'open';
 }
 function renderBattleHome(){
   $('#battleFight').hidden=true;$('#battleResult').hidden=true;$('#battleStage').hidden=false;
   const b=st.battle;
-  const current=ENEMIES.find(e=>e.t<=b.tierUnlocked&&!b.cleared.includes(e.s))||ENEMIES.find(e=>e.t===b.tierUnlocked)||ENEMIES[0];
+  const current=ENEMIES.find(e=>nodeState(e)==='open')||ENEMIES.find(e=>e.t===b.tierUnlocked)||ENEMIES[0];
   $('#stgRail').innerHTML=ENEMIES.map(e=>{
     const stt=nodeState(e);
     const badge=stt==='done'?'<span class="sfBadge done">✓</span>':stt==='locked'?'<span class="sfBadge lock">🔒</span>':(current&&e.s===current.s?'<span class="sfBadge cur">▸</span>':'');
