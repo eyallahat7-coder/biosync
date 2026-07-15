@@ -433,6 +433,119 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 .mYes:hover{box-shadow:0 0 44px rgba(255,215,94,.8)}
 .mNo{font-family:var(--fd);font-size:12px;letter-spacing:2px;color:var(--dim);background:none;border:1px solid rgba(255,255,255,.18);padding:13px 22px;cursor:pointer;transition:.15s}
 .mNo:hover{color:var(--text);border-color:rgba(255,255,255,.4)}
+/* ====== TRANSFORMATION CINEMA ====== */
+body.tfCinemaOpen{overflow:hidden}
+.tfCinema{--tc:#ffd75e;--tc2:#ff8a3c;position:fixed;inset:0;z-index:220;overflow:hidden;background:#02030a;color:#fff;isolation:isolate;opacity:0}
+.tfCinema.isRunning{opacity:1}
+.tfCWorld,.tfCAtmos,.tfCFlash,.tfCGrain,.tfCVignette{position:absolute;inset:0}
+.tfCWorld{overflow:hidden;perspective:900px;background:#02030a}
+.tfCAtmos{background:radial-gradient(ellipse at 50% 68%,color-mix(in srgb,var(--tc) 18%,transparent),transparent 40%),radial-gradient(circle at 50% 32%,#141936 0,#050711 48%,#010208 100%);transform:scale(1.08);transition:transform 3s cubic-bezier(.12,.7,.15,1),filter .8s}
+.tfCAtmos::before{content:"";position:absolute;inset:-40%;opacity:.16;background:repeating-radial-gradient(circle at 50% 55%,transparent 0 46px,color-mix(in srgb,var(--tc) 38%,transparent) 47px 48px);transform:perspective(700px) rotateX(66deg) translateY(24%)}
+.tfCMoon,.tfCSun,.tfCVortex,.tfCRift,.tfCBeam{position:absolute;display:block;pointer-events:none;opacity:0}
+.tfCMoon{width:min(62vw,62vh);height:min(62vw,62vh);border-radius:50%;left:50%;top:40%;transform:translate(-50%,-50%) scale(.4);background:radial-gradient(circle at 36% 34%,#fff6b8,#f5b742 42%,#a54322 72%,#15070b);box-shadow:0 0 80px color-mix(in srgb,var(--tc) 60%,transparent)}
+.tfCSun{width:min(50vw,50vh);height:min(50vw,50vh);border-radius:50%;left:50%;top:43%;transform:translate(-50%,-50%) scale(.15);border:2px solid color-mix(in srgb,var(--tc) 80%,white);box-shadow:0 0 35px var(--tc),inset 0 0 40px color-mix(in srgb,var(--tc) 40%,transparent)}
+.tfCVortex{inset:-35%;background:conic-gradient(from 0deg,transparent 0 9%,color-mix(in srgb,var(--tc) 28%,transparent) 11%,transparent 16% 31%,color-mix(in srgb,var(--tc2) 24%,transparent) 34%,transparent 40% 63%,color-mix(in srgb,var(--tc) 22%,transparent) 66%,transparent 71%);mask-image:radial-gradient(circle,transparent 0 12%,#000 28%,transparent 66%)}
+.tfCRift{left:50%;top:-20%;width:4px;height:140%;transform:rotate(18deg);background:#fff;box-shadow:0 0 12px #fff,0 0 40px var(--tc2),0 0 90px var(--tc2)}
+.tfCBeam{left:50%;top:-12%;bottom:-12%;width:18%;transform:translateX(-50%) scaleX(.04);background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--tc) 55%,transparent),#fff,color-mix(in srgb,var(--tc) 55%,transparent),transparent);filter:blur(10px)}
+.tfCFloor{position:absolute;left:-18%;right:-18%;bottom:-22%;height:50%;transform:perspective(580px) rotateX(62deg);transform-origin:50% 0;background:repeating-linear-gradient(90deg,transparent 0 8%,color-mix(in srgb,var(--tc) 24%,transparent) 8.2% 8.35%,transparent 8.55% 16%),repeating-linear-gradient(0deg,transparent 0 54px,color-mix(in srgb,var(--tc) 23%,transparent) 56px 57px);opacity:.55}
+.tfCFloor i{position:absolute;left:50%;top:0;width:70%;height:18%;transform:translateX(-50%);border-radius:50%;border:2px solid var(--tc);box-shadow:0 0 35px var(--tc),inset 0 0 30px color-mix(in srgb,var(--tc) 28%,transparent)}
+.tfCFloor b{position:absolute;left:50%;top:-15%;width:1px;height:80%;background:linear-gradient(var(--tc),transparent);box-shadow:-90px 0 0 color-mix(in srgb,var(--tc) 50%,transparent),90px 0 0 color-mix(in srgb,var(--tc) 50%,transparent)}
+.tfCRings{position:absolute;left:50%;top:54%;width:min(70vw,70vh);height:min(70vw,70vh);transform:translate(-50%,-50%);pointer-events:none}
+.tfCRings i{position:absolute;inset:42%;border:1px solid var(--tc);border-radius:50%;opacity:0;box-shadow:0 0 18px var(--tc)}
+.tfCParticles,.tfCBolts,.tfCAfter{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.tfCParticle{--x:50%;--y:50%;--s:5px;--d:0s;position:absolute;left:var(--x);top:var(--y);width:var(--s);height:var(--s);border-radius:50%;background:var(--tc);box-shadow:0 0 12px var(--tc);opacity:0}
+.tfCBolt{--x:50%;--y:30%;--r:0deg;--d:0s;position:absolute;left:var(--x);top:var(--y);width:2px;height:16vh;background:#fff;transform:rotate(var(--r)) skewY(-24deg);transform-origin:50% 0;opacity:0;box-shadow:0 0 8px #fff,0 0 18px var(--tc)}
+.tfCAfter img{position:absolute;left:50%;bottom:12vh;height:min(68vh,760px);max-width:70vw;object-fit:contain;transform:translateX(-50%);opacity:0;filter:brightness(0) invert(1) drop-shadow(0 0 18px var(--tc))}
+.tfCFighter{position:absolute;left:50%;bottom:12vh;width:min(46vw,560px);height:min(70vh,780px);transform:translateX(-50%);transform-origin:50% 85%;z-index:5}
+.tfCFighter img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center bottom;filter:brightness(.72) saturate(.72) drop-shadow(0 25px 22px rgba(0,0,0,.82));transition:opacity .18s,filter .55s,transform .8s cubic-bezier(.12,.8,.18,1)}
+.tfCNew{opacity:0;transform:scale(.76);filter:brightness(4) saturate(.2) drop-shadow(0 0 30px #fff)!important}
+.tfCAura{position:absolute;z-index:-1;left:50%;top:48%;width:130%;height:108%;transform:translate(-50%,-50%) scale(.28);border-radius:48% 52% 42% 58%;opacity:0;background:radial-gradient(ellipse,#fff 0,color-mix(in srgb,var(--tc) 78%,white) 14%,color-mix(in srgb,var(--tc) 46%,transparent) 42%,transparent 68%);filter:blur(11px);mix-blend-mode:screen}
+.tfCCore{position:absolute;left:50%;top:44%;width:22px;height:22px;border-radius:50%;transform:translate(-50%,-50%) scale(.2);background:#fff;box-shadow:0 0 18px #fff,0 0 48px var(--tc),0 0 100px var(--tc);opacity:0}
+.tfCEye{position:absolute;left:50%;top:31%;width:0;height:2px;transform:translateX(-50%) rotate(-4deg);background:#fff;box-shadow:0 0 9px #fff,0 0 28px var(--tc);opacity:0;z-index:7}
+.tfCFlash{z-index:30;pointer-events:none;opacity:0;background:#fff}
+.tfCGrain{z-index:24;pointer-events:none;opacity:.13;mix-blend-mode:screen;background:repeating-linear-gradient(0deg,transparent 0 2px,rgba(255,255,255,.1) 3px 4px),radial-gradient(circle at 50% 50%,transparent 45%,rgba(0,0,0,.7));animation:tfCGrain .16s steps(2) infinite}
+.tfCVignette{z-index:23;pointer-events:none;box-shadow:inset 0 0 14vw 3vw #000,inset 0 0 3vw rgba(0,0,0,.8)}
+.tfCBar{position:absolute;z-index:31;left:0;right:0;height:12vh;background:#000;transition:transform .7s cubic-bezier(.2,.9,.25,1)}
+.tfCBar.top{top:0;transform:translateY(-102%)}.tfCBar.bottom{bottom:0;transform:translateY(102%)}
+.tfCReadout{position:absolute;z-index:35;left:5vw;bottom:5vh;max-width:min(760px,90vw);opacity:0;transform:translateY(24px);text-shadow:0 3px 24px #000;transition:.7s cubic-bezier(.15,.8,.2,1)}
+.tfCKicker{display:block;font-family:var(--fj);font-size:11px;letter-spacing:.55em;color:var(--tc);margin-bottom:8px}
+.tfCReadout h2{font-family:var(--fd);font-size:clamp(34px,6.7vw,104px);line-height:.9;letter-spacing:.03em;text-transform:uppercase;background:linear-gradient(180deg,#fff 4%,color-mix(in srgb,var(--tc) 75%,white) 54%,var(--tc2));-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 24px color-mix(in srgb,var(--tc) 62%,transparent))}
+.tfCReadout p{font-family:var(--fd);font-size:clamp(10px,1.25vw,18px);letter-spacing:.28em;color:#fff;margin-top:12px;text-transform:uppercase}
+.tfCPower{display:flex;align-items:baseline;gap:12px;margin-top:12px;font-family:var(--fd)}
+.tfCPower small{font-family:var(--fj);font-size:9px;letter-spacing:.3em;color:rgba(255,255,255,.58)}
+.tfCPower b{font-size:clamp(22px,3vw,46px);color:#fff}.tfCPower i{font-style:normal;font-size:12px;color:var(--tc);letter-spacing:.15em}
+.tfCSkip,.tfCContinue{position:absolute;z-index:40;font-family:var(--fd);cursor:pointer;color:#fff;background:rgba(3,5,14,.48);border:1px solid rgba(255,255,255,.25);letter-spacing:.2em}
+.tfCSkip{right:max(18px,env(safe-area-inset-right));top:max(18px,env(safe-area-inset-top));padding:9px 13px;font-size:9px;opacity:0;transition:.4s}
+.tfCContinue{right:5vw;bottom:6vh;padding:14px 22px;font-size:11px;border-color:var(--tc);box-shadow:0 0 28px color-mix(in srgb,var(--tc) 25%,transparent);clip-path:polygon(12px 0,100% 0,calc(100% - 12px) 100%,0 100%);opacity:0;pointer-events:none;transform:translateY(15px);transition:.5s}
+.tfCContinue span{color:var(--tc);margin-left:12px}.tfCSkip:focus-visible,.tfCContinue:focus-visible{outline:2px solid #fff;outline-offset:3px}
+.tfCinema.phaseIntro .tfCBar{transform:translateY(0)}
+.tfCinema.phaseIntro .tfCSkip,.tfCinema.phaseCharge .tfCSkip,.tfCinema.phaseBreak .tfCSkip,.tfCinema.phaseReveal .tfCSkip,.tfCinema.phaseSettle .tfCSkip{opacity:.72}
+.tfCinema.phaseCharge .tfCAtmos{transform:scale(1.2);filter:brightness(.55) saturate(1.4)}
+.tfCinema.phaseCharge .tfCOld{transform:scale(.92) translateY(2%);filter:brightness(.12) saturate(0) drop-shadow(0 0 32px var(--tc))}
+.tfCinema.phaseCharge .tfCCore{animation:tfCoreGather 1.05s ease-in forwards}
+.tfCinema.phaseCharge .tfCParticle{animation:tfGather .95s cubic-bezier(.5,0,.8,.35) var(--d) forwards}
+.tfCinema.phaseBreak .tfCFlash{animation:tfFlash .62s ease-out}
+.tfCinema.phaseBreak .tfCWorld{animation:tfWorldHit .48s linear}
+.tfCinema.phaseBreak .tfCRings i{animation:tfRing .9s ease-out forwards}.tfCinema.phaseBreak .tfCRings i:nth-child(2){animation-delay:.1s}.tfCinema.phaseBreak .tfCRings i:nth-child(3){animation-delay:.2s}
+.tfCinema.phaseBreak .tfCOld{opacity:0}.tfCinema.phaseBreak .tfCAura{animation:tfAuraBreak .7s ease-out forwards}
+.tfCinema.phaseReveal .tfCNew,.tfCinema.phaseSettle .tfCNew{opacity:1;transform:scale(1);filter:brightness(.96) saturate(1.14) drop-shadow(0 0 24px color-mix(in srgb,var(--tc) 70%,transparent)) drop-shadow(0 28px 22px #000)!important}
+.tfCinema.phaseReveal .tfCAura,.tfCinema.phaseSettle .tfCAura{animation:tfAuraLive 1.1s cubic-bezier(.1,.8,.2,1) forwards}
+.tfCinema.phaseReveal .tfCParticle,.tfCinema.phaseSettle .tfCParticle{animation:tfErupt 1.8s cubic-bezier(.1,.65,.15,1) var(--d) forwards}
+.tfCinema.phaseReveal .tfCBeam,.tfCinema.phaseSettle .tfCBeam{opacity:.8;animation:tfBeamOpen 1.1s ease-out forwards}
+.tfCinema.phaseSettle .tfCReadout{opacity:1;transform:none}.tfCinema.phaseSettle .tfCContinue{opacity:1;pointer-events:auto;transform:none}
+.tfCinema.phaseSettle .tfCBar.top{transform:translateY(-54%)}.tfCinema.phaseSettle .tfCBar.bottom{transform:translateY(54%)}
+@keyframes tfCGrain{to{transform:translate(1px,-1px)}}
+@keyframes tfCoreGather{0%{opacity:0;transform:translate(-50%,-50%) scale(.2)}70%{opacity:1;transform:translate(-50%,-50%) scale(1.5)}100%{opacity:1;transform:translate(-50%,-50%) scale(.4)}}
+@keyframes tfGather{0%{opacity:0}18%{opacity:1}100%{opacity:1;left:50%;top:44%;transform:scale(.25)}}
+@keyframes tfFlash{0%{opacity:0}8%,24%{opacity:1}100%{opacity:0}}
+@keyframes tfWorldHit{0%,100%{transform:none}18%{transform:translate(-12px,6px) scale(1.025)}35%{transform:translate(10px,-7px)}55%{transform:translate(-8px,-3px)}75%{transform:translate(5px,4px)}}
+@keyframes tfRing{0%{opacity:1;inset:44%}100%{opacity:0;inset:-8%}}
+@keyframes tfAuraBreak{0%{opacity:1;transform:translate(-50%,-50%) scale(.22)}40%{opacity:1}100%{opacity:0;transform:translate(-50%,-50%) scale(1.55)}}
+@keyframes tfAuraLive{0%{opacity:1;transform:translate(-50%,-50%) scale(.25)}55%{opacity:.95;transform:translate(-50%,-50%) scale(1.1)}100%{opacity:.68;transform:translate(-50%,-50%) scale(.92)}}
+@keyframes tfErupt{0%{opacity:1;left:50%;top:44%;transform:scale(.3)}65%{opacity:1}100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(1.8)}}
+@keyframes tfBeamOpen{0%{transform:translateX(-50%) scaleX(.02);opacity:1}100%{transform:translateX(-50%) scaleX(1);opacity:0}}
+/* Form choreography: each state spends the same stage differently. */
+.tfCinema[data-form="kaioken"] .tfCVortex{opacity:.75;animation:tfSpin .8s linear infinite}.tfCinema[data-form="kaioken"] .tfCAfter img{animation:tfAfterRush .42s steps(2) infinite}.tfCinema[data-form="kaioken"].phaseCharge .tfCFighter{animation:tfStrain .22s linear infinite}
+.tfCinema[data-form="ssj"] .tfCSun{opacity:.7}.tfCinema[data-form="ssj"].phaseBreak .tfCSun,.tfCinema[data-form="ssj"].phaseReveal .tfCSun{animation:tfSunBirth 1.3s cubic-bezier(.1,.8,.2,1) forwards}.tfCinema[data-form="ssj"] .tfCParticle{border-radius:1px}
+.tfCinema[data-form="ussj"].phaseCharge .tfCFighter{animation:tfMassCharge .95s cubic-bezier(.4,0,.8,.3) forwards}.tfCinema[data-form="ussj"].phaseReveal .tfCNew,.tfCinema[data-form="ussj"].phaseSettle .tfCNew{transform:scaleX(1.08) scaleY(.98)}.tfCinema[data-form="ussj"] .tfCFloor{opacity:.9}
+.tfCinema[data-form="ssj2"] .tfCBolt{animation:tfBolt .7s steps(1) var(--d) infinite}.tfCinema[data-form="ssj2"].phaseReveal .tfCAtmos{animation:tfStrobe 1.3s steps(1) 2}
+.tfCinema[data-form="ssj3"] .tfCBeam{opacity:.35;width:42%}.tfCinema[data-form="ssj3"].phaseCharge .tfCFighter{animation:tfAscend 1.05s ease-in forwards}.tfCinema[data-form="ssj3"].phaseReveal .tfCNew{animation:tfDropIn .9s cubic-bezier(.1,.85,.2,1)}
+.tfCinema[data-form="goldape"] .tfCMoon{opacity:.82}.tfCinema[data-form="goldape"].phaseCharge .tfCMoon{animation:tfMoonWake 1.1s ease-in forwards}.tfCinema[data-form="goldape"].phaseReveal .tfCNew,.tfCinema[data-form="goldape"].phaseSettle .tfCNew{transform:scale(1.13)}.tfCinema[data-form="goldape"].phaseReveal .tfCFloor{animation:tfGroundSlam .7s linear}
+.tfCinema[data-form="ssj4"] .tfCMoon{opacity:.48;filter:hue-rotate(310deg) saturate(1.8)}.tfCinema[data-form="ssj4"] .tfCVortex{opacity:.62;animation:tfSpin 3.6s linear infinite reverse}.tfCinema[data-form="ssj4"].phaseBreak .tfCMoon{animation:tfMoonCrack .7s ease-out forwards}
+.tfCinema[data-form="ssg"] .tfCFloor,.tfCinema[data-form="ssg"] .tfCBolts,.tfCinema[data-form="ssg"] .tfCVortex{display:none}.tfCinema[data-form="ssg"] .tfCSun{opacity:.9;border-width:1px;box-shadow:0 0 80px var(--tc)}.tfCinema[data-form="ssg"].phaseCharge .tfCAtmos{filter:saturate(.25) brightness(1.3)}.tfCinema[data-form="ssg"].phaseBreak .tfCWorld{animation:none}.tfCinema[data-form="ssg"].phaseReveal .tfCSun{animation:tfDivineHalo 1.8s ease-out forwards}
+.tfCinema[data-form="ssb"] .tfCVortex{opacity:.7;animation:tfSpin 4s linear infinite}.tfCinema[data-form="ssb"].phaseReveal .tfCRings{animation:tfWaterRings 1.5s ease-out}.tfCinema[data-form="ssb"] .tfCAtmos{background:radial-gradient(circle at 50% 42%,#0d5380,#05101e 44%,#01040a 100%)}
+.tfCinema[data-form="ssbk"] .tfCVortex{opacity:.48;animation:tfSpin 3s linear infinite}.tfCinema[data-form="ssbk"] .tfCRift{opacity:.9}.tfCinema[data-form="ssbk"].phaseBreak .tfCRift{animation:tfRiftTear .8s ease-out}.tfCinema[data-form="ssbk"] .tfCAfter img{animation:tfDualGhost .5s steps(2) infinite}
+.tfCinema[data-form="uis"] .tfCFloor,.tfCinema[data-form="uis"] .tfCVortex,.tfCinema[data-form="uis"] .tfCBolts{display:none}.tfCinema[data-form="uis"] .tfCAtmos{filter:grayscale(1);background:radial-gradient(circle at 50% 40%,#31394b,#090c13 46%,#010204)}.tfCinema[data-form="uis"].phaseCharge .tfCParticle{animation:tfFreeze .9s ease-out forwards}.tfCinema[data-form="uis"].phaseReveal .tfCEye{animation:tfEyeCut .9s ease-out}.tfCinema[data-form="uis"].phaseBreak .tfCWorld{animation:none}
+.tfCinema[data-form="ue"] .tfCSun{opacity:.9;background:#050008;border-color:#cf78ff;box-shadow:0 0 30px #050008,0 0 90px #8a2be2}.tfCinema[data-form="ue"] .tfCRift{opacity:.45;transform:rotate(-24deg)}.tfCinema[data-form="ue"].phaseReveal .tfCParticle{border-radius:0;animation-name:tfDisintegrate}.tfCinema[data-form="ue"].phaseBreak .tfCSun{animation:tfHakai 1.1s ease-out forwards}
+@keyframes tfSpin{to{transform:rotate(360deg)}}
+@keyframes tfAfterRush{0%,100%{opacity:0;transform:translateX(calc(-50% - 42px))}50%{opacity:.22;transform:translateX(calc(-50% + 42px))}}
+@keyframes tfStrain{0%,100%{transform:translateX(-50%)}50%{transform:translateX(calc(-50% + 5px))}}
+@keyframes tfSunBirth{0%{transform:translate(-50%,-50%) scale(.15);opacity:.3}55%{opacity:1}100%{transform:translate(-50%,-50%) scale(1.6);opacity:0}}
+@keyframes tfMassCharge{0%{transform:translateX(-50%) scale(1)}100%{transform:translateX(-50%) scaleX(1.13) scaleY(.92)}}
+@keyframes tfBolt{0%,72%,100%{opacity:0}74%,84%{opacity:1}}
+@keyframes tfStrobe{0%,100%{filter:none}20%,60%{filter:brightness(1.8)}40%,80%{filter:brightness(.55)}}
+@keyframes tfAscend{to{transform:translateX(-50%) translateY(-8vh);filter:brightness(.15)}}
+@keyframes tfDropIn{0%{transform:translateY(-14vh) scale(.8);opacity:0}100%{transform:none;opacity:1}}
+@keyframes tfMoonWake{to{transform:translate(-50%,-50%) scale(1);filter:brightness(1.5)}}
+@keyframes tfGroundSlam{0%,100%{transform:perspective(580px) rotateX(62deg)}20%{transform:perspective(580px) rotateX(62deg) translateY(15px)}40%{transform:perspective(580px) rotateX(62deg) translateY(-9px)}}
+@keyframes tfMoonCrack{0%{filter:hue-rotate(310deg)}55%{filter:hue-rotate(310deg) brightness(3)}100%{filter:hue-rotate(310deg);transform:translate(-50%,-50%) scale(1.5);opacity:0}}
+@keyframes tfDivineHalo{0%{transform:translate(-50%,-50%) scale(.5);opacity:0}35%{opacity:1}100%{transform:translate(-50%,-50%) scale(1.15);opacity:.45}}
+@keyframes tfWaterRings{0%{filter:blur(8px);transform:translate(-50%,-50%) scale(.5)}100%{filter:none;transform:translate(-50%,-50%) scale(1.15)}}
+@keyframes tfRiftTear{0%{width:1px;filter:brightness(4)}45%{width:14px}100%{width:2px;opacity:0}}
+@keyframes tfDualGhost{0%,100%{opacity:.18;filter:hue-rotate(0deg) brightness(0) invert(1);transform:translateX(calc(-50% - 24px))}50%{filter:hue-rotate(190deg) brightness(0) invert(1);transform:translateX(calc(-50% + 24px))}}
+@keyframes tfFreeze{0%{opacity:1}100%{opacity:.55;transform:none}}
+@keyframes tfEyeCut{0%{width:0;opacity:0}18%{width:120px;opacity:1}70%{width:180px;opacity:1}100%{width:240px;opacity:0}}
+@keyframes tfDisintegrate{0%{opacity:1;left:50%;top:44%}100%{opacity:0;transform:translate(var(--dx),var(--rise)) rotate(240deg)}}
+@keyframes tfHakai{0%{transform:translate(-50%,-50%) scale(.2)}45%{transform:translate(-50%,-50%) scale(1.05);opacity:1}100%{transform:translate(-50%,-50%) scale(2);opacity:0}}
+@media(max-width:640px){
+  .tfCFighter{width:88vw;height:58dvh;bottom:17dvh}.tfCAfter img{height:58dvh;bottom:17dvh;max-width:92vw}
+  .tfCReadout{left:5vw;right:5vw;bottom:11dvh;text-align:center;max-width:none}.tfCReadout h2{font-size:clamp(28px,9vw,48px);line-height:1}.tfCKicker{font-size:9px}.tfCReadout p{font-size:9px;line-height:1.4;margin-top:8px}.tfCPower{justify-content:center;margin-top:8px}
+  .tfCContinue{left:12vw;right:12vw;bottom:3dvh;text-align:center}.tfCBar{height:8dvh}.tfCSkip{top:max(12px,env(safe-area-inset-top));right:12px}
+  .tfCVignette{box-shadow:inset 0 0 24vw 5vw #000}.tfCFloor{bottom:-12%;height:36%}
+}
+@media(prefers-reduced-motion:reduce){
+  .tfCinema *{animation:none!important;transition:none!important}.tfCOld{display:none}.tfCNew{opacity:1!important;transform:none!important;filter:drop-shadow(0 0 22px var(--tc))!important}.tfCAura{opacity:.55;transform:translate(-50%,-50%) scale(.9)}.tfCReadout,.tfCSkip,.tfCContinue{opacity:1;transform:none}.tfCContinue{pointer-events:auto}
+}
 .pastBox{width:min(590px,94vw);max-height:min(800px,92vh);overflow:auto;text-align:left;border-color:rgba(53,224,255,.5);box-shadow:0 0 70px rgba(53,224,255,.18);padding:24px 28px}
 .pastHead{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;padding-bottom:13px;border-bottom:1px solid var(--line);margin-bottom:16px}
 .pastHead .mTitle{margin:0;color:var(--cyan)}
@@ -1737,6 +1850,34 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
   </div>
 </div>
 
+<div class="tfCinema" id="tfCinema" hidden role="dialog" aria-modal="true" aria-labelledby="tfCName">
+  <div class="tfCWorld">
+    <div class="tfCAtmos"></div>
+    <i class="tfCMoon"></i><i class="tfCSun"></i><i class="tfCVortex"></i><i class="tfCRift"></i><i class="tfCBeam"></i>
+    <div class="tfCFloor"><i></i><b></b></div>
+    <div class="tfCRings"><i></i><i></i><i></i></div>
+    <div class="tfCParticles" id="tfCParticles"></div>
+    <div class="tfCBolts" id="tfCBolts"></div>
+    <div class="tfCAfter" id="tfCAfter"></div>
+    <div class="tfCFighter">
+      <span class="tfCAura"></span><span class="tfCCore"></span>
+      <img class="tfCOld" id="tfCOld" alt="">
+      <img class="tfCNew" id="tfCNew" alt="">
+    </div>
+    <div class="tfCEye"></div>
+  </div>
+  <div class="tfCFlash"></div><div class="tfCGrain"></div><div class="tfCVignette"></div>
+  <i class="tfCBar top"></i><i class="tfCBar bottom"></i>
+  <div class="tfCReadout" aria-live="polite">
+    <span class="tfCKicker" id="tfCKicker">LIMIT BREAK</span>
+    <h2 id="tfCName">SUPER SAIYAN</h2>
+    <p id="tfCCreed">THE LEGEND ANSWERS</p>
+    <div class="tfCPower"><small>POWER LEVEL</small><b id="tfCPower">0</b><i id="tfCMult">×1</i></div>
+  </div>
+  <button class="tfCSkip" id="tfCSkip" type="button">SKIP</button>
+  <button class="tfCContinue" id="tfCContinue" type="button">ENTER THIS FORM <span>▸</span></button>
+</div>
+
 <div class="modal" id="pastModal" hidden>
   <div class="mBox pastBox" role="dialog" aria-modal="true" aria-labelledby="pastTitle">
     <div class="pastHead">
@@ -2228,24 +2369,102 @@ function openTfModal(idx){
   $('#tfYes').onclick=()=>{$('#tfModal').hidden=true;doTransform(idx);};
   beep(660,.12,'triangle',.04);
 }
-let tfLock=false;
+const TF_CINEMA={
+  kaioken:{c:'#ff3655',c2:'#ff913d',kicker:'LIMITER OVERRIDE',creed:'FORCE THE LIMIT OPEN'},
+  ssj:{c:'#ffe16b',c2:'#ff932f',kicker:'THE LEGEND AWAKENS',creed:'RAGE BECOMES LIGHT'},
+  ussj:{c:'#ffc34c',c2:'#ed6728',kicker:'POWER WITHOUT RESTRAINT',creed:'MASS BECOMES FORCE'},
+  ssj2:{c:'#fff19a',c2:'#58cfff',kicker:'ASCENSION',creed:'THE STORM BREAKS TWICE'},
+  ssj3:{c:'#ffd45b',c2:'#f1662d',kicker:'POWER WITHOUT END',creed:'LET THE WORLD TREMBLE'},
+  goldape:{c:'#ffb33f',c2:'#ff572b',kicker:'PRIMAL SUN',creed:'INSTINCT TAKES THE THRONE'},
+  ssj4:{c:'#ff4e70',c2:'#7b1731',kicker:'PRIMAL CONTROL',creed:'THE BEAST OBEYS'},
+  ssg:{c:'#ff6a6a',c2:'#ffd29f',kicker:'DIVINE RITE',creed:'MORTAL HEART · DIVINE FLAME'},
+  ssb:{c:'#5ad8ff',c2:'#386fff',kicker:'GOD KI CONTROLLED',creed:'DIVINITY ANSWERS TO DISCIPLINE'},
+  ssbk:{c:'#68d3ff',c2:'#ff355e',kicker:'DUAL OVERDRIVE',creed:'CALM GOD · RAGING BODY'},
+  uis:{c:'#eef6ff',c2:'#809ac4',kicker:'THOUGHT FALLS SILENT',creed:'THE BODY MOVES'},
+  ue:{c:'#c86dff',c2:'#651a9d',kicker:'DESTRUCTION',creed:'DAMAGE BECOMES FUEL'}
+};
+let tfLock=false,tfCinemaTimers=[],tfCinemaRun=0,tfPowerRAF=0,tfReturnFocus=null;
+function tfLater(fn,ms){
+  const run=tfCinemaRun,t=setTimeout(()=>{if(run===tfCinemaRun)fn();},ms);
+  tfCinemaTimers.push(t);return t;
+}
+function tfPhase(name){$('#tfCinema').classList.add('phase'+name);}
+function tfStageBits(fromIdx,idx){
+  const c=$('#tfCinema'),old=FORMS[fromIdx]||FORMS[0],next=FORMS[idx],cfg=TF_CINEMA[next.id]||TF_CINEMA.ssj;
+  c.dataset.form=next.id;c.style.setProperty('--tc',cfg.c);c.style.setProperty('--tc2',cfg.c2);
+  $('#tfCOld').src=old.img;$('#tfCOld').alt=old.nm;
+  $('#tfCNew').src=next.img;$('#tfCNew').alt=next.nm;
+  $('#tfCKicker').textContent=cfg.kicker;$('#tfCName').textContent=next.nm;$('#tfCCreed').textContent=cfg.creed;
+  $('#tfCMult').textContent='×'+next.mult.toLocaleString();
+  let seed=(idx+1)*7919;
+  const rand=()=>{seed=(seed*16807)%2147483647;return(seed-1)/2147483646;};
+  const pw=Math.max(innerWidth,720),ph=Math.max(innerHeight,560);
+  $('#tfCParticles').innerHTML=Array.from({length:44},()=>{
+    const x=6+rand()*88,y=8+rand()*80,dx=(x-50)/100*pw*2.4,dy=(y-44)/100*ph*2.1;
+    return `<i class="tfCParticle" style="--x:${x.toFixed(2)}%;--y:${y.toFixed(2)}%;--s:${(2+rand()*6).toFixed(1)}px;--d:${(rand()*.28).toFixed(2)}s;--dx:${dx.toFixed(0)}px;--dy:${dy.toFixed(0)}px;--rise:${(-ph*(.55+rand()*.5)).toFixed(0)}px"></i>`;
+  }).join('');
+  $('#tfCBolts').innerHTML=Array.from({length:12},()=>`<i class="tfCBolt" style="--x:${(8+rand()*84).toFixed(1)}%;--y:${(4+rand()*52).toFixed(1)}%;--r:${(-52+rand()*104).toFixed(0)}deg;--d:${(rand()*.55).toFixed(2)}s"></i>`).join('');
+  $('#tfCAfter').innerHTML=Array.from({length:3},(_,i)=>`<img src="${old.img}" alt="" aria-hidden="true" style="animation-delay:${(-i*.13).toFixed(2)}s">`).join('');
+}
+function tfAnimatePower(from,to,dur){
+  cancelAnimationFrame(tfPowerRAF);const el=$('#tfCPower'),start=performance.now(),safeFrom=Math.max(1,from),ratio=to/safeFrom;
+  const tick=now=>{const p=clamp((now-start)/dur,0,1),e=1-Math.pow(1-p,3),v=ratio>30?Math.exp(Math.log(safeFrom)+(Math.log(to)-Math.log(safeFrom))*e):from+(to-from)*e;
+    el.textContent=fmtPL(v);if(p<1)tfPowerRAF=requestAnimationFrame(tick);};
+  tfPowerRAF=requestAnimationFrame(tick);
+}
+function tfChargeSound(id){
+  if(id==='uis'){
+    beep(82,.5,'sine',.045);tfLater(()=>beep(1318,.22,'sine',.025),620);return;
+  }
+  if(id==='ssg'||id==='ssb'){
+    [196,293.7,440,659.3].forEach((f,i)=>tfLater(()=>beep(f,.42,'sine',.028),i*210));return;
+  }
+  if(id==='ue'){
+    [55,61,73,92].forEach((f,i)=>tfLater(()=>beep(f,.36,i%2?'square':'sawtooth',.052),i*205));return;
+  }
+  const fast=id==='kaioken';
+  for(let i=0;i<(fast?12:9);i++)tfLater(()=>beep((fast?105:120)*Math.pow(fast?1.17:1.21,i),.13,'sawtooth',.026),i*(fast?70:105));
+}
+function tfBreakSound(id){
+  if(id==='uis'){
+    beep(42,.7,'sine',.05);tfLater(()=>beep(1760,.35,'triangle',.034),120);return;
+  }
+  if(id==='ssg'){
+    [392,523.3,659.3,784].forEach((f,i)=>tfLater(()=>beep(f,.52,'sine',.034),i*55));return;
+  }
+  beep(id==='ue'?38:52,.65,id==='ue'?'sawtooth':'square',.085);
+  beep(id==='ssbk'?96:64,.55,'sawtooth',.065);
+  const top=id==='ssj2'?[988,1480,1976]:id==='ue'?[220,277,330]:[880,1174,1568];
+  top.forEach((f,i)=>tfLater(()=>beep(f,.3,'triangle',.04),120+i*65));
+}
+function tfBuzz(pattern){if(!navigator.userActivation||navigator.userActivation.hasBeenActive)buzz(pattern);}
+function finishTfCinema(skipped){
+  if(!tfLock)return;
+  tfCinemaRun++;tfCinemaTimers.forEach(clearTimeout);tfCinemaTimers=[];cancelAnimationFrame(tfPowerRAF);tfPowerRAF=0;
+  const c=$('#tfCinema');c.hidden=true;c.className='tfCinema';delete c.dataset.form;
+  $('#tfCParticles').innerHTML='';$('#tfCBolts').innerHTML='';$('#tfCAfter').innerHTML='';
+  document.body.classList.remove('tfCinemaOpen');tfLock=false;renderAll();
+  if(!skipped)spawnFloat(FORMS[st.form].nm+' ACHIEVED','xp');
+  const focus=tfReturnFocus;tfReturnFocus=null;
+  if(focus&&focus.offsetParent!==null)focus.focus();else $('#fPrev').focus();
+}
 function doTransform(idx){
-  if(tfLock)return;tfLock=true;
-  const svg=$('#charaBox'),holo=$('#holo'),fl=$('#flash'),shock=$('#shock');
-  svg.classList.add('charging');
-  chargeSound();
-  setTimeout(()=>{fl.classList.remove('go');void fl.offsetWidth;fl.classList.add('go');},950);
-  setTimeout(()=>{
-    st.form=idx;st.formMax=Math.max(st.formMax,idx);save();
-    svg.classList.remove('charging');
-    renderAll();
-    svg.classList.add('popIn');
-    shock.classList.remove('go');void shock.offsetWidth;shock.classList.add('go');
-    holo.classList.add('shake');
-    boomSound();
-    spawnFloat(FORMS[idx].nm+' !!','xp');
-  },1080);
-  setTimeout(()=>{svg.classList.remove('popIn');holo.classList.remove('shake');fl.classList.remove('go');tfLock=false;},2500);
+  if(tfLock||idx<=0||idx>=FORMS.length)return;
+  const fromIdx=st.form,oldPL=playerPL(fromIdx),newPL=basePL()*FORMS[idx].mult,c=$('#tfCinema');
+  tfLock=true;tfCinemaRun++;tfReturnFocus=document.activeElement;
+  tfCinemaTimers.forEach(clearTimeout);tfCinemaTimers=[];cancelAnimationFrame(tfPowerRAF);
+  c.hidden=false;c.className='tfCinema';tfStageBits(fromIdx,idx);$('#tfCPower').textContent=fmtPL(oldPL);
+  document.body.classList.add('tfCinemaOpen');void c.offsetWidth;c.classList.add('isRunning');tfPhase('Intro');
+  $('#tfCContinue').disabled=true;$('#tfCSkip').focus({preventScroll:true});
+  st.form=idx;st.formMax=Math.max(st.formMax,idx);save();renderAll();
+  const reduced=matchMedia('(prefers-reduced-motion:reduce)').matches;
+  if(reduced){tfPhase('Settle');$('#tfCContinue').disabled=false;$('#tfCPower').textContent=fmtPL(newPL);tfBuzz(30);tfLater(()=>finishTfCinema(false),5000);return;}
+  tfChargeSound(FORMS[idx].id);tfBuzz([20,45,20]);
+  tfLater(()=>tfPhase('Charge'),280);
+  tfLater(()=>{tfPhase('Break');tfBreakSound(FORMS[idx].id);tfBuzz([75,35,120]);},1370);
+  tfLater(()=>{tfPhase('Reveal');tfAnimatePower(oldPL,newPL,1350);},1940);
+  tfLater(()=>{tfPhase('Settle');tfBuzz(35);$('#tfCContinue').disabled=false;$('#tfCContinue').focus({preventScroll:true});},3260);
+  tfLater(()=>finishTfCinema(false),7000);
 }
 function switchForm(idx){
   if(idx<0||idx>st.formMax||idx===st.form||tfLock)return;
@@ -2255,11 +2474,6 @@ function switchForm(idx){
   setTimeout(()=>svg.classList.remove('popIn'),750);
   beep(idx>0?980:520,.09,'triangle',.035);
   renderAll();
-}
-function chargeSound(){for(let i=0;i<10;i++)setTimeout(()=>beep(120*Math.pow(1.22,i),.12,'sawtooth',.028),i*95);}
-function boomSound(){
-  beep(60,.5,'square',.09);beep(46,.6,'sawtooth',.07);
-  setTimeout(()=>{beep(880,.3,'triangle',.05);beep(1174,.3,'triangle',.04);beep(1568,.35,'triangle',.04);},130);
 }
 
 /* ================= AUDIO ================= */
@@ -3033,7 +3247,14 @@ $('#savePastDay').addEventListener('click',savePastLog);
 $('#cancelPastDay').addEventListener('click',closePastDay);
 $('#pastModal').addEventListener('click',e=>{if(e.target.id==='pastModal')closePastDay();});
 $('#histBody').addEventListener('click',e=>{if(e.target.closest('[data-edit-past]'))openPastDay();});
-document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#pastModal').hidden)closePastDay();});
+document.addEventListener('keydown',e=>{
+  const cinema=$('#tfCinema');
+  if(!cinema.hidden&&e.key==='Tab'){
+    const focusable=[$('#tfCSkip'),...($('#tfCContinue').disabled?[]:[$('#tfCContinue')])],at=focusable.indexOf(document.activeElement);
+    e.preventDefault();focusable[(at+(e.shiftKey?-1:1)+focusable.length)%focusable.length].focus();return;
+  }
+  if(e.key!=='Escape')return;if(!cinema.hidden)finishTfCinema(true);else if(!$('#pastModal').hidden)closePastDay();
+});
 $('#resetBtn').addEventListener('click',()=>{
   if(confirm('Reset all save data? Your character, level, forms and history will be wiped.')){
     localStorage.removeItem(KEY);location.reload();
@@ -3042,6 +3263,8 @@ $('#resetBtn').addEventListener('click',()=>{
 $('#tfReady').addEventListener('click',()=>openTfModal(st.formMax+1));
 $('#tfNo').addEventListener('click',()=>{$('#tfModal').hidden=true;});
 $('#tfModal').addEventListener('click',e=>{if(e.target.id==='tfModal')$('#tfModal').hidden=true;});
+$('#tfCSkip').addEventListener('click',()=>finishTfCinema(true));
+$('#tfCContinue').addEventListener('click',()=>finishTfCinema(false));
 $('#fPrev').addEventListener('click',()=>switchForm(st.form-1));
 $('#fNext').addEventListener('click',()=>switchForm(st.form+1));
 
