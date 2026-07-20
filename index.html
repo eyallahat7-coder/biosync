@@ -699,8 +699,8 @@ body.tfCinemaOpen{overflow:hidden}
 .meForm{font-family:var(--fd);font-size:11px;color:var(--cyan);margin-top:4px;letter-spacing:1px}
 .clash{position:relative;height:34px}
 #battleFloat{position:absolute;inset:0;pointer-events:none}
-.bnum{position:absolute;top:10%;font-family:var(--fd);font-size:20px;animation:bfl 1.15s ease-out forwards;text-shadow:0 2px 8px #000}
-.bnum.dmg{color:#fff}.bnum.crit{color:var(--gold);font-size:31px;animation:bflCrit 1.5s cubic-bezier(.2,.9,.3,1) forwards}.bnum.foe{color:var(--red)}.bnum.miss{color:var(--dim);font-size:14px}
+.bnum{position:absolute;top:10%;font-family:var(--fd);font-size:20px;animation:bfl 1.65s ease-out forwards;text-shadow:0 2px 8px #000}
+.bnum.dmg{color:#fff}.bnum.crit{color:var(--gold);font-size:31px;animation:bflCrit 1.9s cubic-bezier(.2,.9,.3,1) forwards}.bnum.foe{color:var(--red)}.bnum.miss{color:var(--dim);font-size:14px}
 @keyframes bflCrit{0%{opacity:0;transform:translateY(16px) scale(.4)}14%{opacity:1;transform:translateY(-2px) scale(1.45)}28%{transform:translateY(0) scale(1.05)}70%{opacity:1;transform:translateY(-14px) scale(1.05)}100%{opacity:0;transform:translateY(-42px) scale(1)}}
 .bnum.clutch{color:var(--red);font-size:22px;letter-spacing:1px;text-shadow:0 0 16px var(--gold),0 2px 8px #000}
 .bnum.tell{color:var(--gold);font-size:30px;text-shadow:0 0 14px rgba(255,215,94,.8)}
@@ -731,14 +731,14 @@ body.tfCinemaOpen{overflow:hidden}
 @keyframes lungeUp{0%,100%{transform:translateY(0)}34%{transform:translateY(-20px) scale(1.06)}}
 @keyframes lungeDown{0%,100%{transform:translateY(0)}34%{transform:translateY(20px) scale(1.06)}}
 .spark{position:absolute;top:46%;left:50%;width:46px;height:46px;transform:translate(-50%,-50%);border-radius:50%;pointer-events:none;z-index:5;
-  background:radial-gradient(circle,rgba(255,255,255,.95),rgba(255,224,130,.7) 42%,transparent 70%);animation:sparkPop .38s ease-out forwards}
+  background:radial-gradient(circle,rgba(255,255,255,.95),rgba(255,224,130,.7) 42%,transparent 70%);animation:sparkPop .65s ease-out forwards}
 .spark.crit{width:72px;height:72px;background:radial-gradient(circle,#fff,var(--gold) 40%,rgba(255,120,40,.45) 66%,transparent 80%);
-  box-shadow:0 0 0 3px rgba(255,215,94,.5);animation:sparkCrit .75s cubic-bezier(.2,.8,.3,1) forwards}
+  box-shadow:0 0 0 3px rgba(255,215,94,.5);animation:sparkCrit 1s cubic-bezier(.2,.8,.3,1) forwards}
 @keyframes sparkPop{0%{opacity:0;transform:translate(-50%,-50%) scale(.2)}28%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-50%) scale(1.6)}}
 @keyframes sparkCrit{0%{opacity:0;transform:translate(-50%,-50%) scale(.15)}18%{opacity:1;transform:translate(-50%,-50%) scale(1.15)}46%{opacity:.95;transform:translate(-50%,-50%) scale(1.45)}100%{opacity:0;transform:translate(-50%,-50%) scale(2.3)}}
 .arena.punch{animation:apunch .2s ease-out}
 @keyframes apunch{50%{transform:scale(1.03)}}
-.arena.punchHard{animation:apunchHard .5s cubic-bezier(.2,.9,.3,1)}
+.arena.punchHard{animation:apunchHard .8s cubic-bezier(.2,.9,.3,1)}
 @keyframes apunchHard{0%{transform:scale(1)}18%{transform:scale(1.025) rotate(.2deg)}42%{transform:scale(1.008) rotate(-.1deg)}100%{transform:scale(1)}}
 .arena.freeze,.arena.freeze *{animation-play-state:paused!important}
 /* traveling energy projectiles */
@@ -1006,8 +1006,8 @@ body.tfCinemaOpen{overflow:hidden}
 #battleFight::before,#battleFight::after{display:none}
 #battleFight.enraged{--enemyAura:#ff3148}
 #battleFight .arcFrame{position:relative;z-index:1;display:block;min-height:0;gap:0;filter:none}
-.arcFrame.shake{animation:arcShake .48s linear}
-.arcFrame.punch{animation:arcPunch .22s ease-out}
+.arcFrame.shake{animation:arcShake .8s linear}
+.arcFrame.punch{animation:arcPunch .4s ease-out}
 @keyframes arcShake{0%,100%{transform:none}20%{transform:translate(-4px,2px)}40%{transform:translate(3px,-3px)}60%{transform:translate(-3px,-2px)}80%{transform:translate(3px,2px)}}
 @keyframes arcPunch{50%{transform:scale(1.015)}}
 .arcHud{position:relative;z-index:8;display:grid;grid-template-columns:minmax(0,1fr) 88px minmax(0,1fr);gap:10px;align-items:start;padding:15px 16px 6px}
@@ -1060,7 +1060,7 @@ body.tfCinemaOpen{overflow:hidden}
 .arcFighterTag{position:absolute;z-index:5;bottom:-34px;left:50%;transform:translateX(-50%);text-align:center;white-space:nowrap}
 .arcFighterTag b{display:block;font-family:'Haettenschweiler','Impact','Arial Narrow',var(--fd);font-size:14px;letter-spacing:.1em;color:var(--text);font-weight:400}
 .arcFighterTag span{font-family:Consolas,'Cascadia Mono',monospace;font-size:8.5px;letter-spacing:.22em;color:#7d9ab0;text-transform:uppercase}
-.arcFighter.hurt{animation:arcHurt .42s}.arcFighter.foe.hurtHard{animation:arcHurtHardR .62s cubic-bezier(.2,.8,.3,1)}.arcFighter.you.hurtHard{animation:arcHurtHardL .62s cubic-bezier(.2,.8,.3,1)}.arcFighter.you.lunge{animation:arcLungeR .4s ease-out}.arcFighter.foe.lunge{animation:arcLungeL .4s ease-out}.arcFighter.you.dash{animation:arcLungeR .42s ease-out}
+.arcFighter.hurt{animation:arcHurt .58s}.arcFighter.foe.hurtHard{animation:arcHurtHardR .62s cubic-bezier(.18,.72,.25,1)}.arcFighter.you.hurtHard{animation:arcHurtHardL .62s cubic-bezier(.18,.72,.25,1)}.arcFighter.you.lunge{animation:arcLungeR .5s ease-out}.arcFighter.foe.lunge{animation:arcLungeL .5s ease-out}.arcFighter.you.dash{animation:arcLungeR .5s ease-out}
 @keyframes arcHurt{0%,100%{transform:none}20%{transform:translate(-8px,2px)}45%{transform:translate(7px,-2px)}70%{transform:translate(-5px,1px)}}
 @keyframes arcHurtHardR{0%,100%{transform:none}12%{transform:translate(14px,-4px) rotate(2deg) scale(.98)}28%{transform:translate(6px,3px) rotate(-1deg)}44%{transform:translate(10px,-2px) rotate(1.2deg)}62%{transform:translate(4px,1px) rotate(-.5deg)}80%{transform:translate(6px,-1px)}}
 @keyframes arcHurtHardL{0%,100%{transform:none}12%{transform:translate(-14px,-4px) rotate(-2deg) scale(.98)}28%{transform:translate(-6px,3px) rotate(1deg)}44%{transform:translate(-10px,-2px) rotate(-1.2deg)}62%{transform:translate(-4px,1px) rotate(.5deg)}80%{transform:translate(-6px,-1px)}}
@@ -1071,8 +1071,8 @@ body.tfCinemaOpen{overflow:hidden}
 .arcFrame.clutch::after{content:"";position:absolute;inset:0;z-index:10;pointer-events:none;box-shadow:inset 0 0 70px 12px rgba(255,59,78,.38);animation:clutchVignette 1.1s infinite}
 #projLayer,#battleFloat{position:absolute;inset:0;pointer-events:none;z-index:7;overflow:visible}
 #battleFlash{position:absolute;inset:0;z-index:10;pointer-events:none;background:radial-gradient(circle at 50% 48%,rgba(255,255,255,.9),rgba(255,255,255,.3) 36%,transparent 70%);opacity:0}
-#battleFlash.go{animation:arcFlash .35s ease-out}@keyframes arcFlash{from{opacity:.58}to{opacity:0}}
-#battleFlash.go.big{animation:arcFlashBig .6s cubic-bezier(.2,.8,.3,1)}@keyframes arcFlashBig{0%{opacity:.76}20%{opacity:.68}48%{opacity:.3}100%{opacity:0}}
+#battleFlash.go{animation:arcFlash .55s ease-out}@keyframes arcFlash{from{opacity:.58}to{opacity:0}}
+#battleFlash.go.big{animation:arcFlashBig .85s cubic-bezier(.2,.8,.3,1)}@keyframes arcFlashBig{0%{opacity:.76}20%{opacity:.68}48%{opacity:.3}100%{opacity:0}}
 .bnum{top:38%;font-family:'Haettenschweiler','Impact','Arial Narrow',var(--fd);font-size:23px;letter-spacing:.04em;transform:skewX(-6deg)}
 .bnum.crit{font-size:36px}.bnum.tell{font-size:28px}.bnum.clutch{font-size:23px}
 .spark{top:48%}
@@ -1091,7 +1091,7 @@ body.tfCinemaOpen{overflow:hidden}
 /* ====== BATTLE DIRECTOR ====== */
 body.battleCinematicOpen{overflow:hidden}
 .arcStage{perspective:900px;isolation:isolate}
-.arcStage .arcFighter{transition:transform .42s cubic-bezier(.16,.8,.22,1),filter .3s,opacity .25s}
+.arcStage .arcFighter{transition:transform .68s cubic-bezier(.16,.8,.22,1),filter .5s,opacity .4s}
 .arcStage.dir-track-player .arcFighter.you{transform:translateX(42px) scale(1.12);z-index:6}.arcStage.dir-track-player .arcFighter.foe{transform:translateX(12px) scale(.94);filter:brightness(.7)}
 .arcStage.dir-track-foe .arcFighter.foe{transform:translateX(-42px) scale(1.12);z-index:6}.arcStage.dir-track-foe .arcFighter.you{transform:translateX(-12px) scale(.94);filter:brightness(.68)}
 .arcStage.dir-impact-player .arcFighter.foe{transform:translateX(48px) rotate(3deg) scale(.94);filter:brightness(1.45) saturate(.45)}.arcStage.dir-impact-foe .arcFighter.you{transform:translateX(-48px) rotate(-3deg) scale(.94);filter:brightness(1.45) saturate(.45)}
@@ -1108,14 +1108,14 @@ body.battleCinematicOpen{overflow:hidden}
 .bdImpactWord{position:absolute;z-index:16;left:50%;top:50%;transform:translate(-50%,-50%) skewX(-12deg);font-family:'Haettenschweiler','Impact','Arial Narrow',var(--fd);font-size:clamp(36px,8vw,82px);line-height:.8;letter-spacing:.02em;color:#fff;-webkit-text-stroke:1px #05060a;text-shadow:5px 5px 0 var(--bd),0 0 18px #000;opacity:0;white-space:nowrap}
 .bdSlash{position:absolute;z-index:14;left:-20%;width:140%;height:4px;background:#fff;box-shadow:0 0 12px #fff,0 0 25px var(--bd);opacity:0}.bdSlash.a{top:34%;transform:rotate(-14deg)}.bdSlash.b{top:53%;transform:rotate(11deg)}.bdSlash.c{top:68%;transform:rotate(-7deg)}
 /* Impact frame: a half-second manga cut only for crits and heavy blows. */
-.battleDirector.impact.show .bdBackdrop{opacity:.74}.battleDirector.impact.show .bdPanel{opacity:1;animation:bdPanelHit .5s steps(2) forwards}.battleDirector.impact.show .bdPanel.lead{filter:brightness(1.25)}.battleDirector.impact.show .bdImpactWord{animation:bdWord .52s cubic-bezier(.15,1.3,.2,1) forwards}.battleDirector.impact.show .bdSlash{animation:bdSlash .38s ease-out forwards}.battleDirector.impact.show .bdHit{animation:bdHit .38s steps(2)}
+.battleDirector.impact.show .bdBackdrop{opacity:.74}.battleDirector.impact.show .bdPanel{opacity:1;animation:bdPanelHit .8s steps(2) forwards}.battleDirector.impact.show .bdPanel.lead{filter:brightness(1.25)}.battleDirector.impact.show .bdImpactWord{animation:bdWord .85s cubic-bezier(.15,1.3,.2,1) forwards}.battleDirector.impact.show .bdSlash{animation:bdSlash .65s ease-out forwards}.battleDirector.impact.show .bdHit{animation:bdHit .55s steps(2)}
 /* Full-screen three-shot ultimate: preparation → release → aftermath. */
-.battleDirector.ult.show .bdBackdrop{opacity:1;background:radial-gradient(circle at 28% 50%,color-mix(in srgb,var(--bd) 24%,#04050b),#010207 58%)}.battleDirector.ult.prep .bdPanel.lead{opacity:1;width:58%;animation:bdPrepIn .45s cubic-bezier(.1,.85,.2,1)}.battleDirector.ult.prep .bdPanel.target{opacity:.18;filter:brightness(.35)}.battleDirector.ult.prep .bdCaption{opacity:1;left:auto;right:5%;bottom:9%;text-align:right}.battleDirector.ult.prep .bdCaption b{font-size:clamp(36px,6vw,64px)}
-.battleDirector.ult.fire .bdPanel{opacity:0}.battleDirector.ult.fire .bdSpeed{opacity:1;animation:bdSpeed .28s linear infinite}.battleDirector.ult.fire .bdBeam{opacity:1;animation:bdBeam .62s cubic-bezier(.15,.75,.15,1) forwards}.battleDirector.ult.fire .bdCaption{opacity:0}.battleDirector.ult.fire .bdHit{animation:bdHit .5s steps(2) .34s}
-.battleDirector.ult.after .bdBackdrop{opacity:.9;background:linear-gradient(180deg,#090b12,#020308)}.battleDirector.ult.after .bdPanel.target{opacity:1;left:46%;right:0;width:54%;animation:bdTargetAfter .55s ease-out forwards}.battleDirector.ult.after .bdPanel.lead{opacity:.12;filter:brightness(.4)}.battleDirector.ult.after .bdCaption{opacity:1;left:5%;right:auto;bottom:7%;text-align:left}.battleDirector.ult.after .bdCaption small{color:#fff}.battleDirector.ult.after .bdCaption b{font-size:clamp(32px,5vw,56px)}
+.battleDirector.ult.show .bdBackdrop{opacity:1;background:radial-gradient(circle at 28% 50%,color-mix(in srgb,var(--bd) 24%,#04050b),#010207 58%)}.battleDirector.ult.prep .bdPanel.lead{opacity:1;width:58%;animation:bdPrepIn .72s cubic-bezier(.1,.85,.2,1)}.battleDirector.ult.prep .bdPanel.target{opacity:.18;filter:brightness(.35)}.battleDirector.ult.prep .bdCaption{opacity:1;left:auto;right:5%;bottom:9%;text-align:right}.battleDirector.ult.prep .bdCaption b{font-size:clamp(36px,6vw,64px)}
+.battleDirector.ult.fire .bdPanel{opacity:0}.battleDirector.ult.fire .bdSpeed{opacity:1;animation:bdSpeed .5s linear infinite}.battleDirector.ult.fire .bdBeam{opacity:1;animation:bdBeam .95s cubic-bezier(.15,.75,.15,1) forwards}.battleDirector.ult.fire .bdCaption{opacity:0}.battleDirector.ult.fire .bdHit{animation:bdHit .75s steps(2) .46s}
+.battleDirector.ult.after .bdBackdrop{opacity:.9;background:linear-gradient(180deg,#090b12,#020308)}.battleDirector.ult.after .bdPanel.target{opacity:1;left:46%;right:0;width:54%;animation:bdTargetAfter .8s ease-out forwards}.battleDirector.ult.after .bdPanel.lead{opacity:.12;filter:brightness(.4)}.battleDirector.ult.after .bdCaption{opacity:1;left:5%;right:auto;bottom:7%;text-align:left}.battleDirector.ult.after .bdCaption small{color:#fff}.battleDirector.ult.after .bdCaption b{font-size:clamp(32px,5vw,56px)}
 /* Named boss attacks and phase transitions own the viewport. */
-.battleDirector.boss.show .bdBackdrop,.battleDirector.phase.show .bdBackdrop{opacity:1;background:radial-gradient(circle at 72% 42%,color-mix(in srgb,var(--bd) 26%,#13040a),#010207 62%)}.battleDirector.boss.show .bdPanel.lead,.battleDirector.phase.show .bdPanel.lead{opacity:1;left:42%;width:58%;clip-path:polygon(24% 0,100% 0,100% 100%,0 100%);animation:bdBossIn .65s cubic-bezier(.12,.82,.2,1)}.battleDirector.boss.show .bdPanel.target,.battleDirector.phase.show .bdPanel.target{display:none}.battleDirector.boss.show .bdCaption,.battleDirector.phase.show .bdCaption{opacity:1;animation:bdCaptionIn .45s ease-out}.battleDirector.boss.show .bdSpeed{opacity:.28;animation:bdSpeed .35s linear infinite}.battleDirector.phase.show .bdBackdrop::after{content:"";position:absolute;left:72%;top:42%;width:min(260px,42%);aspect-ratio:1;border-radius:50%;transform:translate(-50%,-50%);background:#030107;box-shadow:0 0 0 2px var(--bd),0 0 52px var(--bd);animation:bdPhaseSun 1.2s ease-out}.battleDirector.phase.show .bdSlash{opacity:1;animation:bdSlash .7s ease-out}
-.battleDirector.boss.strike .bdPanel.lead{transform:scale(1.08);filter:brightness(1.55) saturate(1.35)}.battleDirector.boss.strike .bdBeam{opacity:1;top:48%;height:9%;transform-origin:right center;animation:bdBossBeam .5s cubic-bezier(.12,.8,.2,1) forwards}.battleDirector.boss.strike .bdHit{animation:bdHit .46s steps(2) .16s}.battleDirector.boss.strike .bdCaption{transform:translateX(-2vw)}
+.battleDirector.boss.show .bdBackdrop,.battleDirector.phase.show .bdBackdrop{opacity:1;background:radial-gradient(circle at 72% 42%,color-mix(in srgb,var(--bd) 26%,#13040a),#010207 62%)}.battleDirector.boss.show .bdPanel.lead,.battleDirector.phase.show .bdPanel.lead{opacity:1;left:42%;width:58%;clip-path:polygon(24% 0,100% 0,100% 100%,0 100%);animation:bdBossIn .95s cubic-bezier(.12,.82,.2,1)}.battleDirector.boss.show .bdPanel.target,.battleDirector.phase.show .bdPanel.target{display:none}.battleDirector.boss.show .bdCaption,.battleDirector.phase.show .bdCaption{opacity:1;animation:bdCaptionIn .75s ease-out}.battleDirector.boss.show .bdSpeed{opacity:.28;animation:bdSpeed .55s linear infinite}.battleDirector.phase.show .bdBackdrop::after{content:"";position:absolute;left:72%;top:42%;width:min(260px,42%);aspect-ratio:1;border-radius:50%;transform:translate(-50%,-50%);background:#030107;box-shadow:0 0 0 2px var(--bd),0 0 52px var(--bd);animation:bdPhaseSun 1.9s ease-out}.battleDirector.phase.show .bdSlash{opacity:1;animation:bdSlash 1.05s ease-out}
+.battleDirector.boss.strike .bdPanel.lead{transform:scale(1.08);filter:brightness(1.55) saturate(1.35)}.battleDirector.boss.strike .bdBeam{opacity:1;top:48%;height:9%;transform-origin:right center;animation:bdBossBeam .9s cubic-bezier(.12,.8,.2,1) forwards}.battleDirector.boss.strike .bdHit{animation:bdHit .75s steps(2) .24s}.battleDirector.boss.strike .bdCaption{transform:translateX(-2vw)}
 @keyframes bdPanelHit{0%{transform:scale(1.2);filter:invert(1)}18%{filter:none}100%{transform:scale(1)}}
 @keyframes bdWord{0%{opacity:0;transform:translate(-50%,-50%) skewX(-12deg) scale(2)}18%,72%{opacity:1;transform:translate(-50%,-50%) skewX(-12deg) scale(1)}100%{opacity:0;transform:translate(-50%,-50%) skewX(-12deg) scale(.9)}}
 @keyframes bdSlash{0%{opacity:0;transform:translateX(-55%) rotate(-12deg)}22%{opacity:1}100%{opacity:0;transform:translateX(45%) rotate(8deg)}}
@@ -1151,6 +1151,7 @@ body.battleCinematicOpen{overflow:hidden}
 
 .battleResult{background:radial-gradient(circle at 50% 44%,rgba(4,7,15,.3),rgba(3,6,14,.94) 72%);backdrop-filter:blur(3px)}
 .battleResult .brBox{max-width:520px}.battleResult .brTitle{font-family:'Haettenschweiler','Impact','Arial Narrow',var(--fd);font-size:76px;line-height:.9;letter-spacing:.05em;font-style:italic;transform:skewX(-7deg)}
+.battleResult.lose .brBox{width:min(360px,calc(100vw - 36px));max-width:360px;padding:22px 18px;border:1px solid rgba(255,255,255,.14);background:linear-gradient(180deg,rgba(12,18,34,.96),rgba(4,7,15,.96));box-shadow:0 18px 55px rgba(0,0,0,.62)}.battleResult.lose .brTitle{font-size:44px;line-height:.92;transform:skewX(-5deg)}
 .battleResult .brName{font-family:Consolas,'Cascadia Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase}.battleResult .brXp{font-family:Consolas,'Cascadia Mono',monospace;font-size:10px;letter-spacing:.16em}
 .battleResult .brBtns button{border-radius:0;clip-path:polygon(9px 0,100% 0,calc(100% - 9px) 100%,0 100%);font-family:'Haettenschweiler','Impact','Arial Narrow',var(--fd);letter-spacing:.1em}
 
@@ -1165,7 +1166,7 @@ body.battleCinematicOpen{overflow:hidden}
   .arcCombo{top:83px;font-size:18px}.arcTell{inset:30% 0 auto}.arcTell>div{font-size:14px;padding:7px 18px}.arcTell small{font-size:7.5px}
   .arcUltName{font-size:24px;top:19%}.arcCommands{padding:5px 7px 12px}.arcTicker{font-size:9.5px;line-height:1.35;min-height:34px;padding:6px 8px}
   .arcDeck{grid-template-columns:repeat(3,1fr);gap:6px}.arcDeck .mvBtn{min-height:68px;padding:7px 3px 6px}.arcDeck .mvBtn::before{font-size:16px}.arcDeck .mvBtn b{font-size:10.5px}.arcDeck .mvBtn span{font-size:8px;letter-spacing:.05em}
-  .battleResult .brTitle{font-size:58px}
+  .battleResult .brTitle{font-size:58px}.battleResult.lose .brBox{width:min(320px,calc(100vw - 28px));padding:18px 14px}.battleResult.lose .brTitle{font-size:36px}.battleResult.lose .brBtns{margin-top:18px}.battleResult.lose .brBtns button{padding:11px 18px;font-size:11px}
 }
 @media(max-width:370px), (max-height:700px) and (max-width:700px){
   .arcStage{height:220px}.arcFighter{width:96px;height:145px;bottom:18%}.arcFlame{width:72px;height:122px}.arcPortrait{width:82px;height:134px}.arcFlame.inner{width:50px;height:92px}.arcCore{bottom:52px}.arcRing{width:104px}.arcCommands{padding-bottom:8px}.arcDeck .mvBtn{min-height:58px}.arcTicker{margin-bottom:7px}
@@ -2998,7 +2999,7 @@ const ENEMIES=[
 ];
 ENEMIES.forEach(e=>e.im=1);
 let fight=null;
-const BATTLE_TIMING={anticipation:140,strike:100,hitStop:75,recoil:210,settle:300,total:825};
+const BATTLE_TIMING={anticipation:280,strike:220,projectile:460,hitStop:85,recoil:620,settle:650,total:1855};
 function hasTrait(t){return fight&&fight.en.tr&&fight.en.tr.includes(t);}
 
 /* ---- boss tells: telegraphed heavy attacks you can Guard against ---- */
@@ -3065,12 +3066,12 @@ function calcHit(atk,power,crit,def,ign,attackerPL,defenderPL){const eff=def*(1-
 function bigFx(){const a=$('#arena');if(a){a.classList.remove('shake');void a.offsetWidth;a.classList.add('shake');}}
 function bflash(big){const f=$('#battleFlash');if(f){f.classList.remove('go','big');void f.offsetWidth;if(big)f.classList.add('big');f.classList.add('go');}}
 function bfloat(txt,cls){const l=$('#battleFloat');if(!l)return;const s=document.createElement('span');
-  s.className='bnum '+cls;s.textContent=txt;s.style.left=(20+Math.random()*58)+'%';l.appendChild(s);setTimeout(()=>s.remove(),cls==='crit'?1550:1200);}
+  s.className='bnum '+cls;s.textContent=txt;s.style.left=(20+Math.random()*58)+'%';l.appendChild(s);setTimeout(()=>s.remove(),cls==='crit'?2050:1800);}
 function blog(t){const el=$('#battleLog');if(el)el.textContent=t;}
 function buzz(p){try{navigator.vibrate&&navigator.vibrate(p);}catch(e){}}
 function anim(sel,cls,ms){const el=$(sel);if(!el)return;el.classList.remove(cls);void el.offsetWidth;el.classList.add(cls);setTimeout(()=>el.classList.remove(cls),ms||440);}
-function spark(sel,crit){const p=$(sel);if(!p)return;const s=document.createElement('span');s.className='spark'+(crit?' crit':'');p.appendChild(s);setTimeout(()=>s.remove(),crit?800:400);}
-function punch(hard){anim('#arena',hard?'punchHard':'punch',hard?520:220);}
+function spark(sel,crit){const p=$(sel);if(!p)return;const s=document.createElement('span');s.className='spark'+(crit?' crit':'');p.appendChild(s);setTimeout(()=>s.remove(),crit?1100:700);}
+function punch(hard){anim('#arena',hard?'punchHard':'punch',hard?850:430);}
 function hitStop(ms){const a=$('#arena');if(!a||matchMedia('(prefers-reduced-motion:reduce)').matches)return;a.classList.add('freeze');setTimeout(()=>a.classList.remove('freeze'),ms||70);}
 function hitFx(defender,attacker,crit,heavy){
   const big=crit||heavy;
@@ -3085,7 +3086,7 @@ function fireProjectile(fromSel,toSel,opts){
   const a=arena.getBoundingClientRect(),ff=fromEl.getBoundingClientRect(),tt=toEl.getBoundingClientRect();
   const sx=ff.left+ff.width/2-a.left,sy=ff.top+ff.height/2-a.top;
   const tx=tt.left+tt.width/2-a.left,ty=tt.top+tt.height/2-a.top;
-  const dx=tx-sx,dy=ty-sy,ang=Math.atan2(dy,dx)*180/Math.PI,dur=opts.dur||340;
+  const dx=tx-sx,dy=ty-sy,ang=Math.atan2(dy,dx)*180/Math.PI,dur=opts.dur||BATTLE_TIMING.projectile;
   const p=document.createElement('div');p.className='proj '+(opts.size||'');
   p.style.cssText=`left:${sx}px;top:${sy}px;--pc:${opts.color||'#35e0ff'};transform:translate(-50%,-50%) rotate(${ang}deg)`;
   layer.appendChild(p);
@@ -3207,22 +3208,22 @@ function bdSetup(mode,side,title,kicker,sub,full=false,shot=''){
 }
 function battleDirectorImpact(side,word){
   if(['ult','boss','phase'].includes(bdMode))return false;const token=bdSetup('impact',side,word,'IMPACT FRAME','',false);if(!token)return false;
-  $('#bdImpactWord').textContent=word;battleCamera(side==='player'?'dir-impact-player':'dir-impact-foe',520);bdLater(bdReset,610,token);return true;
+  $('#bdImpactWord').textContent=word;battleCamera(side==='player'?'dir-impact-player':'dir-impact-foe',BATTLE_TIMING.recoil);bdLater(bdReset,1000,token);return true;
 }
 function battleDirectorUlt(label){
   const target=fight?fight.en.n.toUpperCase():'TARGET',token=bdSetup('ult','player',label,'LIMIT BREAK','KI OUTPUT // MAXIMUM',true,'prep');if(!token)return;
   battleCamera('dir-track-player',BATTLE_TIMING.anticipation+BATTLE_TIMING.strike);
   bdLater(()=>{$('#battleDirector').classList.remove('prep');$('#battleDirector').classList.add('fire');},BATTLE_TIMING.anticipation,token);
-  bdLater(()=>{const d=$('#battleDirector');d.classList.remove('fire');d.classList.add('after');$('#bdKicker').textContent='AFTERMATH';$('#bdTitle').textContent='DIRECT HIT';$('#bdSub').textContent=target+' // IMPACT CONFIRMED';battleCamera('dir-aftermath',BATTLE_TIMING.recoil);},BATTLE_TIMING.anticipation+BATTLE_TIMING.strike+BATTLE_TIMING.hitStop,token);
+  bdLater(()=>{const d=$('#battleDirector');d.classList.remove('fire');d.classList.add('after');$('#bdKicker').textContent='AFTERMATH';$('#bdTitle').textContent='DIRECT HIT';$('#bdSub').textContent=target+' // IMPACT CONFIRMED';battleCamera('dir-aftermath',BATTLE_TIMING.recoil);},BATTLE_TIMING.anticipation+BATTLE_TIMING.projectile+BATTLE_TIMING.hitStop,token);
   bdLater(bdReset,BATTLE_TIMING.total,token);
 }
 function battleDirectorBoss(label){
   if(bdMode==='phase'||bdMode==='ult')return false;const token=bdSetup('boss','foe',label,'BOSS TECHNIQUE','DEFEND OR BE BROKEN',true);if(!token)return false;
-  battleCamera('dir-track-foe',520);bdLater(()=>{$('#battleDirector').classList.add('strike');battleCamera('dir-impact-foe',520);},460,token);bdLater(bdReset,1120,token);return true;
+  battleCamera('dir-track-foe',760);bdLater(()=>{$('#battleDirector').classList.add('strike');battleCamera('dir-impact-foe',BATTLE_TIMING.recoil);},650,token);bdLater(bdReset,1600,token);return true;
 }
 function battleDirectorPhase(){
   if(!fight)return;const token=bdSetup('phase','foe','PHASE TWO','LIMITER RELEASED',fight.en.n.toUpperCase()+' // THE ARENA HAS CHANGED',true);if(!token)return;
-  battleCamera('dir-track-foe',760);bdLater(()=>{$('#bdKicker').textContent='THREAT ESCALATED';$('#bdTitle').textContent='NO MORE RESTRAINT';},850,token);bdLater(bdReset,1760,token);
+  battleCamera('dir-track-foe',1050);bdLater(()=>{$('#bdKicker').textContent='THREAT ESCALATED';$('#bdTitle').textContent='NO MORE RESTRAINT';},1100,token);bdLater(bdReset,2400,token);
 }
 function arcCinematic(label){battleDirectorUlt(label);}
 function renderFight(){
@@ -3283,7 +3284,7 @@ function pAttack(power,ign,label,kind){
     battleCamera('dir-track-player',BATTLE_TIMING.anticipation+BATTLE_TIMING.strike);
     beep(kind==='ult'?200:480,.12,'sawtooth',.035);
     if(kind==='ult')arcCinematic(label);
-    setTimeout(()=>fireProjectile('#meArt','#foeArt',{color:col,size:kind==='ult'?'ult':(heavy?'big':''),dur:BATTLE_TIMING.strike}).then(impact),BATTLE_TIMING.anticipation);
+    setTimeout(()=>fireProjectile('#meArt','#foeArt',{color:col,size:kind==='ult'?'ult':(heavy?'big':''),dur:BATTLE_TIMING.projectile}).then(impact),BATTLE_TIMING.anticipation);
   }else{
     f._replyDelay=BATTLE_TIMING.total;
     anim('#meArt','dash',BATTLE_TIMING.anticipation+BATTLE_TIMING.strike);setTimeout(impact,BATTLE_TIMING.anticipation+BATTLE_TIMING.strike);
@@ -3321,7 +3322,7 @@ function playerMove(m){
 }
 function enemyTurn(){
   const f=fight;f.eTurn++;f._postDelay=Math.max(f._postDelay||0,BATTLE_TIMING.total);
-  if(f.en.r==='boss'&&f.eHp<=f.eHpMax*0.3&&!f.enraged){f.enraged=true;$('#battleFight').classList.add('enraged','phaseBroken');setArenaDamage(3);battleDirectorPhase();f._postDelay=Math.max(f._postDelay||0,1800);blog(f.en.n.toUpperCase()+' POWERS UP!');bfloat('ENRAGED','crit');bigFx();bflash(true);hitStop(90);anim('#foeArt','lunge',420);buzz([50,40,70]);beep(140,.3,'sawtooth',.05);}
+  if(f.en.r==='boss'&&f.eHp<=f.eHpMax*0.3&&!f.enraged){f.enraged=true;$('#battleFight').classList.add('enraged','phaseBroken');setArenaDamage(3);battleDirectorPhase();f._postDelay=Math.max(f._postDelay||0,2450);blog(f.en.n.toUpperCase()+' POWERS UP!');bfloat('ENRAGED','crit');bigFx();bflash(true);hitStop(90);anim('#foeArt','lunge',720);buzz([50,40,70]);beep(140,.3,'sawtooth',.05);}
   if(hasTrait('rampage'))f.eAtk*=1.06;
   const atk=f.eAtk*(f.enraged?1.3:1);
 
@@ -3338,9 +3339,8 @@ function enemyTurn(){
         if(skillLevel('guard')>=6){d=0;bfloat('COUNTER','crit');const cd=Math.round(f.pc.atk*.8*plFactor(f.pc.pl,f.es.pl));f.eHp-=cd;anim('#foeArt','hurt',440);blog('Instant Transmission negates the '+moveName+' — counter for '+cd+'!');}
         else{d=Math.round(d*guardMitig()*0.5);bfloat('PERFECT BLOCK','crit');blog('PERFECT BLOCK! You shatter the '+moveName+' for minimal damage.');beep(1100,.1,'square',.04);}
       }else{blog(f.en.n+' unleashes '+moveName+' for '+d+'!'+maybeFlavor('boss'));}
-      fireProjectile('#foeArt','#meArt',{color:'#ff5a3c',size:'big',dur:340});
-      if(d>0){f.pHp-=d;f.combo=0;bfloat('-'+d,'foe');hitFx('#meArt','#foeArt',r.c,true);buzz([30,20,60]);beep(240,.14,'square',.04);checkLastStand();}
-      else{buzz([15,10,15]);beep(500,.08,'triangle',.03);}
+      setTimeout(()=>fireProjectile('#foeArt','#meArt',{color:'#ff5a3c',size:'big',dur:BATTLE_TIMING.projectile}).then(()=>{if(fight!==f)return;if(d>0){bfloat('-'+d,'foe');hitFx('#meArt','#foeArt',r.c,true);buzz([30,20,60]);beep(240,.14,'square',.04);}else{buzz([15,10,15]);beep(500,.08,'triangle',.03);}}),BATTLE_TIMING.anticipation);
+      if(d>0){f.pHp-=d;f.combo=0;checkLastStand();}
       if(hasTrait('lifesteal')&&d>0)f.eHp=Math.min(f.eHpMax,f.eHp+d*0.3);
       if(hasTrait('regen'))f.eHp=Math.min(f.eHpMax,f.eHp+f.eHpMax*0.04);
       return;
