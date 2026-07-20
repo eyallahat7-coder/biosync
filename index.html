@@ -973,7 +973,6 @@ body.tfCinemaOpen{overflow:hidden}
 .stgRailHead{display:flex;align-items:baseline;justify-content:space-between;font-family:var(--fj);font-size:10px;letter-spacing:2px;
   color:var(--dim);text-transform:uppercase;margin-top:2px}
 .stgRailHead .stgRailHint{color:var(--cyan);opacity:.7}
-.stgSagaNav{display:flex;align-items:center;gap:8px}.stgSagaNav button{width:28px;height:26px;border:1px solid var(--line);border-radius:5px;background:rgba(53,224,255,.05);color:var(--cyan);font-family:var(--fd);cursor:pointer}.stgSagaNav button:disabled{opacity:.2;cursor:not-allowed}
 .stgRail{display:flex;gap:8px;overflow-x:auto;overflow-y:hidden;padding:2px 1px 9px;scroll-snap-type:x proximity;overscroll-behavior-x:contain;
   scrollbar-width:thin;scrollbar-color:rgba(53,224,255,.3) transparent;-webkit-overflow-scrolling:touch;cursor:grab}
 .stgRail:active{cursor:grabbing}
@@ -1840,7 +1839,7 @@ body.battleCinematicOpen{overflow:hidden}
         <div class="stgQuote" id="stgDQuote"></div>
       </div>
     </div>
-    <div class="stgRailHead"><span id="stgRailTitle">◈ Current saga</span><span class="stgSagaNav"><button id="stgTierPrev" type="button" aria-label="Previous saga">‹</button><span class="stgRailHint" id="stgRailHint">focused arc</span><button id="stgTierNext" type="button" aria-label="Next saga">›</button></span></div>
+    <div class="stgRailHead"><span>◈ All campaign targets</span><span class="stgRailHint">swipe / drag ↔</span></div>
     <div class="stgRail" id="stgRail"></div>
     <div class="stgActions">
       <button class="stgEngage" id="stgEngage">⚡ ENGAGE</button>
@@ -3097,7 +3096,7 @@ function fireProjectile(fromSel,toSel,opts){
 }
 
 /* ---- pre-fight staging: scouter confrontation, dossier & forecast ---- */
-let staged=null,battleTierView=null;
+let staged=null;
 const TRAIT_SIG={lifesteal:'Energy Absorption',regen:'Cellular Regeneration',rampage:'Berserker Surge',swift:'Blinding Speed',revive:'Undying Will',kidrain:'Ki Disruption'};
 function stgThreatClass(e){
   if(e.r==='boss')return (e.tr&&e.tr.length>=2)?'S':'A';
@@ -3409,21 +3408,15 @@ function nodeState(e){
 function renderBattleHome(){
   $('#battleFight').hidden=true;$('#battleResult').hidden=true;$('#battleStage').hidden=false;
   const b=st.battle;
-  const liveTier=clamp(b.tierUnlocked,0,TIERS.length-1);
-  if(battleTierView===null||battleTierView>liveTier)battleTierView=liveTier;
-  const viewTier=clamp(battleTierView,0,liveTier),tierEnemies=ENEMIES.filter(e=>e.t===viewTier);
-  const current=tierEnemies.find(e=>nodeState(e)==='open')||tierEnemies[0];
-  $('#stgRailTitle').textContent='◈ '+TIERS[viewTier].s+' · '+(viewTier+1)+' / '+TIERS.length;
-  $('#stgRailHint').textContent=viewTier===liveTier?'CURRENT ARC':'PAST ARC';
-  $('#stgTierPrev').disabled=viewTier===0;$('#stgTierNext').disabled=viewTier===liveTier;
-  $('#stgRail').innerHTML=tierEnemies.map(e=>{
+  const current=ENEMIES.find(e=>nodeState(e)==='open')||ENEMIES.find(e=>e.t===b.tierUnlocked)||ENEMIES[0];
+  $('#stgRail').innerHTML=ENEMIES.map(e=>{
     const stt=nodeState(e);
     const badge=stt==='done'?'<span class="sfBadge done">✓</span>':stt==='locked'?'<span class="sfBadge lock">🔒</span>':(current&&e.s===current.s?'<span class="sfBadge cur">▸</span>':'');
     return `<button class="stgFoeCard ${stt}" data-foe="${e.s}" type="button">`+
       `<span class="sfArt"><img src="img/enemies/${e.s}.jpg" alt="${e.n}" loading="lazy" decoding="async"></span>`+
       `<span class="sfName">${e.n}</span><span class="sfPL">PL ${fmtPL(e.pl)}</span>${badge}</button>`;
   }).join('');
-  const keep=staged&&staged.t===viewTier&&tierEnemies.some(x=>x.s===staged.s);
+  const keep=staged&&ENEMIES.some(x=>x.s===staged.s);
   selectFoe(keep?staged:current);
   const sc=$('#stgRail').querySelector('.stgFoeCard.sel');if(sc)sc.scrollIntoView({inline:'center',block:'nearest'});
 }
@@ -3436,8 +3429,6 @@ document.addEventListener('click',e=>{
 });
 $('#retreatBtn').addEventListener('click',()=>{fight=null;renderBattleHome();beep(300,.1,'sine',.03);});
 $('#stgEngage').addEventListener('click',()=>{if(staged&&nodeState(staged)!=='locked')startFight(staged);});
-$('#stgTierPrev').addEventListener('click',()=>{battleTierView=Math.max(0,(battleTierView??st.battle.tierUnlocked)-1);staged=null;renderBattleHome();});
-$('#stgTierNext').addEventListener('click',()=>{battleTierView=Math.min(st.battle.tierUnlocked,(battleTierView??st.battle.tierUnlocked)+1);staged=null;renderBattleHome();});
 
 /* ================= SKILLS SCREEN ================= */
 const STAT_NAME={vit:'VITALITY',str:'STRENGTH',agi:'AGILITY',foc:'FOCUS'};
