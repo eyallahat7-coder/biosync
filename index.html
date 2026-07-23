@@ -1661,7 +1661,7 @@ body.battleCinematicOpen{overflow:hidden}
     </div>
 
     <aside class="statsCol">
-      <div class="pHead"><h2>STATS</h2><span>Character parameters</span></div>
+      <div class="pHead"><h2>STATS</h2><span id="statsSub">Character parameters</span></div>
       <div class="radarWrap">
         <svg width="220" height="204" viewBox="0 0 230 212">
           <g stroke="rgba(53,224,255,.14)" fill="none">
@@ -2412,6 +2412,16 @@ function trainingMomentum(k,s=st){
 }
 function effectiveStat(s,k){return Math.min(100,s.stats[k]||1)+((s.trained&&s.trained[k])||0)+trainingMomentum(k,s);}
 function effOf(k){return effectiveStat(st,k);}
+/* per-form stat bars: bar shows progress within your current form. Unlocking a
+   new form snaps each floor to your current level (bar empties) and you climb again. */
+const FORM_BAND=25;
+function refreshFormBand(){
+  if(st.formStatFloor&&st.formStatFloorForm===st.formMax)return st.formStatFloor;
+  const first=(st.formStatFloorForm===undefined),fl={};
+  for(const k of['vit','str','agi','foc']){const e=effectiveStat(st,k);fl[k]=Math.max(0,first?e-FORM_BAND:e);}
+  st.formStatFloor=fl;st.formStatFloorForm=st.formMax;save();
+  return fl;
+}
 const SKILLS={
   strike:{base:1.0,kind:'atk',tiers:[[0,'Strike'],[2,'Meteor Combo'],[4,'Wolf Fang Fist'],[6,'Dragon Fist']]},
   ki:{base:1.9,kind:'atk',tiers:[[0,'Ki Blast'],[2,'Kamehameha'],[4,'Super Kamehameha'],[6,'Big Bang Kamehameha']]},
@@ -2717,11 +2727,14 @@ function animateStats(){
 }
 function paintStats(){
   const tr=st.trained||{},ev={};
+  const fl=refreshFormBand();
   for(const k of['vit','str','agi','foc']){
     ev[k]=Math.min(100,disp[k])+(tr[k]||0)+trainingMomentum(k);
-    $('#b-'+k).style.width=clamp(ev[k],0,100)+'%';
-    $('#v-'+k).textContent=Math.round(ev[k]);
+    $('#b-'+k).style.width=clamp((ev[k]-fl[k])/FORM_BAND*100,0,100)+'%';   // progress within current form's band
+    $('#v-'+k).textContent=Math.round(ev[k]);                              // true value, never capped
   }
+  const ssub=$('#statsSub');
+  if(ssub)ssub.textContent=st.formMax<FORMS.length-1?('Progress → '+FORMS[st.formMax+1].nm):'Final form · mastered';
   const R=90,cx=115,cy=106;
   const cl=v=>Math.min(100,v);
   const pts=[[cx,cy-R*cl(ev.vit)/100],[cx+R*cl(ev.str)/100,cy],[cx,cy+R*cl(ev.agi)/100],[cx-R*cl(ev.foc)/100,cy]];
